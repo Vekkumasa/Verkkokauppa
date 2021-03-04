@@ -1,8 +1,16 @@
 import express from 'express';
-const app = express();
+import cors from 'cors';
+import { ProductList } from './server/Products/ProductList';
 
-app.get('/ping', (_req, _res) => {
-  _res.send('pong');
+const app = express();
+app.use(cors());
+
+app.get('/api/ping', (_req, res) => {
+  console.log('someone pinged here');
+  res.send('pong');
+});
+app.get('/api/products', (_req, res) => {
+  res.json(ProductList);
 });
 
 const PORT = 3001;
