@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function addProduct(product: Product) {
   const action: ProductAction = {
     type: actionTypes.ADD_PRODUCT,

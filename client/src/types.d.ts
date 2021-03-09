@@ -1,9 +1,11 @@
-interface Product {
+type Product = {
   id: string,
   name: string,
   price: number,
-  stock: number
-}
+  stock: number,
+  image: string,
+  description?: string
+};
 
 type ProductState = {
   products: Product[]

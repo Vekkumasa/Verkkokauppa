@@ -1,17 +1,23 @@
 import React from "react";
-import { useSelector, shallowEqual } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
+import Navibar from './components/Navibar';
+import ProductListPage from './components/ProductListPage';
 
 const App: React.FC = () => {
 
-  const products: readonly Product[] = useSelector(
-    (state: ProductState) => state.products,
-    shallowEqual
-  );
-
-  console.log(products);
   return (
     <div>
-      <h1> Verkkokauppa </h1>
+      <Router>
+        <Navibar />
+        <h1> Verkkokauppa </h1>
+
+        <Switch>
+          <Route path="/" render={() => <ProductListPage />} />
+        </Switch>
+      </Router>
+      
+      
     </div>
   );
 };
