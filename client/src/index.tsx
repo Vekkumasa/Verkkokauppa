@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import axios from 'axios';
-import { BaseUrl } from './constants';
-import { Product } from './types';
 
-const App: React.FC = () => {
+import { createStore, applyMiddleware, Store } from "redux";
+import { Provider } from "react-redux";
+import thunk from "redux-thunk";
 
-  const [ products, setProducts ] = useState<Product[]>([]);
+import App from "./App";
+import reducer from "./store/reducer";
 
-  useEffect(() => {
-    void axios.get<void>(`${BaseUrl}/ping`);
-    
-    void axios.get<Product[]>(`${BaseUrl}/products`).then(response => {
-      console.log('promise fulfilled');
-      setProducts(response.data);
-    });
-  }, []);
-  
-  console.log('product', products);
-  
-  return (
-    <div>
-      <h1> Verkkokauppa </h1>
-    </div>
-  );
-};
+const store: Store<ProductState, ProductAction> & {
+  dispatch: DispatchType
+} = createStore(reducer, applyMiddleware(thunk));
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
