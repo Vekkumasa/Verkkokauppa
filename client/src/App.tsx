@@ -10,8 +10,7 @@ const App: React.FC = () => {
     <div>
       <Router>
         <Navibar />
-        <h1> Verkkokauppa </h1>
-
+        <br/>
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
         </Switch>
