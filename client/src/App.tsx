@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
-
+import ProductForm from './components/forms/product/AddProduct';
 const App: React.FC = () => {
 
   return (
@@ -15,6 +15,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
         </Switch>
+        <ProductForm />
       </Router>
       
       
