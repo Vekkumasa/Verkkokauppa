@@ -16,8 +16,6 @@ const App: React.FC = () => {
         </Switch>
         <ProductForm />
       </Router>
-      
-      
     </div>
   );
 };
