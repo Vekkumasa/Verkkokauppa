@@ -1,47 +1,41 @@
 import * as dotenv from "dotenv";
 import express from 'express';
-import mongoose from 'mongoose';
+//import mongoose from 'mongoose';
 import cors from 'cors';
+
 import { ProductList } from './server/Products/ProductList';
-
-/* eslint-disable */
-
-const isString = (text: unknown): text is string => {
-  return typeof text === 'string' || text instanceof String;
-};
+import StringCheck from './server/utils/StringCheck';
+//import UserSchema from './server/models/user';
+import connect from './server/connect';
+import * as UserController from './server/Controllers/userController';
 
 dotenv.config({ path:__dirname+'/.env' });
-
 const url = process.env.MONGODB_URI;
-
-console.log('connecting to', url);
 
 const app = express();
 
-if (isString(url)) {
-  mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+if (StringCheck(url)) {
+  connect(url);
 }
 
+/*
+const User = UserSchema;
 
-const noteSchema = new mongoose.Schema({
-  content: String,
-  date: Date,
-  important: Boolean,
-})
+const user = new User({
+  email: 'admin@admin.fi',
+  firstName: 'admin',
+  lastName: 'adminen',
+  userName: 'admin',
+  passwordHash: 'admin',
+  userType: 'admin',
+});
 
-const Note = mongoose.model('Note', noteSchema)
-
-const note = new Note({
-  content: 'HTML is Easy',
-  date: new Date(),
-  important: true,
-})
-
-note.save().then((response: any) => {
-  console.log('note saved!')
-  console.log(response)
-  mongoose.connection.close()
-})
+void user.save().then((response: any) => {
+  console.log('user saved!');
+  console.log(response);
+  void mongoose.connection.close();
+});
+*/
 
 app.use(cors());
 
@@ -52,6 +46,8 @@ app.get('/api/ping', (_req, res) => {
 app.get('/api/products', (_req, res) => {
   res.json(ProductList);
 });
+
+app.get("/users", UserController.allUsers);
 
 const PORT = process.env.PORT;
 
