@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Navibar from './components/Navibar';
@@ -7,13 +7,10 @@ import ProductForm from './components/forms/product/AddProduct';
 
 const App: React.FC = () => {
 
-  const [ modalOpen, setModalOpen ] = useState(false);
-
-  console.log(modalOpen);
   return (
     <div>
       <Router>
-        <Navibar setModalOpen={setModalOpen} />
+        <Navibar />
         <br/>
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import { Link } from "react-router-dom";
+import LogInModal from './LogInModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,14 +22,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
-  setModalOpen: (values: boolean) => void;
-}
-
-const Navibar: React.FC<Props> = ({ setModalOpen }) => {
+const Navibar: React.FC = () => {
   const classes = useStyles();
 
-
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
     <div className={classes.root}>
@@ -44,6 +41,7 @@ const Navibar: React.FC<Props> = ({ setModalOpen }) => {
           </Typography>
           <Button onClick={() => setModalOpen(true)} color="inherit">Login</Button>
         </Toolbar>
+        <LogInModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       </AppBar>
     </div>
   );

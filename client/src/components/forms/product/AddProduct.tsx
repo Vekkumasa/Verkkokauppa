@@ -1,6 +1,6 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 
 interface ProductFormValues {
   name: string;
@@ -91,14 +91,16 @@ const Form = withFormik<InitialValues, ProductFormValues>({
       image: props.initialImage || ""
   }),
 
-  /*
+
   validationSchema: Yup.object().shape({
-      email: Yup.string()
-          .email("Email not valid")
-          .required("Email is required"),
-      password: Yup.string().required("Password is required")
+    name: Yup.string()
+          .required("Product name is required"),
+    price: Yup.number()
+          .required("Product price is required"),
+    stock: Yup.number(),
+    image: Yup.string()
   }),
-*/
+
 
   handleSubmit(
       { name, price, stock, image }: ProductFormValues,
