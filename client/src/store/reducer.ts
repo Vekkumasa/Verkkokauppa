@@ -1,8 +1,8 @@
 import * as actionTypes from "./actionTypes";
-import kirves from '../images/kirves.jpg';
-import koppa from '../images/koppa.jpg';
-import mokki from '../images/mokki.jpg';
-import maggara from '../images/maggara.jpg';
+import * as kirves from '../images/kirves.jpg';
+import * as koppa from '../images/koppa.jpg';
+import * as mokki from '../images/mokki.jpg';
+import * as maggara from '../images/maggara.jpg';
 
 const initialState: ProductState = {
   products: [

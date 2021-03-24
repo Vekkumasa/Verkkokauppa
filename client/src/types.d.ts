@@ -17,3 +17,8 @@ type ProductAction = {
 };
 
 type DispatchType = (args: ProductAction) => ProductAction;
+
+declare module "*.jpg" {
+  const content: string;
+  export = content;
+}
