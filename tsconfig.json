@@ -7,6 +7,9 @@
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
         "esModuleInterop": true,
-        "moduleResolution": "node"
-    }
+        "moduleResolution": "node",
+        "outDir": "build",
+        "skipLibCheck": true,
+    },
+    "exclude": ["node_modules", "client", "build"]
   }
