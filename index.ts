@@ -13,13 +13,13 @@ dotenv.config({ path:__dirname+'/.env' });
 const url = process.env.MONGODB_URI;
 
 const app = express();
+app.use(express.static('build'));
 
 if (StringCheck(url)) {
   connect(url);
 }
 
 /*
-jep jep
 const User = UserSchema;
 
 const user = new User({
