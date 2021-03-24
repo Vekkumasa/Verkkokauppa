@@ -3,7 +3,7 @@ import express from 'express';
 //import mongoose from 'mongoose';
 import cors from 'cors';
 
-import { ProductList } from './server/Products/ProductList';
+import * as ProductList  from './server/Products/ProductList';
 import StringCheck from './server/utils/StringCheck';
 //import UserSchema from './server/models/user';
 import connect from './server/connect';
