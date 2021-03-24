@@ -7,8 +7,7 @@
     "ts-node": "ts-node",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts .",
-    "postinstall":"tsc"
+    "lint": "eslint --ext .ts ."
   },
   "repository": {
     "type": "git",
