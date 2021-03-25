@@ -8,21 +8,8 @@ import StringCheck from './server/utils/StringCheck';
 //import UserSchema from './server/models/user';
 import connect from './server/connect';
 import * as UserController from './server/Controllers/userController';
-
-dotenv.config({ path:__dirname+'/.env' });
-
-/*
-const { parsed, error } = dotenv.config({ debug: true });
-// was there an error?
-console.error('error:', error);
-
-// what was parsed?
-console.log('parsed', parsed);
-console.log('port', process.env.PORT);
-// compare to process.env
-console.dir(process.env); 
-*/
-
+import { resolve } from 'path';
+dotenv.config({ path: resolve(__dirname,'.env')});
 const url = process.env.MONGODB_URI;
 
 const app = express();

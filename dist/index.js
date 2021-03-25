@@ -31,15 +31,8 @@ var StringCheck_1 = __importDefault(require("./server/utils/StringCheck"));
 //import UserSchema from './server/models/user';
 var connect_1 = __importDefault(require("./server/connect"));
 var UserController = __importStar(require("./server/Controllers/userController"));
-dotenv.config({ path: __dirname + '/.env' });
-var _a = dotenv.config({ debug: true }), parsed = _a.parsed, error = _a.error;
-// was there an error?
-console.error('error:', error);
-// what was parsed?
-console.log('parsed', parsed);
-console.log('port', process.env.PORT);
-// compare to process.env
-console.dir(process.env);
+var path_1 = require("path");
+dotenv.config({ path: path_1.resolve(__dirname, '.env') });
 var url = process.env.MONGODB_URI;
 var app = express_1["default"]();
 app.use(express_1["default"].static('build'));
