@@ -64,6 +64,9 @@ app.get('/api/ping', function (_req, res) {
 app.get('/api/products', function (_req, res) {
     res.json(ProductList);
 });
+app.get('/api/health', function (_req, res) {
+    res.send('ok');
+});
 app.get("/users", UserController.allUsers);
 var PORT = process.env.PORT;
 app.listen(PORT, function () {
