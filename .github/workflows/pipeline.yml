@@ -16,7 +16,7 @@ jobs:
           node-version: '12.x'
 
       - name: npm install
-        run: npm install
+        run: npm install && cd client && npm install
 
       - name: lint
         run: npm run lint
