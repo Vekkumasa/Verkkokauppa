@@ -44,8 +44,13 @@ app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
+
 app.get('/api/products', (_req, res) => {
   res.json(ProductList);
+});
+
+app.get('/api/health', (_req, res) => {
+  res.send('ok');
 });
 
 app.get("/users", UserController.allUsers);
