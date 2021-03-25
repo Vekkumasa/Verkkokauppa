@@ -9,7 +9,13 @@ import StringCheck from './server/utils/StringCheck';
 import connect from './server/connect';
 import * as UserController from './server/Controllers/userController';
 import { resolve } from 'path';
-dotenv.config({ path: resolve(__dirname,'.env')});
+
+if (process.env.NODE_ENV === 'production') {
+  dotenv.config({ path: resolve(__dirname,'../.env')});
+} else {
+  dotenv.config({ path: resolve(__dirname,'.env')});
+}
+
 const url = process.env.MONGODB_URI;
 
 const app = express();

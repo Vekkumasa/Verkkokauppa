@@ -32,7 +32,12 @@ var StringCheck_1 = __importDefault(require("./server/utils/StringCheck"));
 var connect_1 = __importDefault(require("./server/connect"));
 var UserController = __importStar(require("./server/Controllers/userController"));
 var path_1 = require("path");
-dotenv.config({ path: path_1.resolve(__dirname, '.env') });
+if (process.env.NODE_ENV === 'production') {
+    dotenv.config({ path: path_1.resolve(__dirname, '../.env') });
+}
+else {
+    dotenv.config({ path: path_1.resolve(__dirname, '.env') });
+}
 var url = process.env.MONGODB_URI;
 var app = express_1["default"]();
 app.use(express_1["default"].static('build'));
