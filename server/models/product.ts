@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface ProductInterface extends Document {
+export interface ProductInterface extends mongoose.Document {
   name: string;
   stock: number;
   price: number;
@@ -9,7 +9,7 @@ export interface ProductInterface extends Document {
   image?: string;
 }
 
-const ProductSchema: Schema = new Schema({
+const ProductSchema: mongoose.Schema = new mongoose.Schema({
   name: { type: String, required: true, unique: true },
   stock: { type: Number, required: true },
   price: { type: Number, required: true },

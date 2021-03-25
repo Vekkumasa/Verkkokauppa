@@ -8,4 +8,5 @@
 | 12.3  |  2   | Alustava AddProduct form |
 | 15.3  |  5   | Mongodb skeemat ja asetukset ym |
 | 19.3  |  5   | Login modal, login form, + styles |
-| yht   |  21  | | 
+| 24.3  |  6   | Heroku yrityksiä |
+| yht   |  27  | | 
