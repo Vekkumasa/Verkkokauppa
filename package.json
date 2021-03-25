@@ -10,7 +10,8 @@
     "serve": "node build/index.js",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "postinstall":"tsc"
   },
   "repository": {
     "type": "git",

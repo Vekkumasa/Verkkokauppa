@@ -20,3 +20,13 @@ jobs:
 
       - name: lint
         run: npm run lint
+
+      - name: deploy
+        if: ${{ github.event_name == 'push' }}
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "verggogauppa"
+          heroku_email: "ylirasku@gmail.com"
+        #  healthcheck: "https://verggogauppa.herokuapp.com//health"
+        #  rollbackonhealthcheckfailed: true
