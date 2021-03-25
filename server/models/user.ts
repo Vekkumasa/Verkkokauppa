@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import uniqueValidator from 'mongoose-unique-validator';
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
 
-export interface UserInterface extends Document {
+export interface UserInterface extends mongoose.Document {
   email: string;
   firstName: string;
   lastName: string;
@@ -11,7 +11,7 @@ export interface UserInterface extends Document {
   userType: string;
 }
 
-const UserSchema: Schema = new Schema({
+const UserSchema: mongoose.Schema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },

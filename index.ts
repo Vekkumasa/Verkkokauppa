@@ -3,7 +3,7 @@ import express from 'express';
 //import mongoose from 'mongoose';
 import cors from 'cors';
 
-import { ProductList } from './server/Products/ProductList';
+import * as ProductList  from './server/Products/ProductList';
 import StringCheck from './server/utils/StringCheck';
 //import UserSchema from './server/models/user';
 import connect from './server/connect';
@@ -44,8 +44,13 @@ app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
 });
+
 app.get('/api/products', (_req, res) => {
   res.json(ProductList);
+});
+
+app.get('/api/health', (_req, res) => {
+  res.send('ok');
 });
 
 app.get("/users", UserController.allUsers);
