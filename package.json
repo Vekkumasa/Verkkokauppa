@@ -5,13 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node",
-    "build-ts": "tsc",
-    "postinstall": "npm run build-ts",
-    "serve": "node build/index.js",
+    "tsc": "tsc && cp -r .env ./dist",
+    "build-client": "cd client && npm run build && cp -r build/ ../",
+    "build-all": "rm -rf dist/ build/ && npm run tsc && npm run build-client",
+    "serve": "node dist/index.js",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
-    "lint": "eslint --ext .ts .",
-    "postinstall":"tsc"
+    "lint": "eslint --ext .ts ."
   },
   "repository": {
     "type": "git",
