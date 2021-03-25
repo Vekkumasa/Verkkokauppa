@@ -32,6 +32,14 @@ var StringCheck_1 = __importDefault(require("./server/utils/StringCheck"));
 var connect_1 = __importDefault(require("./server/connect"));
 var UserController = __importStar(require("./server/Controllers/userController"));
 dotenv.config({ path: __dirname + '/.env' });
+var _a = dotenv.config({ debug: true }), parsed = _a.parsed, error = _a.error;
+// was there an error?
+console.error('error:', error);
+// what was parsed?
+console.log('parsed', parsed);
+console.log('port', process.env.PORT);
+// compare to process.env
+console.dir(process.env);
 var url = process.env.MONGODB_URI;
 var app = express_1["default"]();
 app.use(express_1["default"].static('build'));
@@ -63,6 +71,9 @@ app.get('/api/ping', function (_req, res) {
 });
 app.get('/api/products', function (_req, res) {
     res.json(ProductList);
+});
+app.get('/api/health', function (_req, res) {
+    res.send('ok');
 });
 app.get("/users", UserController.allUsers);
 var PORT = process.env.PORT;
