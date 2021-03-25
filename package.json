@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node",
-    "tsc": "tsc && cp -r .env ./dist",
+    "tsc": "tsc",
     "build-client": "cd client && npm run build && cp -r build/ ../",
     "build-all": "rm -rf dist/ build/ && npm run tsc && npm run build-client",
     "serve": "node dist/index.js",
@@ -18,6 +18,9 @@
     "url": "git+https://github.com/Vekkumasa/Verkkokauppa.git"
   },
   "author": "",
+  "engines": {
+    "node": "12.18.3"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Vekkumasa/Verkkokauppa/issues"
@@ -39,6 +42,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
+    "ts-node" : "^9.1.1",
     "@material-ui/styles": "^4.11.3",
     "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.10",
