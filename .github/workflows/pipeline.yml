@@ -32,4 +32,4 @@ jobs:
           heroku_app_name: "verggogauppa"
           heroku_email: "ylirasku@gmail.com"
           healthcheck: "https://verggogauppa.herokuapp.com/api/ping"
-        #  rollbackonhealthcheckfailed: true
+          rollbackonhealthcheckfailed: true
