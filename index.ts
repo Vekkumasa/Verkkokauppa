@@ -55,6 +55,10 @@ app.get('/api/products', (_req, res) => {
   res.json(ProductList);
 });
 
+app.get('/api/health', (_req, res) => {
+  res.send('ok');
+});
+
 app.get("/users", UserController.allUsers);
 
 const PORT = process.env.PORT;
