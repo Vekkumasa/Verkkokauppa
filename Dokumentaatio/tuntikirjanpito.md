@@ -10,4 +10,5 @@
 | 19.3  |  5   | Login modal, login form, + styles |
 | 24.3  |  6   | Heroku yrityksiä |
 | 25.3  |  3   | Heroku + deploy pipeline |
+| 26.3  |  3   | Heroku + deploy pipeline |
 | yht   |  27  | | 

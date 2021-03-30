@@ -29,5 +29,5 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema({
 }
 );
 
-const User = mongoose.model<ProductInterface>("Product", ProductSchema);
-export default User;
+const Product = mongoose.model<ProductInterface>("Product", ProductSchema);
+export default Product;

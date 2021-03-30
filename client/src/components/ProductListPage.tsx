@@ -21,7 +21,6 @@ const ProductListPage: React.FC = () => {
   return (
     <div className={classes.root}>
       {products.map((product: Product) => (
-        // eslint-disable-next-line
         <Product key={product.id} product={product} />
       ))}
     </div>

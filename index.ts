@@ -1,14 +1,16 @@
 import * as dotenv from "dotenv";
 import express from 'express';
-//import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 import cors from 'cors';
 
-import * as ProductList  from './server/Products/ProductList';
-import StringCheck from './server/utils/StringCheck';
+import ProductRouter from './server/Routers/ProductRouter';
+import ProductController from './server/Controllers/ProductController';
+import { StringCheck } from './server/utils/StringCheck';
 //import UserSchema from './server/models/user';
 import connect from './server/connect';
-import * as UserController from './server/Controllers/userController';
+import * as UserController from './server/Controllers/UserController';
 import { resolve } from 'path';
+
 
 if (process.env.NODE_ENV === 'production') {
   dotenv.config({ path: resolve(__dirname,'../.env')});
@@ -45,20 +47,17 @@ void user.save().then((response: any) => {
 */
 
 app.use(cors());
-
+app.use('/api/products', ProductRouter);
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
-});
-
-app.get('/api/products', (_req, res) => {
-  res.json(ProductList);
 });
 
 app.get('/api/health', (_req, res) => {
   res.send('ok');
 });
 
+app.get("/products", ProductController.AllProducts);
 app.get("/users", UserController.allUsers);
 
 const PORT = process.env.PORT;

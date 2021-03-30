@@ -1,3 +1,4 @@
+import axios from 'axios'
 import * as actionTypes from "./actionTypes";
 import * as kirves from '../images/kirves.jpg';
 import * as koppa from '../images/koppa.jpg';
@@ -5,6 +6,7 @@ import * as mokki from '../images/mokki.jpg';
 import * as maggara from '../images/maggara.jpg';
 
 const initialState: ProductState = {
+
   products: [
     {
       id: "1",

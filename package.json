@@ -44,7 +44,6 @@
   },
   "dependencies": {
     "@material-ui/styles": "^4.11.3",
-    "@types/body-parser": "^1.19.0",
     "@types/cors": "^2.8.10",
     "@types/mongoose-unique-validator": "^1.0.4",
     "body-parser": "^1.19.0",
@@ -54,6 +53,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.12.0",
     "mongoose-unique-validator": "^2.0.3",
-    "ts-node": "^9.1.1"
+    "ts-node": "^9.1.1",
+    "uuidv4": "^6.2.7"
   }
 }
