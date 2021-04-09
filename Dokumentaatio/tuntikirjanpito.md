@@ -11,4 +11,5 @@
 | 24.3  |  6   | Heroku yrityksiä |
 | 25.3  |  3   | Heroku + deploy pipeline |
 | 26.3  |  3   | Heroku + deploy pipeline |
+| 9.4   |  4   | Redux + productit haetaan tietokannasta |
 | yht   |  27  | | 

@@ -11,12 +11,19 @@ type ProductState = {
   products: Product[]
 };
 
-type ProductAction = {
+type AddProductAction = {
   type: string,
-  product: Product
+  data: Product,
 };
 
-type DispatchType = (args: ProductAction) => ProductAction;
+type GetProductsAction = {
+  type: string,
+  data: Product[]
+}
+
+type Actions = AddProductAction | GetProductsAction
+
+type DispatchType = (args: Actions) => Actions;
 
 declare module "*.jpg" {
   const content: string;

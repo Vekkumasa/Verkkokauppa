@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector, shallowEqual } from "react-redux";
 import Product from './Product';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector, shallowEqual } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -17,6 +17,10 @@ const ProductListPage: React.FC = () => {
     (state: ProductState) => state.products,
     shallowEqual
   );
+
+  if (!products) {
+    return <div></div>;
+  }
 
   return (
     <div className={classes.root}>

@@ -1,20 +1,27 @@
 import * as actionTypes from "./actionTypes";
+import productService from '../services/productService';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function addProduct(product: Product) {
-  const action: ProductAction = {
+export const addProduct = (data: Product) => {
+  const action: AddProductAction = {
     type: actionTypes.ADD_PRODUCT,
-    product,
+    data,
   };
 
-  return simulateHttpRequest(action);
-}
+  console.log(data);
 
-export function simulateHttpRequest(action: ProductAction) {
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   return (dispatch: DispatchType) => {
-    setTimeout(() => {
-      dispatch(action);
-    }, 500);
+    dispatch(action);
   };
-}
+};
+
+export const initializeProducts = () => {
+  return async (dispatch: (arg0: { type: string; data: Product[]; }) => void) => {
+    const data = await productService.getAll();
+    console.log('initializeproducts:', data);
+    dispatch({
+      type: 'GET_PRODUCTS',
+      data
+    });
+  };
+};
