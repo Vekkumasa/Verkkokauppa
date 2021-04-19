@@ -7,6 +7,8 @@ type Product = {
   description?: string
 };
 
+type NoIdProduct = Omit<Product, 'id'>
+
 type ProductState = {
   products: Product[]
 };

@@ -19,6 +19,8 @@ const url = process.env.MONGODB_URI;
 const app = express();
 app.use(cors());
 app.use(express.static('build'));
+app.use(express.json());
+app.use(express.urlencoded());
 
 if (StringCheck(url)) {
   connect(url);

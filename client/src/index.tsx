@@ -13,7 +13,6 @@ const store: Store<ProductState, Actions> & {
   dispatch: DispatchType
 } = createStore(reducer, applyMiddleware(thunk));
 
-console.log('store', store.getState());
 ReactDOM.render(
   <Provider store={store}>
     <App />

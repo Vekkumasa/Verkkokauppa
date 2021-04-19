@@ -1,11 +1,12 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
+import productService from '../../../services/productService';
 
 interface ProductFormValues {
   name: string;
-  price: string;
-  stock: string;
+  price: number;
+  stock: number;
   image: string;
 }
 
@@ -15,8 +16,8 @@ interface Description {
 
 interface InitialValues {
   initialName?: string;
-  initialPrice?: string;
-  initialStock?: string;
+  initialPrice?: number;
+  initialStock?: number;
   initialImage?: string;
 }
 
@@ -86,8 +87,8 @@ const InnerForm = (props: Description & FormikProps<ProductFormValues>): JSX.Ele
 const Form = withFormik<InitialValues, ProductFormValues>({
   mapPropsToValues: props => ({
       name: props.initialName || "",
-      price: props.initialPrice || "",
-      stock: props.initialStock || "",
+      price: props.initialPrice || 0,
+      stock: props.initialStock || 0,
       image: props.initialImage || ""
   }),
 
@@ -107,6 +108,8 @@ const Form = withFormik<InitialValues, ProductFormValues>({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       { props, setSubmitting, setErrors }
   ) {
+      const product: NoIdProduct = { name, price, stock, image} ;
+      void productService.addProduct(product);
       console.log(name, price, stock, image);
   }
 })(InnerForm);
