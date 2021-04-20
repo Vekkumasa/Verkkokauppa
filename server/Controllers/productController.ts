@@ -1,24 +1,12 @@
-import { Request, Response } from "express";
 import { uuid } from "uuidv4";
 import Product from "../models/product";
 import { Product as ProductType } from '../types';
-
-const AllProducts = (_req: Request, res: Response) => {
-  const products = Product.find((err: unknown, products: typeof Product) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(products);
-    } 
-  });
-  console.log(products);
-};
 
 const GetProducts = async () => {
   return await Product.find({});
 };
 
-const NewProduct = (product: ProductType) => {
+const NewProduct = async (product: ProductType) => {
   try {
     const newProduct = new Product({
       id: uuid(),
@@ -26,19 +14,17 @@ const NewProduct = (product: ProductType) => {
       price: product.price,
       stock: product.stock,
       image: product.image,
-      descripstion: product.description
+      description: product.description
     });
-    void newProduct.save().then((response: unknown) => {
-      console.log('product saved!');
-      console.log(response);
-      });
+    const response = await newProduct.save();
+    return response;
   } catch (e) {
     console.log(e);
+    return null;
   }
 };
 
 export default {
-  AllProducts,
   GetProducts,
   NewProduct,
 };

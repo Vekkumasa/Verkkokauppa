@@ -13,8 +13,10 @@ router.get('/', [] , async (_req: Request, res: Response) => {
 
 router.post('/', (req: Request, res: Response) => {
   const product: Product = req.body;
-  productController.NewProduct(product);
-  res.json(product);
+  const added = productController.NewProduct(product);
+  void added.then((response) => {
+    res.status(201).json(response);
+  });
 });
 
 export default router;

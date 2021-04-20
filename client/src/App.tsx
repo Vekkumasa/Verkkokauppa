@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
-import ProductForm from './components/forms/product/AddProduct';
+import AddProductPage from './components/AddProductPage';
 import { initializeProducts } from './store/actionCreators';
-//import axios from 'axios';
 
 const App: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -24,7 +23,7 @@ const App: React.FC = () => {
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
         </Switch>
-        <ProductForm />
+        <AddProductPage />
       </Router>
     </div>
   );

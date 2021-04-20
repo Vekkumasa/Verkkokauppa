@@ -8,7 +8,7 @@ export const addProduct = (data: Product) => {
     data,
   };
 
-  console.log(data);
+  console.log('addproduct action', data);
 
   return (dispatch: DispatchType) => {
     dispatch(action);

@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   const classes = useStyles();
 
-  console.log(product.image);
+  console.log(product);
   return (
     <Card className={classes.root}>
       <CardActionArea>

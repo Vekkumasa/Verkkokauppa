@@ -2,26 +2,26 @@ import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 import productService from '../../../services/productService';
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import { addProduct } from '../../../store/actionCreators';
 
 interface ProductFormValues {
   name: string;
+  description: string;
   price: number;
   stock: number;
   image: string;
 }
-
-interface Description {
-  description?: string;
-}
-
 interface InitialValues {
   initialName?: string;
+  initialDescription?: string;
   initialPrice?: number;
   initialStock?: number;
   initialImage?: string;
 }
 
-const InnerForm = (props: Description & FormikProps<ProductFormValues>): JSX.Element => {
+const InnerForm = (props: FormikProps<ProductFormValues>): JSX.Element => {
   const {
     values,
     errors,
@@ -42,6 +42,14 @@ const InnerForm = (props: Description & FormikProps<ProductFormValues>): JSX.Ele
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.name}
+          />
+        <label>Description</label>
+          <input
+            type="textarea"
+            name="description"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.description}
           />
         <label>Price</label>
           <input
@@ -72,6 +80,7 @@ const InnerForm = (props: Description & FormikProps<ProductFormValues>): JSX.Ele
           disabled={
             isSubmitting ||
             !!(errors.name && touched.name) ||
+            !!(errors.description && touched.description) ||
             !!(errors.price && touched.price) ||
             !!(errors.stock && touched.stock) ||
             !!(errors.image && touched.image) 
@@ -84,34 +93,43 @@ const InnerForm = (props: Description & FormikProps<ProductFormValues>): JSX.Ele
   );
 };
 
-const Form = withFormik<InitialValues, ProductFormValues>({
-  mapPropsToValues: props => ({
-      name: props.initialName || "",
-      price: props.initialPrice || 0,
-      stock: props.initialStock || 0,
-      image: props.initialImage || ""
-  }),
+const Testi = () => {
+  const dispatch: Dispatch<any> = useDispatch();
+
+  const Form = withFormik<InitialValues, ProductFormValues>({
+    mapPropsToValues: props => ({
+        name: props.initialName || "",
+        description: props.initialDescription || "",
+        price: props.initialPrice || 0,
+        stock: props.initialStock || 0,
+        image: props.initialImage || ""
+    }),
 
 
-  validationSchema: Yup.object().shape({
-    name: Yup.string()
-          .required("Product name is required"),
-    price: Yup.number()
-          .required("Product price is required"),
-    stock: Yup.number(),
-    image: Yup.string()
-  }),
+    validationSchema: Yup.object().shape({
+      name: Yup.string()
+            .required("Product name is required"),
+      description: Yup.string(),
+      price: Yup.number()
+            .required("Product price is required"),
+      stock: Yup.number(),
+      image: Yup.string()
+    }),
 
 
-  handleSubmit(
-      { name, price, stock, image }: ProductFormValues,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      { props, setSubmitting, setErrors }
-  ) {
-      const product: NoIdProduct = { name, price, stock, image} ;
-      void productService.addProduct(product);
-      console.log(name, price, stock, image);
-  }
-})(InnerForm);
+    handleSubmit(
+        { name, description, price, stock, image }: ProductFormValues,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        { props, setSubmitting, setErrors }
+    ) {
+        const product: NoIdProduct = { name, description, price, stock, image};
+        const addedProduct = productService.addProduct(product);
+        console.log('promise', addedProduct);
+    }
+  })(InnerForm);
 
-export default Form;
+  return <Form />;
+};
+  
+
+export default Testi;

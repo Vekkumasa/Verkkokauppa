@@ -23,6 +23,7 @@ type GetProductsAction = {
   data: Product[]
 }
 
+
 type Actions = AddProductAction | GetProductsAction
 
 type DispatchType = (args: Actions) => Actions;
