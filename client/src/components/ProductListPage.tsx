@@ -1,7 +1,7 @@
 import React from "react";
-import { useSelector, shallowEqual } from "react-redux";
 import Product from './Product';
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -14,14 +14,16 @@ const ProductListPage: React.FC = () => {
   const classes = useStyles();
 
   const products: Product[] = useSelector(
-    (state: ProductState) => state.products,
-    shallowEqual
+    (state: AppState) => state.products.products,
   );
+
+  if (products.length === 0) {
+    return <div></div>;
+  }
 
   return (
     <div className={classes.root}>
       {products.map((product: Product) => (
-        // eslint-disable-next-line
         <Product key={product.id} product={product} />
       ))}
     </div>

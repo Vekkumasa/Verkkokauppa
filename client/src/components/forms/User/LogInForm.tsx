@@ -1,8 +1,11 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import { makeStyles } from '@material-ui/core/styles';
-
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import userService from '../../../services/userService';
+import { logIn } from '../../../store/User/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -18,12 +21,12 @@ const useStyles = makeStyles({
       alignItems: 'center',
       position: 'relative',
       padding: 20,
-      paddingRight: 70,
+      paddingRight: 5,
       left: '38%',
       transform: `translate(-50%, -$50%)`,
       borderWidth: 3,
       borderRadius: 35,      
-      width: 75,
+      width: 92,
       height: 20,
       opacity: 0.95,
       backgroundColor: '#124eb0',
@@ -88,34 +91,48 @@ const InnerForm = (props: FormikProps<LogInFormValues>): JSX.Element => {
             !!(errors.password && touched.password)
           }
         >
-          Submit
+          Log in
         </button>
       </form>
     </div>
   );
 };
 
-const Form = withFormik<InitialValues, LogInFormValues>({
-  mapPropsToValues: props => ({
-      username: props.initialUsername || "",
-      password: props.initialPassword || ""
-  }),
+const LoginForm = () => {
+  const dispatch: Dispatch<any> = useDispatch();
 
-  
-  validationSchema: Yup.object().shape({
-      username: Yup.string()
-          .required("Username is required"),
-      password: Yup.string()
-          .required("Password is required")
-  }),
+  const Form = withFormik<InitialValues, LogInFormValues>({
+    mapPropsToValues: props => ({
+        username: props.initialUsername || "",
+        password: props.initialPassword || ""
+    }),
+   
+    validationSchema: Yup.object().shape({
+        username: Yup.string()
+            .required("Username is required"),
+        password: Yup.string()
+            .required("Password is required")
+    }),
 
-  handleSubmit(
-      { username, password, }: LogInFormValues,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      { props, setSubmitting, setErrors }
-  ) {
-      console.log(username, password);
-  }
-})(InnerForm);
+    handleSubmit({ username, password, }: LogInFormValues) {
+        const user = userService.signIn(username, password);
+        void user.then((res) => {
+          if (res.token === undefined) {
+            console.log('');
+          }
+          const credentials: Credentials = {
+            firstName: res.firstName,
+            lastName: res.lastName,
+            userName: res.userName,
+            userType: res.userType,
+            token: res.token,
+          };
+          dispatch(logIn(credentials));
+        });
+    }
+  })(InnerForm);
 
-export default Form;
+  return <Form></Form>;
+};
+
+export default LoginForm;

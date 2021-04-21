@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import mongoose from "mongoose";
 
@@ -19,15 +20,22 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema({
 {
   toJSON: {
     transform: (_document, returnedObject) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      returnedObject.id = returnedObject._id.toString();
       delete returnedObject._id;
       delete returnedObject.__v;
     }
   },
   toObject: {
-    versionKey: false,
+    transform: (_document, returnedObject) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+      delete returnedObject.__v;
+    }
   }
 }
 );
 
-const User = mongoose.model<ProductInterface>("Product", ProductSchema);
-export default User;
+const Product = mongoose.model<ProductInterface>("Product", ProductSchema);
+export default Product;

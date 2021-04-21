@@ -10,4 +10,9 @@
 | 19.3  |  5   | Login modal, login form, + styles |
 | 24.3  |  6   | Heroku yrityksiä |
 | 25.3  |  3   | Heroku + deploy pipeline |
-| yht   |  27  | | 
+| 26.3  |  3   | Heroku + deploy pipeline |
+| 9.4   |  4   | Redux + productit haetaan tietokannasta |
+| 19.4  |  3   | Tuotteen lisääminen tietokantaan |
+| 20.4  |  5   | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
+| 21.4  |  6   | Login backend + frontend, Kayttajan luominen ja tallettamien tietokantaan fixeja |
+| yht   |  51  | | 

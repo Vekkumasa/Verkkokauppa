@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -63,6 +64,7 @@
     "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
-    "eslint": "^7.21.0"
+    "eslint": "^7.21.0",
+    "typesafe-actions": "^5.1.0"
   }
 }

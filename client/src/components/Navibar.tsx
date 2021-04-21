@@ -7,6 +7,10 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import { logIn } from '../store/User/actionCreators';
+
 import { Link } from "react-router-dom";
 import LogInModal from './LogInModal';
 
@@ -22,10 +26,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navibar: React.FC = () => {
+type UserProp = {
+  user: Credentials | null
+};
+
+const Navibar: React.FC<UserProp> = (user) => {
   const classes = useStyles();
+  const dispatch: Dispatch<any> = useDispatch();
 
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+
+  const logOut = () => {
+    dispatch(logIn(null));
+  };
 
   return (
     <div className={classes.root}>
@@ -39,7 +52,12 @@ const Navibar: React.FC = () => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
-          <Button onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+          {user.user === null ?
+            <Button onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+            :
+            <Button onClick={() => logOut()} color="inherit">Log Out</Button>
+          }
+          
         </Toolbar>
         <LogInModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
       </AppBar>
