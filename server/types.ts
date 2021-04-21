@@ -16,3 +16,13 @@ export type User = {
   passwordHash: string,
   userType: string
 };
+
+export type UserType = 'Admin' | 'User';
+
+export type Credentials = {
+  token: string,
+  userName: string,
+  firstName: string,
+  lastName: string,
+  userType: UserType
+};

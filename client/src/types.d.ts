@@ -9,6 +9,27 @@ type Product = {
 
 type NoIdProduct = Omit<Product, 'id'>
 
+type User = {
+  id: string,
+  firstName: string,
+  lastName: string,
+  userName: string,
+  email: string,
+  userType: UserType
+};
+
+type NoIdUser = Omit<User, 'id'>;
+
+type Credentials = {
+  token: string,
+  userName: string,
+  firstName: string,
+  lastName: string,
+  userType: UserType
+};
+
+type UserType = 'Admin' | 'User';
+
 type ProductState = {
   products: Product[]
 };
@@ -23,8 +44,22 @@ type GetProductsAction = {
   data: Product[]
 }
 
+type ProductActions = AddProductAction | GetProductsAction
+type UserActions = LogInAction
 
-type Actions = AddProductAction | GetProductsAction
+type UserState = {
+  user: Credentials | null
+};
+
+type LogInAction = {
+  type: string,
+  data: Credentials | null,
+};
+
+interface AppState {
+  products: ProductState,
+  user: UserState
+}
 
 type DispatchType = (args: Actions) => Actions;
 

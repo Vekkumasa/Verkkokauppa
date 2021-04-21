@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 
-import LogInForm from './forms/User/LogIn';
+import LogInForm from './forms/User/LogInForm';
 
 
 const getModalStyle = () => {

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import productService from '../../../services/productService';
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
-import { addProduct } from '../../../store/actionCreators';
+import { addProduct } from '../../../store/Product/actionCreators';
 
 interface ProductFormValues {
   name: string;
@@ -93,7 +93,7 @@ const InnerForm = (props: FormikProps<ProductFormValues>): JSX.Element => {
   );
 };
 
-const Testi = () => {
+const AddProductForm = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const Form = withFormik<InitialValues, ProductFormValues>({
@@ -142,4 +142,4 @@ const Testi = () => {
 };
   
 
-export default Testi;
+export default AddProductForm;

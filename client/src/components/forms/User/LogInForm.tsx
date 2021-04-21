@@ -1,8 +1,11 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import { makeStyles } from '@material-ui/core/styles';
-
+import { Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+import userService from '../../../services/userService';
+import { logIn } from '../../../store/User/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -95,27 +98,41 @@ const InnerForm = (props: FormikProps<LogInFormValues>): JSX.Element => {
   );
 };
 
-const Form = withFormik<InitialValues, LogInFormValues>({
-  mapPropsToValues: props => ({
-      username: props.initialUsername || "",
-      password: props.initialPassword || ""
-  }),
+const LoginForm = () => {
+  const dispatch: Dispatch<any> = useDispatch();
 
-  
-  validationSchema: Yup.object().shape({
-      username: Yup.string()
-          .required("Username is required"),
-      password: Yup.string()
-          .required("Password is required")
-  }),
+  const Form = withFormik<InitialValues, LogInFormValues>({
+    mapPropsToValues: props => ({
+        username: props.initialUsername || "",
+        password: props.initialPassword || ""
+    }),
+   
+    validationSchema: Yup.object().shape({
+        username: Yup.string()
+            .required("Username is required"),
+        password: Yup.string()
+            .required("Password is required")
+    }),
 
-  handleSubmit(
-      { username, password, }: LogInFormValues,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      { props, setSubmitting, setErrors }
-  ) {
-      console.log(username, password);
-  }
-})(InnerForm);
+    handleSubmit({ username, password, }: LogInFormValues) {
+        const user = userService.signIn(username, password);
+        void user.then((res) => {
+          if (res.token === undefined) {
+            console.log('');
+          }
+          const credentials: Credentials = {
+            firstName: res.firstName,
+            lastName: res.lastName,
+            userName: res.userName,
+            userType: res.userType,
+            token: res.token,
+          };
+          dispatch(logIn(credentials));
+        });
+    }
+  })(InnerForm);
 
-export default Form;
+  return <Form></Form>;
+};
+
+export default LoginForm;

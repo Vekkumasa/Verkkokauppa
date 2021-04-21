@@ -1,5 +1,4 @@
 import React from "react";
-import Product from './Product';
 import { makeStyles } from '@material-ui/core/styles';
 import ProductForm from './forms/product/AddProduct';
 

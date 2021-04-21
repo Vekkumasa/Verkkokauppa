@@ -1,13 +1,14 @@
 import User from "../models/user";
 import config from '../../config';
-// import { User as UserType } from '../types';
+ import { Credentials } from '../types';
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
 import { StringCheck } from '../utils/StringCheck';
+import { UserTypeParser } from '../utils/UserTypeCheck';
 
-const logIn = async (userName: string, passWord: string) => {
+const logIn = async (userName: string, passWord: string): Promise<Credentials | null> => {
   const user = await User.findOne({ userName: userName });
-  console.log('user', user);
+  console.log('login user:', user);
 
   const passwordCorrect = user === null
     ? false
@@ -22,10 +23,20 @@ const logIn = async (userName: string, passWord: string) => {
       username: user.userName,
       id: user.id,
     };
+
+    if (!UserTypeParser(user.userType)) {
+      return null;
+    }
   
     const token = jwt.sign(userForToken, config.jwtSecret);
-  
-    return { token: token, username: userName, firstname: user.firstName, lastname: user.lastName };
+    const credentials: Credentials = {
+      token: token,
+      userName: user.userName,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userType: user.userType,
+    };
+    return credentials;
   }
 
   return null;

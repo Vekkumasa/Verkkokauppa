@@ -14,4 +14,5 @@
 | 9.4   |  4   | Redux + productit haetaan tietokannasta |
 | 19.4  |  3   | Tuotteen lisääminen tietokantaan |
 | 20.4  |  5   | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
-| yht   |  45  | | 
+| 21.4  |  6   | Login backend + frontend, Kayttajan luominen ja tallettamien tietokantaan fixeja |
+| yht   |  51  | | 

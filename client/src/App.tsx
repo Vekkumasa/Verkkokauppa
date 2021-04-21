@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
 import AddProductPage from './components/AddProductPage';
-import { initializeProducts } from './store/actionCreators';
+import { initializeProducts } from './store/Product/actionCreators';
+import { useSelector } from "react-redux";
 
 const App: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
@@ -15,10 +16,14 @@ const App: React.FC = () => {
     dispatch(initializeProducts());
   },[]);
 
+  const user: Credentials | null = useSelector(
+    (state: AppState) => state.user.user,
+  );
+
   return (
     <div>
       <Router>
-        <Navibar />
+        <Navibar user={user} />
         <br/>
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
