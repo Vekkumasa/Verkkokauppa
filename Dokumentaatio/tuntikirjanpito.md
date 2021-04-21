@@ -13,5 +13,5 @@
 | 26.3  |  3   | Heroku + deploy pipeline |
 | 9.4   |  4   | Redux + productit haetaan tietokannasta |
 | 19.4  |  3   | Tuotteen lisääminen tietokantaan |
-| 20.4  |      | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
-| yht   |  40  | | 
+| 20.4  |  5   | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
+| yht   |  45  | | 

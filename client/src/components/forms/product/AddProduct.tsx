@@ -123,8 +123,18 @@ const Testi = () => {
         { props, setSubmitting, setErrors }
     ) {
         const product: NoIdProduct = { name, description, price, stock, image};
-        const addedProduct = productService.addProduct(product);
-        console.log('promise', addedProduct);
+        const promise = productService.addProduct(product);
+        void promise.then((res) => {
+          const addedProduct: Product = {
+            name: res.name,
+            description: res.description,
+            price: res.price,
+            stock: res.stock,
+            image: res.image,
+            id: res.id
+          };
+          dispatch(addProduct(addedProduct));
+        });
     }
   })(InnerForm);
 

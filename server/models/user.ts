@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import uniqueValidator from 'mongoose-unique-validator';
 import mongoose from "mongoose";
@@ -22,14 +23,20 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
 {
   toJSON: {
     transform: (_document, returnedObject) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      returnedObject.id = returnedObject._id.toString();
       delete returnedObject._id;
       delete returnedObject.__v;
       delete returnedObject.passwordHash;
     }
   },
-
   toObject: {
-    versionKey: false,
+    transform: (_document, returnedObject) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      returnedObject.id = returnedObject._id.toString();
+      delete returnedObject._id;
+      delete returnedObject.__v;
+    }
   }
 }
 );

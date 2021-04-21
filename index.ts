@@ -2,10 +2,11 @@ import * as dotenv from "dotenv";
 import express from 'express';
 import cors from 'cors';
 
+import LogInRouter from './server/Routers/LogInRouter';
 import ProductRouter from './server/Routers/ProductRouter';
+import UserRouter from './server/Routers/UserRouter';
 import { StringCheck } from './server/utils/StringCheck';
 import connect from './server/connect';
-import * as UserController from './server/Controllers/UserController';
 import { resolve } from 'path';
 
 if (process.env.NODE_ENV === 'production') {
@@ -26,7 +27,10 @@ if (StringCheck(url)) {
   connect(url);
 }
 
+app.use('/api/login', LogInRouter);
 app.use('/api/products', ProductRouter);
+app.use('/api/users', UserRouter);
+
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
@@ -35,8 +39,6 @@ app.get('/api/ping', (_req, res) => {
 app.get('/api/health', (_req, res) => {
   res.send('ok');
 });
-
-app.get("/users", UserController.allUsers);
 
 const PORT = process.env.PORT;
 

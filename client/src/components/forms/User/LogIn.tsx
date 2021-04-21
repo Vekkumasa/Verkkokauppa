@@ -18,12 +18,12 @@ const useStyles = makeStyles({
       alignItems: 'center',
       position: 'relative',
       padding: 20,
-      paddingRight: 70,
+      paddingRight: 5,
       left: '38%',
       transform: `translate(-50%, -$50%)`,
       borderWidth: 3,
       borderRadius: 35,      
-      width: 75,
+      width: 92,
       height: 20,
       opacity: 0.95,
       backgroundColor: '#124eb0',
@@ -88,7 +88,7 @@ const InnerForm = (props: FormikProps<LogInFormValues>): JSX.Element => {
             !!(errors.password && touched.password)
           }
         >
-          Submit
+          Log in
         </button>
       </form>
     </div>
