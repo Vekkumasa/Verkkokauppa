@@ -15,4 +15,5 @@
 | 19.4  |  3   | Tuotteen lisääminen tietokantaan |
 | 20.4  |  5   | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
 | 21.4  |  6   | Login backend + frontend, Kayttajan luominen ja tallettamien tietokantaan fixeja |
-| yht   |  51  | | 
+| 22.4  |  1   | Addproductform vain adminille näkyvissä, work in progress |
+| yht   |  52  | | 

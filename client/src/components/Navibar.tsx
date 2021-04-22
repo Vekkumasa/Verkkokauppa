@@ -16,14 +16,24 @@ import LogInModal from './LogInModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex', 
     flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    marginRight: theme.spacing(10),
   },
+
+  login: {
+
+  },
+
+  addProduct: {
+    
+  }
+
 }));
 
 type UserProp = {
@@ -52,10 +62,21 @@ const Navibar: React.FC<UserProp> = (user) => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
+          <Link to={'/AddProduct'}>
+            <Button className={classes.addProduct} color="inherit">
+              <Typography variant="h6" className={classes.title}>
+                Add Product
+              </Typography>
+            </Button>
+          </Link>
           {user.user === null ?
-            <Button onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+            <div>
+              <Button className={classes.login} onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+            </div>  
             :
-            <Button onClick={() => logOut()} color="inherit">Log Out</Button>
+            <div>
+              <Button className={classes.login} onClick={() => logOut()} color="inherit">Log Out</Button>
+            </div>
           }
           
         </Toolbar>
