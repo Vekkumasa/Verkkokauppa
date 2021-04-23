@@ -14,6 +14,7 @@ type User = {
   firstName: string,
   lastName: string,
   userName: string,
+  password: string,
   email: string,
   userType: UserType
 };
@@ -46,6 +47,7 @@ type GetProductsAction = {
 
 type ProductActions = AddProductAction | GetProductsAction
 type UserActions = LogInAction
+type Actions = ProductActions | UserActions
 
 type UserState = {
   user: Credentials | null

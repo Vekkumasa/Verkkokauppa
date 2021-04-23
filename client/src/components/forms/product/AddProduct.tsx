@@ -169,7 +169,7 @@ const InnerForm = (props: FormikProps<ProductFormValues>): JSX.Element => {
   );
 };
 
-const AddProductForm = () => {
+const AddProductForm = ():JSX.Element => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const Form = withFormik<InitialValues, ProductFormValues>({

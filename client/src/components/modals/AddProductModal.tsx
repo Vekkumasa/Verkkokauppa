@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-
-import LogInForm from './forms/User/LogInForm';
-
+import AddProductForm from '../forms/product/AddProduct';
 
 const getModalStyle = () => {
   const top = 50;
@@ -21,14 +19,16 @@ const useStyles = makeStyles(theme => ({
       alignItems: 'center',
       justifyContent: 'center',
   },
+
   paper: {
       position: 'absolute',
-      width: 450,
-      height: 170,
+      width: 650,
+      height: 350,
       backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
   },
+
   header: {
     background: 'linear-gradient(45deg, #124eb0 70%, #501573 90%)',
     border: 0,
@@ -43,11 +43,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Header: React.FC = () => {
-
   const classes = useStyles();
-
   return (
-    <h2 className={classes.header}> Log In</h2>
+    <h2 className={classes.header}> Add Product </h2>
   );
 };
 
@@ -56,7 +54,7 @@ interface Props {
   modalOpen: boolean
 }
 
-const LogInModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
+const AddProductModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
@@ -73,10 +71,10 @@ const LogInModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <LogInForm />
+        <AddProductForm />
       </div>
     </Modal>
   );
 };
 
-export default LogInModal;
+export default AddProductModal;  
