@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import ProductForm from './forms/product/AddProduct';
+import CreateUserForm from "../forms/User/CreateUserForm";
 
 const getModalStyle = () => {
   const top = 50;
@@ -15,18 +15,18 @@ const getModalStyle = () => {
 
 const useStyles = makeStyles(theme => ({
   modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   paper: {
-      position: 'absolute',
-      width: 650,
-      height: 350,
-      backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
+    position: 'absolute',
+    width: 650,
+    height: 370,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
   },
 
   header: {
@@ -38,14 +38,15 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     height: 30,
     marginTop: 5,
-    padding: '0 30px',
+    padding: 10,
+    marginBottom: 30
   },
 }));
 
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Add Product </h2>
+    <h2 className={classes.header}> Create User </h2>
   );
 };
 
@@ -54,7 +55,7 @@ interface Props {
   modalOpen: boolean
 }
 
-const AddProductModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
+const CreateUserModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
@@ -71,10 +72,10 @@ const AddProductModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <ProductForm />
+        <CreateUserForm />
       </div>
     </Modal>
   );
 };
 
-export default AddProductModal;  
+export default CreateUserModal;  

@@ -6,35 +6,38 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import { logIn } from '../store/User/actionCreators';
 
-import { Link } from "react-router-dom";
-import LogInModal from './LogInModal';
-import AddProductModal from './AddProductModal';
+import LogInModal from './modals/LogInModal';
+import AddProductModal from './modals/AddProductModal';
+import CreateUserModal from './modals/CreateUserModal';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex', 
-    flexGrow: 1,
-  },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
     marginRight: theme.spacing(10),
   },
-
-  login: {
-
+  buttons: {
+    display: 'flex',
+    marginLeft: 'auto',
+    marginRight: -12,
+    fontSize: 15
   },
-
-  addProduct: {
-    
+  login: {
+    margin: theme.spacing(2),
+    fontSize: 15,
+  },
+  addProductIcon: {
+    height: 30,
+    width: 30,
   }
-
 }));
 
 type UserProp = {
@@ -46,45 +49,67 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+  const [createUserModalOpen, setCreateUserModalOpen] = useState<boolean>(false);
   const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
+
   const logOut = () => {
     dispatch(logIn(null));
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <Link to={'/'}>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-          </Link>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
-          {user !== null && user.userType === 'Admin' ?
-            <Button className={classes.addProduct} onClick={() => setAddProductModalOpen(true)} color="inherit">
-              <Typography variant="h6" className={classes.title}>
-                Add Product
-              </Typography>
-            </Button>
-          :
-            null
-          }
-          {user === null ?
-            <div>
-              <Button className={classes.login} onClick={() => setLoginModalOpen(true)} color="inherit">Login</Button>
-            </div>  
+          <div className={classes.buttons}>
+            {user !== null && user.userType === 'Admin' ?
+              <IconButton onClick={() => setAddProductModalOpen(true)} color="inherit">
+                <Tooltip title="Add product">
+                  <AddCircleOutlineIcon className={classes.addProductIcon} />
+                </Tooltip>
+              </IconButton>
             :
-            <div>
-              <Button className={classes.login} onClick={() => logOut()} color="inherit">Log Out</Button>
-            </div>
-          }
-          
+              null
+            }
+            {user === null ?
+              <div>
+                <Button onClick={() => setLoginModalOpen(true)} color="inherit">
+                  <Typography variant="h6" className={classes.login}>
+                    Login
+                  </Typography>
+                </Button>
+              </div>  
+              :
+              <div>
+                <Button  onClick={() => logOut()} color="inherit">
+                  <Typography variant="h6" className={classes.login}>
+                    Log out
+                  </Typography>
+                </Button>
+              </div>
+            }
+            {user === null ?
+              <div>
+                <Button onClick={() => setCreateUserModalOpen(true)} color="inherit">
+                  <Typography variant="h6" className={classes.login}>
+                    Create User
+                  </Typography>
+                </Button>
+              </div>  
+              :
+              null
+            }
+          </div>
         </Toolbar>
         <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
         <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
+        <CreateUserModal modalOpen={createUserModalOpen} setModalOpen={setCreateUserModalOpen} />
       </AppBar>
     </div>
   );
