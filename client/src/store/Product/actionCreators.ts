@@ -16,9 +16,10 @@ export const addProduct = (data: Product) => {
 export const initializeProducts = () => {
   return async (dispatch: (arg0: { type: string; data: Product[]; }) => void) => {
     const data = await productService.getAll();
-    dispatch({
-      type: 'GET_PRODUCTS',
-      data
-    });
+    const action: GetProductsAction = {
+      type: actionTypes.GET_PRODUCTS,
+      data,
+    };
+    dispatch(action);
   };
 };

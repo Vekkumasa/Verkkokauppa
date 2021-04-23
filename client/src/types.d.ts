@@ -47,6 +47,7 @@ type GetProductsAction = {
 
 type ProductActions = AddProductAction | GetProductsAction
 type UserActions = LogInAction
+type Actions = ProductActions | UserActions
 
 type UserState = {
   user: Credentials | null

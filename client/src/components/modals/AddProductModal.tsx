@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
-import CreateUserForm from '../forms/User/CreateUserForm';
+import AddProductForm from '../forms/product/AddProduct';
 
 const getModalStyle = () => {
   const top = 50;
@@ -71,7 +71,7 @@ const AddProductModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <CreateUserForm />
+        <AddProductForm />
       </div>
     </Modal>
   );
