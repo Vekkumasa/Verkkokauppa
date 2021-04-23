@@ -41,7 +41,7 @@ type UserProp = {
   user: Credentials | null
 };
 
-const Navibar: React.FC<UserProp> = (user) => {
+const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
   const dispatch: Dispatch<any> = useDispatch();
 
@@ -63,12 +63,16 @@ const Navibar: React.FC<UserProp> = (user) => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
+          {user !== null && user.userType === 'Admin' ?
             <Button className={classes.addProduct} onClick={() => setAddProductModalOpen(true)} color="inherit">
               <Typography variant="h6" className={classes.title}>
                 Add Product
               </Typography>
             </Button>
-          {user.user === null ?
+          :
+            null
+          }
+          {user === null ?
             <div>
               <Button className={classes.login} onClick={() => setLoginModalOpen(true)} color="inherit">Login</Button>
             </div>  
