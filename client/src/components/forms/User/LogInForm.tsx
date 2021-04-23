@@ -98,7 +98,7 @@ const InnerForm = (props: FormikProps<LogInFormValues>): JSX.Element => {
   );
 };
 
-const LoginForm = () => {
+const LoginForm: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
 
   const Form = withFormik<InitialValues, LogInFormValues>({

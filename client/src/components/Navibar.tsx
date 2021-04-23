@@ -13,29 +13,40 @@ import { logIn } from '../store/User/actionCreators';
 
 import { Link } from "react-router-dom";
 import LogInModal from './LogInModal';
+import AddProductModal from './AddProductModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex', 
     flexGrow: 1,
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    marginRight: theme.spacing(10),
   },
+
+  login: {
+
+  },
+
+  addProduct: {
+    
+  }
+
 }));
 
 type UserProp = {
   user: Credentials | null
 };
 
-const Navibar: React.FC<UserProp> = (user) => {
+const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
+  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+  const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
   const logOut = () => {
     dispatch(logIn(null));
   };
@@ -52,14 +63,28 @@ const Navibar: React.FC<UserProp> = (user) => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
-          {user.user === null ?
-            <Button onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+          {user !== null && user.userType === 'Admin' ?
+            <Button className={classes.addProduct} onClick={() => setAddProductModalOpen(true)} color="inherit">
+              <Typography variant="h6" className={classes.title}>
+                Add Product
+              </Typography>
+            </Button>
+          :
+            null
+          }
+          {user === null ?
+            <div>
+              <Button className={classes.login} onClick={() => setLoginModalOpen(true)} color="inherit">Login</Button>
+            </div>  
             :
-            <Button onClick={() => logOut()} color="inherit">Log Out</Button>
+            <div>
+              <Button className={classes.login} onClick={() => logOut()} color="inherit">Log Out</Button>
+            </div>
           }
           
         </Toolbar>
-        <LogInModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
+        <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
       </AppBar>
     </div>
   );
