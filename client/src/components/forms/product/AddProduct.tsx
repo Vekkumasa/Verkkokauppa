@@ -1,10 +1,49 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
+import { makeStyles } from '@material-ui/styles';
 import productService from '../../../services/productService';
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 import { addProduct } from '../../../store/Product/actionCreators';
+
+const useStyles = makeStyles({
+  label: {
+    
+  },
+  div: {
+    display: 'flex',
+    width: 600,
+    justifyContent: 'flex-end'
+  },
+
+  field: {
+      padding: 5,
+      borderColor: '#124eb0',
+      position: 'relative',
+      marginBottom: 10,
+      width: '90%',
+      maxWidth: 700
+  },
+  button: {
+      display: 'inline-flex',
+      alignItems: 'center',
+      position: 'relative',
+      padding: 20,
+      paddingRight: 5,
+      left: '38%',
+      transform: `translate(-50%, -$50%)`,
+      borderWidth: 3,
+      borderRadius: 35,      
+      width: 92,
+      height: 20,
+      opacity: 0.95,
+      backgroundColor: '#124eb0',
+      fontSize: 16,
+      fontStyle: 'bold',
+      color: 'white'  
+  },
+});
 
 interface ProductFormValues {
   name: string;
@@ -32,50 +71,71 @@ const InnerForm = (props: FormikProps<ProductFormValues>): JSX.Element => {
     isSubmitting,
   } = props;
 
+  const classes = useStyles();
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.name}
-          />
-        <label>Description</label>
-          <input
-            type="textarea"
-            name="description"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.description}
-          />
-        <label>Price</label>
-          <input
-            type="number"
-            name="price"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.price}
-          />
-        <label>Stock</label>
-          <input
-            type="number"
-            name="stock"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.stock}
-          />
-        <label>Image</label>
-          <input
-            type="text"
-            name="image"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.image}
-          />
+        <div className={classes.div}>
+          <label className={classes.label}>Name: </label>
+            <input
+              className={classes.field}
+              placeholder="My new product"
+              type="text"
+              name="name"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
+            />
+        </div>
+        <div className={classes.div}>
+          <label>Description:</label>
+            <input
+              className={classes.field}
+              placeholder="So useless product that Wish.com should sell these"
+              type="textarea"
+              name="description"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.description}
+            />
+        </div>
+        <div className={classes.div}>
+          <label>Price:</label>
+            <input
+              className={classes.field}
+              type="number"
+              name="price"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.price}
+            />
+        </div>
+        <div className={classes.div}>
+          <label>Stock:</label>
+            <input
+              className={classes.field}
+              type="number"
+              name="stock"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.stock}
+            />
+        </div>
+        <div className={classes.div}>
+          <label>Image:</label> 
+            <input
+              className={classes.field}
+              placeholder="www.example-image.com"
+              type="text"
+              name="image"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.image}
+            />
+        </div>
         <button
+          className={classes.button}
           type="submit"
           disabled={
             isSubmitting ||

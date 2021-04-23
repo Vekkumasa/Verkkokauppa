@@ -13,6 +13,7 @@ import { logIn } from '../store/User/actionCreators';
 
 import { Link } from "react-router-dom";
 import LogInModal from './LogInModal';
+import AddProductModal from './AddProductModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,8 +45,8 @@ const Navibar: React.FC<UserProp> = (user) => {
   const classes = useStyles();
   const dispatch: Dispatch<any> = useDispatch();
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
+  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
+  const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
   const logOut = () => {
     dispatch(logIn(null));
   };
@@ -62,16 +63,14 @@ const Navibar: React.FC<UserProp> = (user) => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
-          <Link to={'/AddProduct'}>
-            <Button className={classes.addProduct} color="inherit">
+            <Button className={classes.addProduct} onClick={() => setAddProductModalOpen(true)} color="inherit">
               <Typography variant="h6" className={classes.title}>
                 Add Product
               </Typography>
             </Button>
-          </Link>
           {user.user === null ?
             <div>
-              <Button className={classes.login} onClick={() => setModalOpen(true)} color="inherit">Login</Button>
+              <Button className={classes.login} onClick={() => setLoginModalOpen(true)} color="inherit">Login</Button>
             </div>  
             :
             <div>
@@ -80,7 +79,8 @@ const Navibar: React.FC<UserProp> = (user) => {
           }
           
         </Toolbar>
-        <LogInModal modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
+        <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
       </AppBar>
     </div>
   );

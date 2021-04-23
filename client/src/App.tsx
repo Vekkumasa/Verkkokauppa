@@ -5,13 +5,11 @@ import { useDispatch } from "react-redux";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
-import AddProductModal from './components/AddProductModal';
 import { initializeProducts } from './store/Product/actionCreators';
 import { useSelector } from "react-redux";
 
 const App: React.FC = () => {
   const dispatch: Dispatch<any> = useDispatch();
-  const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
   useEffect(() => {
     dispatch(initializeProducts());
   },[]);
@@ -27,9 +25,6 @@ const App: React.FC = () => {
         <br/>
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
-        </Switch>
-        <Switch>
-          <Route path="/AddProduct" render={() => <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} /> } />
         </Switch>
       </Router>
     </div>
