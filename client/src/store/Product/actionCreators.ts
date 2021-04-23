@@ -20,6 +20,7 @@ export const initializeProducts = () => {
       type: actionTypes.GET_PRODUCTS,
       data,
     };
+    
     dispatch(action);
   };
 };
