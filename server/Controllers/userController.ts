@@ -21,13 +21,13 @@ const findUserById = (req: Request, res: Response) => {
 
 const addUser = async (user: UserType) => {
   try {
-    const password = await bcrypt.hash(user.passwordHash, 10);
+    const password = await bcrypt.hash(user.password, 10);
     const newUser = new User({
       id: uuid(),
       firstName: user.firstName,
       lastName: user.lastName,
       userName: user.userName,
-      passwordHash: password,
+      password: password,
       email: user.email,
       userType: user.userType
     });

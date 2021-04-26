@@ -9,9 +9,13 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
   const user = await User.findOne({ userName: userName });
   console.log('login user:', user);
 
+  if (user?.password === undefined) {
+    return null;
+  }
+
   const passwordCorrect = user === null
     ? false
-    : await bcrypt.compare(passWord, user.passwordHash);
+    : await bcrypt.compare(passWord, user.password);
 
   if (!(user && passwordCorrect)) {
     return null;

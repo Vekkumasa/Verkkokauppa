@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import mongoose from "mongoose";
 
 export interface ProductInterface extends mongoose.Document {
@@ -8,6 +6,7 @@ export interface ProductInterface extends mongoose.Document {
   price: number;
   description?: string;
   image?: string;
+  _id?: string;
 }
 
 const ProductSchema: mongoose.Schema = new mongoose.Schema({
@@ -19,17 +18,15 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema({
 },
 {
   toJSON: {
-    transform: (_document, returnedObject) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      returnedObject.id = returnedObject._id.toString();
+    transform: (_document, returnedObject: ProductInterface) => {
+      returnedObject.id = returnedObject._id?.toString();
       delete returnedObject._id;
       delete returnedObject.__v;
     }
   },
   toObject: {
-    transform: (_document, returnedObject) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      returnedObject.id = returnedObject._id.toString();
+    transform: (_document, returnedObject: ProductInterface) => {
+      returnedObject.id = returnedObject._id?.toString();
       delete returnedObject._id;
       delete returnedObject.__v;
     }
