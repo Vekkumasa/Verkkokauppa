@@ -17,5 +17,5 @@
 | 21.4  |  6   | Login backend + frontend, Kayttajan luominen ja tallettamien tietokantaan fixeja |
 | 22.4  |  1   | Addproductform vain adminille näkyvissä, work in progress |
 | 23.4  |  6   | Createuser form + modal, AddproductView -> Modal, eslint fixes | 
-| 26.4  |  1.5 | Reducer typings and eslint fixes |
-| yht   |  58  | | 
+| 26.4  |  3   | Reducer typings and eslint fixes |
+| yht   |  61  | | 
