@@ -1,21 +1,19 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
 import { initializeProducts } from './store/Product/actionCreators';
-import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
 
 const App: React.FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(initializeProducts());
+    void dispatch(initializeProducts());
   },[]);
 
-  const user: Credentials | null = useSelector(
-    (state: AppState) => state.user.user,
+  const user: Credentials | null = useAppSelector(
+    state => state.userReducer.user
   );
 
   return (

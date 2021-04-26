@@ -1,9 +1,9 @@
 import React from 'react';
 import { withFormik, FormikProps } from "formik";
 import { makeStyles } from '@material-ui/core/styles';
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 import * as Yup from "yup";
+
+import { AppDispatch, useAppDispatch } from '../../../store/rootReducer';
 import userService from '../../../services/userService';
 import { logIn } from '../../../store/User/actionCreators';
 
@@ -99,7 +99,7 @@ const InnerForm = (props: FormikProps<LogInFormValues>): JSX.Element => {
 };
 
 const LoginForm: React.FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const Form = withFormik<InitialValues, LogInFormValues>({
     mapPropsToValues: props => ({

@@ -7,7 +7,7 @@ type Product = {
   description?: string
 };
 
-type NoIdProduct = Omit<Product, 'id'>
+type NoIdProduct = Omit<Product, 'id'>;
 
 type User = {
   id: string,
@@ -43,11 +43,11 @@ type AddProductAction = {
 type GetProductsAction = {
   type: string,
   data: Product[]
-}
+};
 
-type ProductActions = AddProductAction | GetProductsAction
-type UserActions = LogInAction
-type Actions = ProductActions | UserActions
+type ProductActions = AddProductAction | GetProductsAction;
+type UserActions = LogInAction;
+type Actions = ProductActions | UserActions;
 
 type UserState = {
   user: Credentials | null

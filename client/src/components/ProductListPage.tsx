@@ -1,7 +1,7 @@
 import React from "react";
 import Product from './Product';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from "react-redux";
+import { useAppSelector } from '../store/rootReducer';
 
 const useStyles = makeStyles({
   root: {
@@ -13,8 +13,8 @@ const useStyles = makeStyles({
 const ProductListPage: React.FC = () => {
   const classes = useStyles();
 
-  const products: Product[] = useSelector(
-    (state: AppState) => state.products.products,
+  const products: Product[] = useAppSelector(
+    state => state.productReducer.products
   );
 
   if (products.length === 0) {

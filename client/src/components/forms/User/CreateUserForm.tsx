@@ -63,7 +63,7 @@ import React from 'react';
       .required('Required'),
  });
  
- const NewCreateUserForm = () => {
+ const NewCreateUserForm = ():JSX.Element => {
    const classes = useStyles();
    return (
     <div>

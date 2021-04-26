@@ -3,9 +3,9 @@ import { withFormik, FormikProps } from "formik";
 import * as Yup from "yup";
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/styles';
+
+import { AppDispatch, useAppDispatch } from '../../../store/rootReducer';
 import productService from '../../../services/productService';
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 import { addProduct } from '../../../store/Product/actionCreators';
 
 const useStyles = makeStyles({
@@ -170,7 +170,7 @@ const InnerForm = (props: FormikProps<ProductFormValues>): JSX.Element => {
 };
 
 const AddProductForm = ():JSX.Element => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const Form = withFormik<InitialValues, ProductFormValues>({
     mapPropsToValues: props => ({

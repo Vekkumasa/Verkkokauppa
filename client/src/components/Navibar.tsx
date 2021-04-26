@@ -9,10 +9,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 import { logIn } from '../store/User/actionCreators';
-
+import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import LogInModal from './modals/LogInModal';
 import AddProductModal from './modals/AddProductModal';
 import CreateUserModal from './modals/CreateUserModal';
@@ -46,7 +44,7 @@ type UserProp = {
 
 const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
   const [createUserModalOpen, setCreateUserModalOpen] = useState<boolean>(false);
