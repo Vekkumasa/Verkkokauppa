@@ -35,7 +35,7 @@ const addUser = async (user: UserType) => {
     return response;
   } catch (e) {
     console.log(e);
-    return;
+    return null;
   }
 };
 

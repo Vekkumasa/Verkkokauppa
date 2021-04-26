@@ -1,5 +1,4 @@
 import User from "../models/user";
-import config from '../../config';
  import { Credentials } from '../types';
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
@@ -27,16 +26,19 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
     if (!UserTypeParser(user.userType)) {
       return null;
     }
-  
-    const token = jwt.sign(userForToken, config.jwtSecret);
-    const credentials: Credentials = {
-      token: token,
-      userName: user.userName,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      userType: user.userType,
-    };
-    return credentials;
+
+    const secret = process.env.JWTSECRET;
+    if (secret !== undefined) {
+      const token = jwt.sign(userForToken, secret);
+      const credentials: Credentials = {
+        token: token,
+        userName: user.userName,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userType: user.userType,
+      };
+      return credentials;
+    }
   }
 
   return null;
