@@ -18,4 +18,5 @@
 | 22.4  |  1   | Addproductform vain adminille näkyvissä, work in progress |
 | 23.4  |  6   | Createuser form + modal, AddproductView -> Modal, eslint fixes | 
 | 26.4  |  3   | Reducer typings and eslint fixes |
-| yht   |  61  | | 
+| 27.4  |  4   | Notification reducer, addproduct & login formit uusiksi & notification component |
+| yht   |  65  | | 

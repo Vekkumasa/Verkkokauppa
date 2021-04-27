@@ -20,6 +20,12 @@ type User = {
 };
 
 type NoIdUser = Omit<User, 'id'>;
+type CreateUserInput = Omit<NoIdUser, 'userType'>;
+
+interface SignInInfo {
+  userName: string,
+  password: string,
+}
 
 type Credentials = {
   token: string,
@@ -31,8 +37,19 @@ type Credentials = {
 
 type UserType = 'Admin' | 'User';
 
+type NotificationType = 'success' | 'error' | 'info';
+
 type ProductState = {
   products: Product[]
+};
+
+type UserState = {
+  user: Credentials | null
+};
+
+type NotificationState = {
+  notification: string,
+  visible: boolean
 };
 
 type AddProductAction = {
@@ -45,13 +62,16 @@ type GetProductsAction = {
   data: Product[]
 };
 
+type SetNotificationAction = {
+  type: string,
+  data: string
+};
+
 type ProductActions = AddProductAction | GetProductsAction;
 type UserActions = LogInAction;
-type Actions = ProductActions | UserActions;
+type NotificationActions = SetNotificationAction
 
-type UserState = {
-  user: Credentials | null
-};
+type Actions = ProductActions | UserActions | NotificationActions;
 
 type LogInAction = {
   type: string,
@@ -60,7 +80,8 @@ type LogInAction = {
 
 interface AppState {
   products: ProductState,
-  user: UserState
+  user: UserState,
+  notification: NotificationState
 }
 
 type DispatchType = (args: Actions) => Actions;

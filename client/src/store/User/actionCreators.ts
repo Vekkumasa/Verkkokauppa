@@ -1,6 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
-export const logIn = (data: Credentials | null) => {
+type Login = (dispatch: DispatchType) => void;
+
+export const logIn = (data: Credentials | null): Login => {
   const action: LogInAction = {
     type: actionTypes.LOG_IN,
     data,

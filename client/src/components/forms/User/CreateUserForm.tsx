@@ -38,32 +38,37 @@ import React from 'react';
 });
 
  const SignupSchema = Yup.object().shape({
-    userName: Yup.string()
+    userName: Yup
+      .string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Required'),
 
-    firstName: Yup.string()
+    firstName: Yup
+      .string()
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Required'),
 
-    lastName: Yup.string()
-     .min(2, 'Too Short!')
-     .max(50, 'Too Long!')
-     .required('Required'),
+    lastName: Yup
+      .string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
 
-    password: Yup.string()
-     .min(2, 'Too Short!')
-     .max(50, 'Too Long!')
-     .required('Required'),
+    password: Yup
+      .string()
+      .min(2, 'Too Short!')
+      .max(50, 'Too Long!')
+      .required('Required'),
 
-    email: Yup.string()
+    email: Yup
+      .string()
       .email('Invalid email')
       .required('Required'),
  });
  
- const NewCreateUserForm = ():JSX.Element => {
+ const CreateUserForm = ():JSX.Element => {
    const classes = useStyles();
    return (
     <div>
@@ -190,4 +195,4 @@ import React from 'react';
  );
 };
 
- export default NewCreateUserForm;
+ export default CreateUserForm;

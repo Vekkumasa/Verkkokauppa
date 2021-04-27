@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import productController from '../Controllers/ProductController';
 import { ProductInterface } from '../models/product';
-import { Product } from '../types';
+import { Product, CustomRequest } from '../types';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.get('/', [] , async (_req: Request, res: Response) => {
   return res.status(200).send(products);
 });
 
-router.post('/', (req: Request<unknown, unknown, Product>, res: Response) => {
+router.post('/', (req: CustomRequest<Product>, res: Response) => {
   const product: Product = req.body;
   const added: Promise<ProductInterface | null> = productController.NewProduct(product);
   void added.then((response) => {

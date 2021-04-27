@@ -20,6 +20,7 @@ const reducer = (state: ProductState = initialState, action: GetProductsAction |
       };
   }
   
+  console.log('productstate', state);
   return state;
 };
 
