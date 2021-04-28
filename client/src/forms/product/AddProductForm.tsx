@@ -4,10 +4,11 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
-import { AppDispatch, useAppDispatch } from '../../../store/rootReducer';
-import productService from '../../../services/productService';
-import { addProduct } from '../../../store/Product/actionCreators';
- 
+import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+import productService from '../../services/productService';
+import { addProduct } from '../../store/Product/actionCreators';
+import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+
 const useStyles = makeStyles({
   field: {
     padding: 5,
@@ -82,7 +83,13 @@ const useStyles = makeStyles({
                 id: res.id
               };
               dispatch(addProduct(addedProduct));
-        });
+              const text = "Product " + product.name + " added";
+              const type: NotificationType = 'success';
+              dispatch(setNotification(text, type));
+              setTimeout(() => {
+                dispatch(hideNotification());
+              }, 5000);
+            });
           }}
         >
           {({ errors, touched }) => (

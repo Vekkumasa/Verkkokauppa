@@ -1,12 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field, FormikHelpers } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
-import { AppDispatch, useAppDispatch } from '../../../store/rootReducer';
-import userService from '../../../services/userService';
-import { logIn } from '../../../store/User/actionCreators';
+import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+import userService from '../../services/userService';
+import { logIn } from '../../store/User/actionCreators';
+import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
  
 const useStyles = makeStyles({
   field: {
@@ -67,7 +68,12 @@ const LogInForm = ():JSX.Element => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
             if (res.token === undefined) {
-              console.log('fail');
+              const text = "Invalid username / password";
+              const notificationType: NotificationType = 'error';
+              dispatch(setNotification(text, notificationType));
+              setTimeout(() => {
+                dispatch(hideNotification());
+              }, 5000);
             } else {
               console.log('res',res);
               const credentials: Credentials = {
@@ -78,7 +84,13 @@ const LogInForm = ():JSX.Element => {
                 token: res.token,
               };
               dispatch(logIn(credentials));
-            }   
+              const text = "Logged in as: " + credentials.userName;
+              const notificationType: NotificationType = 'success';
+              dispatch(setNotification(text, notificationType));
+              setTimeout(() => {
+                dispatch(hideNotification());
+              }, 5000);
+            }
           });
         }}
       >

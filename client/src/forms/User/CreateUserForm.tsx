@@ -4,8 +4,10 @@ import React from 'react';
  import Grid from '@material-ui/core/Grid';
  import * as Yup from 'yup';
 
- import userService from '../../../services/userService';
- 
+ import userService from '../../services/userService';
+ import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+ import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+
  const useStyles = makeStyles({
 
   field: {
@@ -70,6 +72,7 @@ import React from 'react';
  
  const CreateUserForm = ():JSX.Element => {
    const classes = useStyles();
+   const dispatch: AppDispatch = useAppDispatch();
    return (
     <div>
       <Formik
@@ -91,6 +94,13 @@ import React from 'react';
             userType: 'User' 
           };
           void userService.createUser(newUser);
+          // TODO: Error notification:  Createuser voi feilata esim jos sama email, backend valittaa.
+          const text = "Created user: " + newUser.userName;
+          const type: NotificationType = 'success';
+          dispatch(setNotification(text, type));
+          setTimeout(() => {
+            dispatch(hideNotification);
+          }, 5000);
         }}
       >
         {({ errors, touched }) => (

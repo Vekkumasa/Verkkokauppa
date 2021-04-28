@@ -1,7 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState: NotificationState = {
-  notification: '',
+  message: '',
+  type: 'error',
   visible: false
 };
 
@@ -11,7 +12,16 @@ const reducer = (state: NotificationState = initialState, action: SetNotificatio
     case actionTypes.SET_NOTIFICATION:
       return {
         ...state,
-        notification: action.data
+        message: action.data,
+        type: action.notificationType,
+        visible: true
+      };
+    case actionTypes.HIDE_NOTIFICATION:
+      return {
+        ...state,
+        message: '',
+        type: action.notificationType,
+        visible: false
       };
   }
   

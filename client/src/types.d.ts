@@ -48,7 +48,8 @@ type UserState = {
 };
 
 type NotificationState = {
-  notification: string,
+  message: string,
+  type: NotificationType,
   visible: boolean
 };
 
@@ -64,10 +65,11 @@ type GetProductsAction = {
 
 type SetNotificationAction = {
   type: string,
+  notificationType: NotificationType,
   data: string
 };
 
-type ProductActions = AddProductAction | GetProductsAction;
+type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
 type UserActions = LogInAction;
 type NotificationActions = SetNotificationAction
 

@@ -1,11 +1,22 @@
 import * as actionTypes from "./actionTypes";
 import productService from '../../services/productService';
 
-type AddProduct = (dispatch: DispatchType) => void;
+type ProductDispatch = (dispatch: DispatchType) => void;
 
-export const addProduct = (data: Product): AddProduct => {
+export const addProduct = (data: Product): ProductDispatch => {
   const action: AddProductAction = {
     type: actionTypes.ADD_PRODUCT,
+    data,
+  };
+
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};
+
+export const removeProduct = (data: Product): ProductDispatch => {
+  const action: AddProductAction = {
+    type: actionTypes.REMOVE_PRODUCT,
     data,
   };
 

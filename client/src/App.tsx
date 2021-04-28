@@ -17,19 +17,23 @@ const App: React.FC = () => {
     state => state.userReducer.user
   );
 
-  const type: NotificationType = 'success';
-  const message = "testi";
+  const notification: NotificationState = useAppSelector(
+    state => state.notificationReducer
+  );
 
   return (
     <div>
       <Router>
         <Navibar user={user} />
         <br/>
+        {notification.visible ?
+          <Notification type={notification.type} message={notification.message} />
+        :
+          null
+        }
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
-        </Switch>
-        {/* eslint-disable-next-line @typescript-eslint/no-unsafe-assignment */}
-        <Notification type={type} message={message} />
+        </Switch>    
       </Router>
     </div>
   );

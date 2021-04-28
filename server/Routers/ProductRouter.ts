@@ -18,4 +18,11 @@ router.post('/', (req: CustomRequest<Product>, res: Response) => {
   });
 });
 
+router.delete('/:id', (req: CustomRequest<Product>, res: Response) => {
+  const deleted: Promise<ProductInterface | null> = productController.DeleteProduct(req.params.id);
+  void deleted.then(() => {
+    res.status(204).end();
+  });
+});
+
 export default router;

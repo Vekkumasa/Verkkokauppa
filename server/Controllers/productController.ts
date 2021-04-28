@@ -24,8 +24,19 @@ const NewProduct = async (product: ProductType) => {
   }
 };
 
+const DeleteProduct = async (id: string) => {
+  const product = await Product.findById(id);
+
+  if (product === null) {
+    return null;
+  }
+
+  return await product.remove();
+};
+
 export default {
   GetProducts,
   NewProduct,
+  DeleteProduct,
 };
 

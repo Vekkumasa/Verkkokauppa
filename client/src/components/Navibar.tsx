@@ -10,10 +10,11 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { logIn } from '../store/User/actionCreators';
+import { setNotification, hideNotification } from '../store/Notification/actionCreators';
 import { useAppDispatch, AppDispatch } from '../store/rootReducer';
-import LogInModal from './modals/LogInModal';
-import AddProductModal from './modals/AddProductModal';
-import CreateUserModal from './modals/CreateUserModal';
+import LogInModal from '../modals/LogInModal';
+import AddProductModal from '../modals/AddProductModal';
+import CreateUserModal from '../modals/CreateUserModal';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -52,6 +53,10 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
 
   const logOut = () => {
     dispatch(logIn(null));
+    dispatch(setNotification("Have a nice day", 'success'));
+    setTimeout(() => {
+      dispatch(hideNotification());
+    }, 5000);
   };
 
   return (
