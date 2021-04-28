@@ -6,6 +6,8 @@ const initialState: ProductState = {
 
 const reducer = (state: ProductState = initialState, action: GetProductsAction | AddProductAction): ProductState => {
 
+  console.log('action', action);
+    
   switch (action.type) {
     case actionTypes.GET_PRODUCTS:
       return {
@@ -18,8 +20,16 @@ const reducer = (state: ProductState = initialState, action: GetProductsAction |
         ...state,
         products: state.products.concat(action.data)
       };
+
+    case actionTypes.REMOVE_PRODUCT:
+      console.log('REDUCER', action.data);
+      return {
+        ...state,
+        products: state.products.filter(product => product !== action.data)
+      };
   }
   
+  console.log('productstate', state);
   return state;
 };
 

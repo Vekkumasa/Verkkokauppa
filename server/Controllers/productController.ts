@@ -1,8 +1,8 @@
 import { uuid } from "uuidv4";
-import Product from "../models/product";
+import Product, { ProductInterface } from "../models/product";
 import { Product as ProductType } from '../types';
 
-const GetProducts = async () => {
+const GetProducts = async (): Promise<ProductInterface[]> => {
   return await Product.find({});
 };
 
@@ -24,8 +24,19 @@ const NewProduct = async (product: ProductType) => {
   }
 };
 
+const DeleteProduct = async (id: string) => {
+  const product = await Product.findById(id);
+
+  if (product === null) {
+    return null;
+  }
+
+  return await product.remove();
+};
+
 export default {
   GetProducts,
   NewProduct,
+  DeleteProduct,
 };
 

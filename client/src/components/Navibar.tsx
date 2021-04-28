@@ -9,13 +9,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 import { logIn } from '../store/User/actionCreators';
-
-import LogInModal from './modals/LogInModal';
-import AddProductModal from './modals/AddProductModal';
-import CreateUserModal from './modals/CreateUserModal';
+import { setNotification, hideNotification } from '../store/Notification/actionCreators';
+import { useAppDispatch, AppDispatch } from '../store/rootReducer';
+import LogInModal from '../modals/LogInModal';
+import AddProductModal from '../modals/AddProductModal';
+import CreateUserModal from '../modals/CreateUserModal';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -46,7 +45,7 @@ type UserProp = {
 
 const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
 
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
   const [createUserModalOpen, setCreateUserModalOpen] = useState<boolean>(false);
@@ -54,6 +53,10 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
 
   const logOut = () => {
     dispatch(logIn(null));
+    dispatch(setNotification("Have a nice day", 'success'));
+    setTimeout(() => {
+      dispatch(hideNotification());
+    }, 5000);
   };
 
   return (

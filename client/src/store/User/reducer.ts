@@ -14,6 +14,7 @@ const reducer = (state: UserState = initialState, action: LogInAction): UserStat
       };
   }
   
+  console.log('userstate', state);
   return state;
 };
 

@@ -16,4 +16,7 @@
 | 20.4  |  5   | ProductSchema palauttaa id _id:n sijasta + addproduct reducer |
 | 21.4  |  6   | Login backend + frontend, Kayttajan luominen ja tallettamien tietokantaan fixeja |
 | 22.4  |  1   | Addproductform vain adminille näkyvissä, work in progress |
-| yht   |  52  | | 
+| 23.4  |  6   | Createuser form + modal, AddproductView -> Modal, eslint fixes | 
+| 26.4  |  3   | Reducer typings and eslint fixes |
+| 27.4  |  4   | Notification reducer, addproduct & login formit uusiksi & notification component |
+| yht   |  65  | | 

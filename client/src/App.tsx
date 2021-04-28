@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { Dispatch } from "redux";
-import { useDispatch } from "react-redux";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
 import { initializeProducts } from './store/Product/actionCreators';
-import { useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
+import Notification from './UI/Notification';
 
 const App: React.FC = () => {
-  const dispatch: Dispatch<any> = useDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(initializeProducts());
+    void dispatch(initializeProducts());
   },[]);
 
-  const user: Credentials | null = useSelector(
-    (state: AppState) => state.user.user,
+  const user: Credentials | null = useAppSelector(
+    state => state.userReducer.user
+  );
+
+  const notification: NotificationState = useAppSelector(
+    state => state.notificationReducer
   );
 
   return (
@@ -23,9 +26,14 @@ const App: React.FC = () => {
       <Router>
         <Navibar user={user} />
         <br/>
+        {notification.visible ?
+          <Notification type={notification.type} message={notification.message} />
+        :
+          null
+        }
         <Switch>
           <Route path="/" render={() => <ProductListPage />} />
-        </Switch>
+        </Switch>    
       </Router>
     </div>
   );

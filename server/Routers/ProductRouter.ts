@@ -1,20 +1,27 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express, { Request, Response } from 'express';
 import productController from '../Controllers/ProductController';
-import { Product } from '../types';
+import { ProductInterface } from '../models/product';
+import { Product, CustomRequest } from '../types';
 
 const router = express.Router();
 
 router.get('/', [] , async (_req: Request, res: Response) => {
-  const products = await productController.GetProducts();
+  const products: ProductInterface[] = await productController.GetProducts();
   return res.status(200).send(products);
 });
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: CustomRequest<Product>, res: Response) => {
   const product: Product = req.body;
-  const added = productController.NewProduct(product);
+  const added: Promise<ProductInterface | null> = productController.NewProduct(product);
   void added.then((response) => {
     res.status(201).json(response);
+  });
+});
+
+router.delete('/:id', (req: CustomRequest<Product>, res: Response) => {
+  const deleted: Promise<ProductInterface | null> = productController.DeleteProduct(req.params.id);
+  void deleted.then(() => {
+    res.status(204).end();
   });
 });
 

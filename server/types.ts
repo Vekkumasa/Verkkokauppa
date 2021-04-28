@@ -1,3 +1,5 @@
+import { Request } from 'express';
+
 export type Product = {
     _id: string,
     name: string,
@@ -13,11 +15,20 @@ export type User = {
   firstName: string,
   lastName: string,
   userName: string,
-  passwordHash: string,
+  password: string,
   userType: string
 };
 
+export type LoginInfo = {
+  username: string,
+  password: string
+};
+
 export type UserType = 'Admin' | 'User';
+
+export interface CustomRequest<T> extends Request {
+  body: T
+}
 
 export type Credentials = {
   token: string,

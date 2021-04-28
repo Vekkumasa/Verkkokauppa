@@ -7,11 +7,16 @@ const getAll = ():Promise<Product[]> => {
 
 const addProduct = async (product: NoIdProduct):Promise<Product> => {
   const request = await axios.post<Product>('http://localhost:3001/api/products', product);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return request.data;
+};
+
+const deleteProduct = async (product: Product): Promise<Product> => {
+  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product.id}`);
   return request.data;
 };
 
 export default {
   getAll,
   addProduct,
+  deleteProduct
 };

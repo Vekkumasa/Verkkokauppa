@@ -7,7 +7,7 @@ type Product = {
   description?: string
 };
 
-type NoIdProduct = Omit<Product, 'id'>
+type NoIdProduct = Omit<Product, 'id'>;
 
 type User = {
   id: string,
@@ -20,6 +20,12 @@ type User = {
 };
 
 type NoIdUser = Omit<User, 'id'>;
+type CreateUserInput = Omit<NoIdUser, 'userType'>;
+
+interface SignInInfo {
+  userName: string,
+  password: string,
+}
 
 type Credentials = {
   token: string,
@@ -31,8 +37,20 @@ type Credentials = {
 
 type UserType = 'Admin' | 'User';
 
+type NotificationType = 'success' | 'error' | 'info';
+
 type ProductState = {
   products: Product[]
+};
+
+type UserState = {
+  user: Credentials | null
+};
+
+type NotificationState = {
+  message: string,
+  type: NotificationType,
+  visible: boolean
 };
 
 type AddProductAction = {
@@ -43,15 +61,19 @@ type AddProductAction = {
 type GetProductsAction = {
   type: string,
   data: Product[]
-}
-
-type ProductActions = AddProductAction | GetProductsAction
-type UserActions = LogInAction
-type Actions = ProductActions | UserActions
-
-type UserState = {
-  user: Credentials | null
 };
+
+type SetNotificationAction = {
+  type: string,
+  notificationType: NotificationType,
+  data: string
+};
+
+type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
+type UserActions = LogInAction;
+type NotificationActions = SetNotificationAction
+
+type Actions = ProductActions | UserActions | NotificationActions;
 
 type LogInAction = {
   type: string,
@@ -60,7 +82,8 @@ type LogInAction = {
 
 interface AppState {
   products: ProductState,
-  user: UserState
+  user: UserState,
+  notification: NotificationState
 }
 
 type DispatchType = (args: Actions) => Actions;

@@ -1,7 +1,8 @@
 import * as actionTypes from "./actionTypes";
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const logIn = (data: Credentials | null) => {
+type Login = (dispatch: DispatchType) => void;
+
+export const logIn = (data: Credentials | null): Login => {
   const action: LogInAction = {
     type: actionTypes.LOG_IN,
     data,
