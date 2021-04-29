@@ -24,6 +24,13 @@ export type LoginInfo = {
   password: string
 };
 
+export type ShoppingCart = {
+  _id: string,
+  products: Product[],
+  userId: string,
+  totalPrice: number
+};
+
 export type UserType = 'Admin' | 'User';
 
 export interface CustomRequest<T> extends Request {
