@@ -75,7 +75,6 @@ const LogInForm = ():JSX.Element => {
                 dispatch(hideNotification());
               }, 5000);
             } else {
-              console.log('res',res);
               const credentials: Credentials = {
                 firstName: res.firstName,
                 lastName: res.lastName,

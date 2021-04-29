@@ -25,7 +25,6 @@ const reducer = (state: NotificationState = initialState, action: SetNotificatio
       };
   }
   
-  console.log('notificationstate', state);
   return state;
 };
 

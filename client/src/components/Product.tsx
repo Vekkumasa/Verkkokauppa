@@ -33,7 +33,6 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   );
 
   const deleteProduct = () => {
-    console.log('delete', product);
     void productService.deleteProduct(product);
     dispatch(removeProduct(product));
     const text = "Removed " + product.name;
