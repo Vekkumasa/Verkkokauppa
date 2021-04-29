@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getAll = ():Promise<Product[]> => {
-  const request = axios.get<Product[]>('https://verkkis.herokuapp.com//api/products');
+  const request = axios.get<Product[]>('https://verkkis.herokuapp.com/api/products');
   return request.then(response => response.data);
 };
 
