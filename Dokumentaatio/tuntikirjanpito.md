@@ -19,4 +19,6 @@
 | 23.4  |  6   | Createuser form + modal, AddproductView -> Modal, eslint fixes | 
 | 26.4  |  3   | Reducer typings and eslint fixes |
 | 27.4  |  4   | Notification reducer, addproduct & login formit uusiksi & notification component |
-| yht   |  65  | | 
+| 28.4  |  4   | Notification reducer fix & eslint fixes & projekti herokuun probleemeja |
+| 29.4  |  4   | Heroku probleemat fiksattu ja pushattu, ShoppingCart modelin työstäminen aloitettu |  
+| yht   |  73  | | 
