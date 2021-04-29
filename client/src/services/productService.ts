@@ -6,12 +6,12 @@ const getAll = ():Promise<Product[]> => {
 };
 
 const addProduct = async (product: NoIdProduct):Promise<Product> => {
-  const request = await axios.post<Product>('http://localhost:3001/api/products', product);
+  const request = await axios.post<Product>('https://verkkis.herokuapp.com/api/products', product);
   return request.data;
 };
 
 const deleteProduct = async (product: Product): Promise<Product> => {
-  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product.id}`);
+  const request = await axios.delete<Product>(`https://verkkis.herokuapp.com/api/products/${product.id}`);
   return request.data;
 };
 
