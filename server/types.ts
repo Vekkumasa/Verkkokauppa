@@ -19,6 +19,15 @@ export type User = {
   userType: string
 };
 
+export type UserId = {
+  id: string
+};
+
+export type CartProduct = {
+  userId: string,
+  productId: string
+};
+
 export type LoginInfo = {
   username: string,
   password: string
@@ -27,7 +36,7 @@ export type LoginInfo = {
 export type ShoppingCart = {
   _id: string,
   products: Product[],
-  userId: string,
+  user: string,
   totalPrice: number
 };
 

@@ -36,13 +36,6 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
       delete returnedObject.password;
     }
   },
-  toObject: {
-    transform: (_document, returnedObject: UserInterface) => {
-      returnedObject.id = returnedObject._id?.toString();
-      delete returnedObject._id;
-      delete returnedObject.__v;
-    }
-  }
 }
 );
 

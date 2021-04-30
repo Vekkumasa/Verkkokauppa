@@ -1,24 +1,18 @@
 import mongoose from 'mongoose';
-import { Product, User } from '../types';
+import { Product } from '../types';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: Product[];
-  user: User;
+  user: string;
   _id?: string;
 }
 
 const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   products: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product'
-    }
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }
   ],
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'  }
 },
 {
   toJSON: {
@@ -28,13 +22,6 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
       delete returnedObject.__v;
     }
   },
-  toObject: {
-    transform: (_document: mongoose.Document, returnedObject: ShoppingCartInterface) => {
-      returnedObject.id = returnedObject._id?.toString();
-      delete returnedObject._id;
-      delete returnedObject.__v;
-    }
-  }
 });
 
 const ShoppingCart = mongoose.model<ShoppingCartInterface>("ShoppingCart", ShoppingCartSchema);
