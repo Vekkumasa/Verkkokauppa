@@ -20,5 +20,6 @@
 | 26.4  |  3   | Reducer typings and eslint fixes |
 | 27.4  |  4   | Notification reducer, addproduct & login formit uusiksi & notification component |
 | 28.4  |  4   | Notification reducer fix & eslint fixes & projekti herokuun probleemeja |
-| 29.4  |  4   | Heroku probleemat fiksattu ja pushattu, ShoppingCart modelin työstäminen aloitettu |  
-| yht   |  73  | | 
+| 29.4  |  4   | Heroku probleemat fiksattu ja pushattu, ShoppingCart modelin työstäminen aloitettu |
+| 30.4  |  5   | ShoppingCart backend, ShoppingCart reducer, ShoppingCart.tsx sivu (aloitettu) |  
+| yht   |  78  | | 

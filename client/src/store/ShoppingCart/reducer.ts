@@ -8,13 +8,12 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
 
   switch (action.type) {
     case actionTypes.ADD_PRODUCT_TO_CART:
-      console.log('hep');
       return {
         ...state,
         cart: state.cart.concat(action.data)
       };
   }
-  console.log('shopping cart state', state);
+
   return state;
 };
 

@@ -9,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
@@ -68,10 +69,11 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
     <div>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-
+          <Link to="/products">
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          </Link>
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
@@ -114,9 +116,11 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
               null
             }
             <div>
-              <IconButton className={classes.shoppingCart} onClick={() => console.log('heippa')}>
-                <ShoppingCartIcon style={{ fontSize: 30 }}/>
-              </IconButton>
+              <Link to="/shoppingCart">
+                <IconButton className={classes.shoppingCart} >
+                  <ShoppingCartIcon style={{ fontSize: 30, marginTop: 5}}/>
+                </IconButton>
+              </Link>
             </div>
           </div>
         </Toolbar>
