@@ -53,6 +53,10 @@ type NotificationState = {
   visible: boolean
 };
 
+type ShoppingCartState = {
+  cart: Product[]
+};
+
 type AddProductAction = {
   type: string,
   data: Product,
@@ -70,20 +74,27 @@ type SetNotificationAction = {
 };
 
 type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
-type UserActions = LogInAction;
+type UserActions = LogInAction
 type NotificationActions = SetNotificationAction
+type ShoppingCartAction = AddProductToCartAction
 
-type Actions = ProductActions | UserActions | NotificationActions;
+type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction;
 
 type LogInAction = {
   type: string,
   data: Credentials | null,
 };
 
+type AddProductToCartAction = {
+  type: string,
+  data: Product,
+};
+
 interface AppState {
   products: ProductState,
   user: UserState,
-  notification: NotificationState
+  notification: NotificationState,
+  cart: ShoppingCartState
 }
 
 type DispatchType = (args: Actions) => Actions;

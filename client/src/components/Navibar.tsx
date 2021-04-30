@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import { logIn } from '../store/User/actionCreators';
@@ -36,6 +37,10 @@ const useStyles = makeStyles((theme) => ({
   addProductIcon: {
     height: 30,
     width: 30,
+  },
+  shoppingCart: {
+    color: 'white',
+    fontSize: 30
   }
 }));
 
@@ -108,6 +113,11 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
               :
               null
             }
+            <div>
+              <IconButton className={classes.shoppingCart} onClick={() => console.log('heippa')}>
+                <ShoppingCartIcon style={{ fontSize: 30 }}/>
+              </IconButton>
+            </div>
           </div>
         </Toolbar>
         <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />

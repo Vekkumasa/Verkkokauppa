@@ -4,11 +4,13 @@ import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import productReducer from './Product/reducer';
 import userReducer from './User/reducer';
 import notificationReducer from './Notification/reducer';
+import shoppingCartReducer from './ShoppingCart/reducer';
 
 const rootReducer = combineReducers({
   productReducer,
   userReducer,
-  notificationReducer
+  notificationReducer,
+  shoppingCartReducer
 });
 
 const store = configureStore({

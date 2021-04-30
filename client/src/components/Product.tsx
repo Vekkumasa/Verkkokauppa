@@ -14,6 +14,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
+import { addProductToCart } from '../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles({
   root: {
@@ -41,7 +42,11 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     setTimeout(() => {
       dispatch(hideNotification());
     }, 5000);
-  };  
+  };
+
+  const addProductToShoppingCart = () => {
+    dispatch(addProductToCart(product));
+  };
 
   return (
     <Card className={classes.root}>
@@ -60,7 +65,7 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => addProductToShoppingCart()}>
           Lisää ostoskoriin
         </Button>
         {user !== null && user.userType === 'Admin' ?         

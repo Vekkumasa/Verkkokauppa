@@ -19,10 +19,6 @@ export type User = {
   userType: string
 };
 
-export type UserId = {
-  id: string
-};
-
 export type CartProduct = {
   userId: string,
   productId: string
