@@ -19,6 +19,12 @@ type User = {
   userType: UserType
 };
 
+type ShippingInfo = {
+  firstName: string,
+  lastName: string,
+  address: string,
+};
+
 type NoIdUser = Omit<User, 'id'>;
 type CreateUserInput = Omit<NoIdUser, 'userType'>;
 
@@ -76,7 +82,7 @@ type SetNotificationAction = {
 type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
 type UserActions = LogInAction
 type NotificationActions = SetNotificationAction
-type ShoppingCartAction = AddProductToCartAction
+type ShoppingCartAction = AddProductToCartAction | RemoveProductFromCart
 
 type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction;
 
@@ -88,6 +94,11 @@ type LogInAction = {
 type AddProductToCartAction = {
   type: string,
   data: Product,
+};
+
+type RemoveProductFromCart = {
+  type: string,
+  data: Product
 };
 
 interface AppState {

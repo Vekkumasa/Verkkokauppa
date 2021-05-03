@@ -8,16 +8,8 @@ import ShoppingCart from './components/ShoppingCart';
 import { initializeProducts } from './store/Product/actionCreators';
 import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
 import Notification from './UI/Notification';
-import { makeStyles } from '@material-ui/styles';
-
-const useStyles = makeStyles({
-  notification: {
-
-  },
-});
 
 const App: React.FC = () => {
-  const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
   useEffect(() => {
     void dispatch(initializeProducts());

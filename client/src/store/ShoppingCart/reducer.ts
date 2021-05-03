@@ -12,6 +12,11 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
         ...state,
         cart: state.cart.concat(action.data)
       };
+    case actionTypes.REMOVE_PRODUCT_FROM_CART:
+      return {
+        ...state,
+        cart: state.cart.filter(product => product.id !== action.data.id)
+      };
   }
 
   return state;
