@@ -97,44 +97,47 @@ const ShoppingCart: React.FC = (): JSX.Element => {
     <Box className={classes.box} border={1}>
       <Grid container item xs={12} spacing={3}>
         <Grid item xs={5}>
-          <Box border={1} className={classes.cart}>
-            <Paper style={{maxHeight: 300, overflow: 'auto'}}>
-              <List>
-              
-                {products.map(product => {
-                  return (
-                    <Container className={classes.container} key={product.id} maxWidth="sm">
-                      <Card className={classes.card}>
-                        <div className={classes.contentAndImage}>
-                          <div className={classes.details}>
-                            <CardContent className={classes.content}>
-                              <Typography className={classes.info} component="h5" variant="h5">
-                                {product.name}
-                              </Typography>
-                              <Typography className={classes.info} variant="subtitle1" color="textSecondary">
-                                {product.description}
-                              </Typography>
-                              <Typography variant="subtitle1" color="textSecondary">
-                                {product.price}€
-                              </Typography>
-                            </CardContent>
+          <Box border={1} className={classes.cart}> 
+            {products.length === 0 ?
+              <Typography variant='h5'> Your Shopping Cart Is Empty </Typography>
+              :
+              <Paper style={{maxHeight: 300, overflow: 'auto'}}>
+                <List>
+                  {products.map(product => {
+                    return (
+                      <Container className={classes.container} key={product.id} maxWidth="sm">
+                        <Card className={classes.card}>
+                          <div className={classes.contentAndImage}>
+                            <div className={classes.details}>
+                              <CardContent className={classes.content}>
+                                <Typography className={classes.info} component="h5" variant="h5">
+                                  {product.name}
+                                </Typography>
+                                <Typography className={classes.info} variant="subtitle1" color="textSecondary">
+                                  {product.description}
+                                </Typography>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                  {product.price}€
+                                </Typography>
+                              </CardContent>
+                            </div>
+                            <CardMedia
+                              className={classes.image}
+                              image={product.image}
+                            />
                           </div>
-                          <CardMedia
-                            className={classes.image}
-                            image={product.image}
-                          />
-                        </div>
-                        <div>
-                          <CardActionArea className={classes.deleteButton} onClick={() => removeProduct(product)}>
-                            Remove item from cart
-                          </CardActionArea>
-                        </div>        
-                      </Card>
-                    </Container>
-                  );
-                })}
-              </List>
-            </Paper>
+                          <div>
+                            <CardActionArea className={classes.deleteButton} onClick={() => removeProduct(product)}>
+                              Remove item from cart
+                            </CardActionArea>
+                          </div>        
+                        </Card>
+                      </Container>
+                    );
+                  })}
+                </List>
+              </Paper>
+            }
           </Box>
         </Grid>
       

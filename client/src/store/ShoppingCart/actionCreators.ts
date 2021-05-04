@@ -16,7 +16,7 @@ export const addProductToCart = (data: Product): Cart => {
 export const removeProductFromCart = (data: Product): Cart => {
   const action: RemoveProductFromCart = {
     type: actionTypes.REMOVE_PRODUCT_FROM_CART,
-    data
+    data,
   };
 
   return (dispatch: DispatchType) => {

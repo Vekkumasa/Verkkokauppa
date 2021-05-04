@@ -4,18 +4,29 @@ const initialState: ShoppingCartState = {
   cart: []
 };
 
+const convertProductToShoppingCartProduct = (product: Product):ShoppingCartProduct => {
+  const shoppingCartProduct: ShoppingCartProduct = {
+    name: product.name,
+    stock: product.stock,
+    description: product.description,
+    id: product.id,
+    price: product.price,
+    quantity: 1,
+    image: product.image
+  };
+  return shoppingCartProduct;
+};
+
 const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAction): ShoppingCartState => {
 
   switch (action.type) {
     case actionTypes.ADD_PRODUCT_TO_CART:
       return {
-        ...state,
-        cart: state.cart.concat(action.data)
+        cart: state.cart.concat(convertProductToShoppingCartProduct(action.data))
       };
     case actionTypes.REMOVE_PRODUCT_FROM_CART:
       return {
-        ...state,
-        cart: state.cart.filter(product => product.id !== action.data.id)
+        cart: state.cart
       };
   }
 

@@ -8,6 +8,7 @@ type Product = {
 };
 
 type NoIdProduct = Omit<Product, 'id'>;
+type ShoppingCartProduct = Product & {quantity: number};
 
 type User = {
   id: string,
@@ -60,7 +61,7 @@ type NotificationState = {
 };
 
 type ShoppingCartState = {
-  cart: Product[]
+  cart: ShoppingCartProduct[]
 };
 
 type AddProductAction = {
