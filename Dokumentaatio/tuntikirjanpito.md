@@ -23,4 +23,5 @@
 | 29.4  |  4   | Heroku probleemat fiksattu ja pushattu, ShoppingCart modelin työstäminen aloitettu |
 | 30.4  |  5   | ShoppingCart backend, ShoppingCart reducer, ShoppingCart.tsx componentti (aloitettu) |
 | 3.5   |  2   | ShoppingCart.tsx componentti ja shoppingcartform.tsx |
+| 4.5   |  3   | ShoppingCart.tsx modausta ja bugi fixi yrityksia ostoskorista poistamiseen liittyen |
 | yht   |  80  | | 
