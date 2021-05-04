@@ -94,12 +94,12 @@ type LogInAction = {
 
 type AddProductToCartAction = {
   type: string,
-  data: Product,
+  data: ShoppingCartProduct,
 };
 
 type RemoveProductFromCart = {
   type: string,
-  data: Product
+  data: ShoppingCartProduct
 };
 
 interface AppState {
