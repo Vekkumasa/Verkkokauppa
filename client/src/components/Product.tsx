@@ -14,7 +14,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
-import { addProductToCart } from '../store/ShoppingCart/actionCreators';
+import { increaseQuantity } from '../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +45,7 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   };
 
   const addProductToShoppingCart = () => {
-    dispatch(addProductToCart(product));
+    dispatch(increaseQuantity(product));
   };
 
   return (

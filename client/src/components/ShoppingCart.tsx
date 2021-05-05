@@ -10,7 +10,7 @@ import { Box, Container, Grid, List, Paper } from '@material-ui/core';
 import { grey, red } from '@material-ui/core/colors';
 
 import ShoppingCartForm from '../forms/shoppingCart/ShoppingCartForm';
-import { removeProductFromCart } from '../store/ShoppingCart/actionCreators';
+import { decreaseQuantity, removeProduct } from '../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles({
   box: {
@@ -79,17 +79,16 @@ const ShoppingCart: React.FC = (): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const products: Product[] = useAppSelector(
+  const products: ShoppingCartProduct[] = useAppSelector(
     state => state.shoppingCartReducer.cart
   );
 
-  const user: Credentials | null = useAppSelector(
-    state => state.userReducer.user
-  );
+  const decreaseQuantityFromCart = (prod: ShoppingCartProduct) => {
+    dispatch(decreaseQuantity(prod));
+  };
 
-  const removeProduct = (prod: Product) => {
-    // TODO: Jos useampi sama tuote korissa, poistaa kaikki kerralla ( Tuotteen quantity muutoksella korjaantuu luultavasti )
-    dispatch(removeProductFromCart(prod));
+  const removeProductFromCart = (prod: ShoppingCartProduct) => {
+    dispatch(removeProduct(prod));
   };
 
   console.log('shopping cart', products);
@@ -104,36 +103,41 @@ const ShoppingCart: React.FC = (): JSX.Element => {
               <Paper style={{maxHeight: 300, overflow: 'auto'}}>
                 <List>
                   {products.map(product => {
-                    return (
-                      <Container className={classes.container} key={product.id} maxWidth="sm">
-                        <Card className={classes.card}>
-                          <div className={classes.contentAndImage}>
-                            <div className={classes.details}>
-                              <CardContent className={classes.content}>
-                                <Typography className={classes.info} component="h5" variant="h5">
-                                  {product.name}
-                                </Typography>
-                                <Typography className={classes.info} variant="subtitle1" color="textSecondary">
-                                  {product.description}
-                                </Typography>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                  {product.price}€
-                                </Typography>
-                              </CardContent>
+                    if (product.quantity > 0) {
+                      return (
+                        <Container className={classes.container} key={product.id} maxWidth="sm">
+                          <Card className={classes.card}>
+                            <div className={classes.contentAndImage}>
+                              <div className={classes.details}>
+                                <CardContent className={classes.content}>
+                                  <Typography className={classes.info} component="h5" variant="h5">
+                                    {product.name}
+                                  </Typography>
+                                  <Typography className={classes.info} variant="subtitle1" color="textSecondary">
+                                    {product.description}
+                                  </Typography>
+                                  <Typography variant="subtitle1" color="textSecondary">
+                                    {product.price}€
+                                  </Typography>
+                                </CardContent>
+                              </div>
+                              <CardMedia
+                                className={classes.image}
+                                image={product.image}
+                              />
                             </div>
-                            <CardMedia
-                              className={classes.image}
-                              image={product.image}
-                            />
-                          </div>
-                          <div>
-                            <CardActionArea className={classes.deleteButton} onClick={() => removeProduct(product)}>
-                              Remove item from cart
-                            </CardActionArea>
-                          </div>        
-                        </Card>
-                      </Container>
-                    );
+                            <div>
+                              <CardActionArea className={classes.deleteButton} onClick={() => decreaseQuantityFromCart(product)}>
+                                Remove item from cart
+                              </CardActionArea>
+                            </div>        
+                          </Card>
+                        </Container>
+                      );
+                    } else {
+                      removeProductFromCart(product);
+                    }
+                    
                   })}
                 </List>
               </Paper>

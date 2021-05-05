@@ -83,23 +83,16 @@ type SetNotificationAction = {
 type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
 type UserActions = LogInAction
 type NotificationActions = SetNotificationAction
-type ShoppingCartAction = AddProductToCartAction | RemoveProductFromCart
+type ShoppingCartAction = {
+  type: string,
+  data: ShoppingCartProduct
+};
 
 type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction;
 
 type LogInAction = {
   type: string,
   data: Credentials | null,
-};
-
-type AddProductToCartAction = {
-  type: string,
-  data: ShoppingCartProduct,
-};
-
-type RemoveProductFromCart = {
-  type: string,
-  data: ShoppingCartProduct
 };
 
 interface AppState {

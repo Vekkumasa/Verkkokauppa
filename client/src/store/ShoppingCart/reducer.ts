@@ -26,18 +26,25 @@ const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAction): ShoppingCartState => {
 
   switch (action.type) {
-    case actionTypes.ADD_PRODUCT_TO_CART:
+    case actionTypes.INCREASE_QUANTITY:   
+      if (!state.cart.some(p => p.id === action.data.id)) {
+        console.log('data:', action.data, ' cart: ', state.cart[0]);
+        return { cart: state.cart.concat(action.data) };
+      } 
       const lisattava = increaseQuantity(action.data, state.cart);
-      if (state.cart.length === 0) {
-        return  { cart: [lisattava] };
-      }
       return {
-        cart: state.cart.map(p => p.id === lisattava.id ? p : lisattava)
+        cart: state.cart.map(p => p.id === lisattava.id ? lisattava : p)
       };
-    case actionTypes.REMOVE_PRODUCT_FROM_CART:
+
+    case actionTypes.DECREASE_QUANTITY:
       const uusi = decreaseQuantity(action.data, state.cart);
       return {
-        cart: state.cart.map(p => p.id === uusi.id ? p : uusi)
+        cart: state.cart.map(p => p.id === uusi.id ? uusi : p)
+      };
+
+    case actionTypes.REMOVE_PRODUCT_FROM_CART:
+      return {
+        cart: state.cart.filter(p => p.id !== action.data.id)
       };
   }
 
