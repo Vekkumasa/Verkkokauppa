@@ -17,6 +17,7 @@ import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
+import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -59,6 +60,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
 
   const logOut = () => {
     dispatch(logIn(null));
+    dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
     setTimeout(() => {
       dispatch(hideNotification());

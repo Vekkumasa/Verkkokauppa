@@ -7,6 +7,12 @@ type Product = {
   description?: string
 };
 
+type CartProduct = {
+  userId: string,
+  productId: string,
+  cartId: string,
+};
+
 type NoIdProduct = Omit<Product, 'id'>;
 type ShoppingCartProduct = Product & {quantity: number};
 
@@ -35,6 +41,7 @@ interface SignInInfo {
 }
 
 type Credentials = {
+  id: string,
   token: string,
   userName: string,
   firstName: string,
@@ -45,64 +52,6 @@ type Credentials = {
 type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
-
-type ProductState = {
-  products: Product[]
-};
-
-type UserState = {
-  user: Credentials | null
-};
-
-type NotificationState = {
-  message: string,
-  type: NotificationType,
-  visible: boolean
-};
-
-type ShoppingCartState = {
-  cart: ShoppingCartProduct[]
-};
-
-type AddProductAction = {
-  type: string,
-  data: Product,
-};
-
-type GetProductsAction = {
-  type: string,
-  data: Product[]
-};
-
-type SetNotificationAction = {
-  type: string,
-  notificationType: NotificationType,
-  data: string
-};
-
-type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
-type UserActions = LogInAction
-type NotificationActions = SetNotificationAction
-type ShoppingCartAction = {
-  type: string,
-  data: ShoppingCartProduct
-};
-
-type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction;
-
-type LogInAction = {
-  type: string,
-  data: Credentials | null,
-};
-
-interface AppState {
-  products: ProductState,
-  user: UserState,
-  notification: NotificationState,
-  cart: ShoppingCartState
-}
-
-type DispatchType = (args: Actions) => Actions;
 
 declare module "*.jpg" {
   const content: string;

@@ -15,6 +15,7 @@ import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
 import { increaseQuantity } from '../store/ShoppingCart/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles({
   root: {
@@ -29,9 +30,11 @@ const useStyles = makeStyles({
 const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
+
   const user: Credentials | null = useAppSelector(
     state => state.userReducer.user
   );
+  const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 
   const deleteProduct = () => {
     void productService.deleteProduct(product);
@@ -45,7 +48,16 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   };
 
   const addProductToShoppingCart = () => {
-    dispatch(increaseQuantity(product));
+    let response;
+    if (user === null) {
+      response = shoppingCartService.addProductToShoppingCart({ productId: product.id, userId: '', cartId});
+    } else {
+      response = shoppingCartService.addProductToShoppingCart({ productId: product.id, userId: user.id, cartId});
+    }
+    void response.then((res) => {
+      console.log('product.tsx response', res);
+      dispatch(increaseQuantity(product, res.id));
+    });
   };
 
   return (

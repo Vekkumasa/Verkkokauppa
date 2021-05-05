@@ -35,6 +35,7 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
     if (secret !== undefined) {
       const token = jwt.sign(userForToken, secret);
       const credentials: Credentials = {
+        id: user.id,
         token: token,
         userName: user.userName,
         firstName: user.firstName,

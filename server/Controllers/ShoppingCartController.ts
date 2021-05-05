@@ -1,7 +1,6 @@
 import { uuid } from "uuidv4";
 import Product from "../models/product";
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import User from "../models/user";
 import { CartProduct } from '../types';
 
 const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
@@ -10,22 +9,30 @@ const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
 
 const AddProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
-    const userId = cartProduct.userId;
-    const user = await User.findById(userId);
-    const product = await Product.findById(cartProduct.productId);
-    let cart = await ShoppingCart.findOne({ user: userId });
+    const { userId, productId, cartId } = cartProduct;
+    let cart;
 
-    if (!user || !product) {
-      return null;
-    }
-
+    if (cartId) cart = await ShoppingCart.findById(cartId);
+    const product = await Product.findById(productId);
+    console.log('cart', cart);
+    if (!product) return null;
     if (!cart) {
-      cart = new ShoppingCart({
-        id: uuid(),
-        products: [],
-        user: userId,
-        totalPrice: 0
-      });
+      if (userId) {
+        cart = new ShoppingCart({
+          id: uuid(),
+          products: [],
+          user: userId,
+          active: true,
+          totalPrice: 0
+        });
+      } else {
+        cart = new ShoppingCart({
+          id: uuid(),
+          products: [],
+          active: true,
+          totalPrice: 0
+        });
+      } 
     }
 
     cart.products.push(product.id);

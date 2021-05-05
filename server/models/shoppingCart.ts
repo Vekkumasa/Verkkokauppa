@@ -3,7 +3,8 @@ import { Product } from '../types';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: Product[];
-  user: string;
+  active: boolean;
+  user?: string;
   _id?: string;
 }
 
@@ -12,7 +13,8 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
   products: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }
   ],
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'  }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  active: { type: Boolean, required: true }
 },
 {
   toJSON: {

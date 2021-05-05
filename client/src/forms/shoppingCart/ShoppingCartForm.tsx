@@ -1,12 +1,13 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { makeStyles } from '@material-ui/styles';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
-import Typography from '@material-ui/core/Typography';
+import { UserCheck } from '../../typeGuards';
 
 const useStyles = makeStyles({
   field: {
@@ -45,23 +46,24 @@ const useStyles = makeStyles({
   }
 });
 
- const ShippingSchema = Yup.object().shape({
-  firstName: Yup
-    .string()
-    .required("Required"),
-  lastName: Yup
-    .string()
-    .required("Required"),
-  address: Yup
-    .string()
-    .required("Required")
- });
+const ShippingSchema = Yup.object().shape({
+firstName: Yup
+  .string()
+  .required("Required"),
+lastName: Yup
+  .string()
+  .required("Required"),
+address: Yup
+  .string()
+  .required("Required")
+});
  
- const ShoppingCartForm = ():JSX.Element => {
+const ShoppingCartForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const classes = useStyles();
 
   const user: Credentials | null = useAppSelector(state => state.userReducer.user);
+  const products: ShoppingCartProduct[] = useAppSelector(state => state.shoppingCartReducer.cart);
 
   return (
     <div>
@@ -75,12 +77,15 @@ const useStyles = makeStyles({
         onSubmit={values => {
           const { firstName, lastName, address } = values;
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
-            const text = "";
+
+          if (UserCheck(user)) {
+            const text = "Delivering products to " + shippingInfo.address;
             const type: NotificationType = 'success';
             dispatch(setNotification(text, type));
             setTimeout(() => {
               dispatch(hideNotification());
             }, 5000);
+          }    
         }}
       >
         {({ errors, touched }) => (

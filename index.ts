@@ -32,7 +32,7 @@ if (StringCheck(url)) {
 app.use('/api/login', LogInRouter);
 app.use('/api/products', ProductRouter);
 app.use('/api/users', UserRouter);
-app.use('/api/ShoppingCart', ShoppingCartRouter);
+app.use('/api/shoppingCart', ShoppingCartRouter);
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');

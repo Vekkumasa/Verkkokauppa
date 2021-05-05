@@ -76,6 +76,7 @@ const LogInForm = ():JSX.Element => {
               }, 5000);
             } else {
               const credentials: Credentials = {
+                id: res.id,
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,

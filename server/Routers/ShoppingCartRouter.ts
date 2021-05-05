@@ -11,6 +11,7 @@ router.get('/', [] , async (_req: Request, res: Response) => {
 });
 
 router.post('/', (req: CustomRequest<CartProduct>, res: Response) => {
+  console.log('router body', req.body);
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.AddProductToCart(req.body);
   void cartProduct.then((response) => {
     res.status(201).json(response);

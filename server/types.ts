@@ -21,7 +21,8 @@ export type User = {
 
 export type CartProduct = {
   userId: string,
-  productId: string
+  productId: string,
+  cartId: string,
 };
 
 export type LoginInfo = {
@@ -43,6 +44,7 @@ export interface CustomRequest<T> extends Request {
 }
 
 export type Credentials = {
+  id: string,
   token: string,
   userName: string,
   firstName: string,
