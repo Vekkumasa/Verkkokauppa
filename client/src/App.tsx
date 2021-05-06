@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import Navibar from './components/Navibar';
 import ProductListPage from './components/ProductListPage';
@@ -40,8 +40,9 @@ const App: React.FC = () => {
         </Switch> 
 
         <Switch>
-          <Route path="/products" render={() => <ProductListPage />} />
+          <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
+
    
       </Router>
     </div>

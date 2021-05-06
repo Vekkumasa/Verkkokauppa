@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export type Product = {
+type Product = {
     _id: string,
     name: string,
     price: number,
@@ -9,7 +9,14 @@ export type Product = {
     image?: string
 };
 
-export type User = {
+type ShoppingCartProduct ={
+  _id: string,
+  name: string,
+  quantity: number,
+  price: number
+};
+
+type User = {
   _id: string,
   email: string,
   firstName: string,
@@ -19,31 +26,31 @@ export type User = {
   userType: string
 };
 
-export type CartProduct = {
+type CartProduct = {
   userId: string,
   productId: string,
   cartId: string,
 };
 
-export type LoginInfo = {
+type LoginInfo = {
   username: string,
   password: string
 };
 
-export type ShoppingCart = {
+type ShoppingCart = {
   _id: string,
   products: Product[],
   user: string,
   totalPrice: number
 };
 
-export type UserType = 'Admin' | 'User';
+type UserType = 'Admin' | 'User';
 
-export interface CustomRequest<T> extends Request {
+interface CustomRequest<T> extends Request {
   body: T
 }
 
-export type Credentials = {
+type Credentials = {
   id: string,
   token: string,
   userName: string,

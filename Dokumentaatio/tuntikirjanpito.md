@@ -24,5 +24,6 @@
 | 30.4  |  5   | ShoppingCart backend, ShoppingCart reducer, ShoppingCart.tsx componentti (aloitettu) |
 | 3.5   |  2   | ShoppingCart.tsx componentti ja shoppingcartform.tsx |
 | 4.5   |  3   | ShoppingCart.tsx modausta ja bugi fixi yrityksia ostoskorista poistamiseen liittyen |
-| 5.5   |  6   | Shoppingcart.tsx bugi fixattu + ulkoasu muutoksia, Shoppingcart backend parannuksia ym muuta kivaa | 
-| yht   |  86  | | 
+| 5.5   |  6   | Shoppingcart.tsx bugi fixattu + ulkoasu muutoksia, Shoppingcart backend parannuksia ym muuta kivaa |
+| 6.5|  |  3   | ShoppingCart backendiä uusiksi |
+| yht   |  89  | | 

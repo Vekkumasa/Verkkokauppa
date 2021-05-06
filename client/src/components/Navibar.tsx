@@ -71,7 +71,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
     <div>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <Link to="/products">
+          <Link to="/">
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
             </IconButton>

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { Product } from '../types';
+import { ShoppingCartProduct } from '../types';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
-  products: Product[];
+  products: ShoppingCartProduct[];
   active: boolean;
   user?: string;
   _id?: string;
@@ -11,7 +11,7 @@ export interface ShoppingCartInterface extends mongoose.Document {
 const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   products: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }
+    { type: mongoose.Schema.Types.ObjectId, ref: 'ShoppingCartProduct', required: true }
   ],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   active: { type: Boolean, required: true }

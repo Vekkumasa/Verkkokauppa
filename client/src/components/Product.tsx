@@ -35,7 +35,9 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     state => state.userReducer.user
   );
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
+  const shoppingCart = useAppSelector(state => state.shoppingCartReducer.cart);
 
+  console.log('cartId:', cartId, 'ShoppingCart:', shoppingCart);
   const deleteProduct = () => {
     void productService.deleteProduct(product);
     dispatch(removeProduct(product));
@@ -47,6 +49,17 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     }, 5000);
   };
 
+  const handleShoppingCart = () => {
+    const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
+    if (isProductAlreadyInCart) {
+      console.log("true"); 
+      increaseShoppingCartProductQuantity();
+    } else {
+      console.log("false");    
+      addProductToShoppingCart();
+    }
+  };
+
   const addProductToShoppingCart = () => {
     let response;
     if (user === null) {
@@ -55,7 +68,20 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
       response = shoppingCartService.addProductToShoppingCart({ productId: product.id, userId: user.id, cartId});
     }
     void response.then((res) => {
-      console.log('product.tsx response', res);
+      console.log('product.tsx addProductToShoppingCart', res);
+      dispatch(increaseQuantity(product, res.id));
+    });
+  };
+
+  const increaseShoppingCartProductQuantity = () => {
+    let response;
+    if (user === null) {
+      response = shoppingCartService.increaseProductQuantity({ productId: product.id, userId: '', cartId});
+    } else {
+      response = shoppingCartService.increaseProductQuantity({ productId: product.id, userId: user.id, cartId});
+    }
+    void response.then((res) => {
+      console.log('product.tsx increaseShoppingCartProductQuantity', res);
       dispatch(increaseQuantity(product, res.id));
     });
   };
@@ -77,7 +103,7 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary" onClick={() => addProductToShoppingCart()}>
+        <Button size="small" color="primary" onClick={() => handleShoppingCart()}>
           Lisää ostoskoriin
         </Button>
         {user !== null && user.userType === 'Admin' ?         

@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
-import shoppingCartController from '../Controllers/ShoppingCartController';
+import shoppingCartController from '../Controllers/shoppingCartController';
 import { CartProduct, CustomRequest } from '../types';
 
 const router = express.Router();
@@ -12,7 +12,15 @@ router.get('/', [] , async (_req: Request, res: Response) => {
 
 router.post('/', (req: CustomRequest<CartProduct>, res: Response) => {
   console.log('router body', req.body);
-  const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.AddProductToCart(req.body);
+  const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.AddNewProductToCart(req.body);
+  void cartProduct.then((response) => {
+    res.status(201).json(response);
+  });
+});
+
+router.put('/:id', (req: CustomRequest<CartProduct>, res: Response) => {
+  console.log('router body', req.body);
+  const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.IncreaseProductQuantity(req.body);
   void cartProduct.then((response) => {
     res.status(201).json(response);
   });

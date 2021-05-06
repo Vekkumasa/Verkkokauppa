@@ -1,21 +1,20 @@
-import { uuid } from "uuidv4";
+import { v4 as uuid } from 'uuid';
 import Product from "../models/product";
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
+import ShoppingCartProduct from "../models/shoppingCartProduct";
 import { CartProduct } from '../types';
+import { StringParser } from '../utils/StringCheck';
 
 const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
 };
 
-const AddProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const getCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
-    const { userId, productId, cartId } = cartProduct;
+    const { userId, cartId } = cartProduct;
     let cart;
 
-    if (cartId) cart = await ShoppingCart.findById(cartId);
-    const product = await Product.findById(productId);
-    console.log('cart', cart);
-    if (!product) return null;
+    if (cartId) cart = await ShoppingCart.findById(cartId);   
     if (!cart) {
       if (userId) {
         cart = new ShoppingCart({
@@ -35,10 +34,85 @@ const AddProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartI
       } 
     }
 
-    cart.products.push(product.id);
-    cart.totalPrice += product.price;
-    void cart.save();
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
 
+const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+  try {
+    const { productId } = cartProduct;
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const product = await Product.findById(productId);
+
+    if (!cart || !product) return null;
+    const cartId = StringParser(cart.id);
+    const shoppingCartProduct = await ShoppingCartProduct.findOne({ productId: productId, shoppingCartId: cartId });
+    if (!shoppingCartProduct) return null;
+    shoppingCartProduct.quantity -= 1;
+    cart.totalPrice -= shoppingCartProduct.price;
+
+    await shoppingCartProduct.save();
+    await cart.save();
+
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+  try {
+    const { productId } = cartProduct;
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const product = await Product.findById(productId);
+
+    if (!cart || !product) return null;
+    const cartId = StringParser(cart.id);
+    const shoppingCartProduct = await ShoppingCartProduct.findOne({ productId: productId, shoppingCartId: cartId });
+
+    if (!shoppingCartProduct) return null;
+
+    shoppingCartProduct.quantity += 1;    
+    cart.totalPrice += shoppingCartProduct.price;
+
+    await shoppingCartProduct.save();
+    await cart.save();
+
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+  try {
+    const { productId } = cartProduct;
+
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    
+    const product = await Product.findById(productId);
+    
+    if (!cart || !product || !cart.id) return null;
+
+    const cartId = StringParser(cart.id);
+    const shoppingCartProduct = new ShoppingCartProduct({
+      id: uuid(),
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      productId: productId,
+      shoppingCartId: cartId
+    });
+
+    console.log('addproduct:', shoppingCartProduct);
+    await shoppingCartProduct.save();
+    cart.products.push(shoppingCartProduct.id);
+    cart.totalPrice += product.price;
+    await cart.save();
+
+    console.log('CART', cart);
     return cart;
   } catch (e) {
     console.log(e);
@@ -48,5 +122,7 @@ const AddProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartI
 
 export default {
   GetAllCarts,
-  AddProductToCart,
+  AddNewProductToCart,
+  DecreaseProductQuantity,
+  IncreaseProductQuantity,
 };
