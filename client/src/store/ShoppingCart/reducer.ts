@@ -27,6 +27,7 @@ const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAction): ShoppingCartState => {
 
   if (AddOrRemoveActionCheck(action)) {
+    console.log('fak');
     switch (action.type) {
       case actionTypes.INCREASE_QUANTITY:   
         if (!state.cart.some(p => p.id === action.data.id)) {

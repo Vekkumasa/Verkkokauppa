@@ -28,7 +28,7 @@ type User = {
 
 type CartProduct = {
   userId: string,
-  productId: string,
+  product: ShoppingCartProduct,
   cartId: string,
 };
 

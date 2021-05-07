@@ -50,22 +50,30 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   };
 
   const handleShoppingCart = () => {
+    
     const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
+    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
+
+    if (shoppingCartProduct === undefined) {
+      shoppingCartProduct = {...product, quantity: 1};
+    }
+
     if (isProductAlreadyInCart) {
-      console.log("true"); 
-      increaseShoppingCartProductQuantity();
+      console.log("Product already in cart, increasing quantity"); 
+      shoppingCartProduct.quantity += 1;
+      updateShoppingCartProductQuantity(shoppingCartProduct);
     } else {
-      console.log("false");    
-      addProductToShoppingCart();
+      console.log("Adding new product to cart");    
+      addProductToShoppingCart(shoppingCartProduct);
     }
   };
 
-  const addProductToShoppingCart = () => {
+  const addProductToShoppingCart = (shoppingCartProduct: ShoppingCartProduct) => {
     let response;
     if (user === null) {
-      response = shoppingCartService.addProductToShoppingCart({ productId: product.id, userId: '', cartId});
+      response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: '', cartId});
     } else {
-      response = shoppingCartService.addProductToShoppingCart({ productId: product.id, userId: user.id, cartId});
+      response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
     }
     void response.then((res) => {
       console.log('product.tsx addProductToShoppingCart', res);
@@ -73,12 +81,12 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     });
   };
 
-  const increaseShoppingCartProductQuantity = () => {
+  const updateShoppingCartProductQuantity = (shoppingCartProduct: ShoppingCartProduct) => {
     let response;
     if (user === null) {
-      response = shoppingCartService.increaseProductQuantity({ productId: product.id, userId: '', cartId});
+      response = shoppingCartService.updateProductQuantity({ product: shoppingCartProduct, userId: '', cartId});
     } else {
-      response = shoppingCartService.increaseProductQuantity({ productId: product.id, userId: user.id, cartId});
+      response = shoppingCartService.updateProductQuantity({ product: shoppingCartProduct, userId: user.id, cartId});
     }
     void response.then((res) => {
       console.log('product.tsx increaseShoppingCartProductQuantity', res);

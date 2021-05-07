@@ -14,10 +14,24 @@ router.post('/', (req: CustomRequest<CartProduct>, res: Response) => {
   console.log('router body', req.body);
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.AddNewProductToCart(req.body);
   void cartProduct.then((response) => {
+    if (response === null) {
+      res.status(400).send({ error: 'Something happened' });
+    }
     res.status(201).json(response);
   });
 });
 
+router.put('/:id/', (req: CustomRequest<CartProduct>, res: Response) => {
+  const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.UpdateProductQuantity(req.body);
+  void cartProduct.then((response) => {
+    if (response === null) {
+      res.status(400).send({ error: 'Something happened' });
+    }
+    res.status(201).json(response);
+  });
+});
+
+/*
 router.put('/:id/increase', (req: CustomRequest<CartProduct>, res: Response) => {
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.IncreaseProductQuantity(req.body);
   void cartProduct.then((response) => {
@@ -37,5 +51,6 @@ router.put('/:id/decrease', (req: CustomRequest<CartProduct>, res: Response) => 
     res.status(201).json(response);
   });
 });
+*/
 
 export default router;

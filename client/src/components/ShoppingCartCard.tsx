@@ -75,7 +75,6 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
   };
 
   const decreaseQuantityFromCart = (item: ShoppingCartProduct) => {
-    void shoppingCartService.DecreaseProductQuantity({ productId: product.id, userId, cartId: cartId });
     dispatch(decreaseQuantity(item, cartId));
   };
 
