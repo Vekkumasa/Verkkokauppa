@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import Product from "../models/product";
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import ShoppingCartProduct from "../models/shoppingCartProduct";
 import { CartProduct } from '../types';
 import { StringParser } from '../utils/StringCheck';
 
@@ -34,6 +33,7 @@ const getCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface 
       } 
     }
 
+    await cart.save();
     return cart;
   } catch (e) {
     return null;
@@ -47,13 +47,15 @@ const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
     const product = await Product.findById(productId);
 
     if (!cart || !product) return null;
-    const cartId = StringParser(cart.id);
-    const shoppingCartProduct = await ShoppingCartProduct.findOne({ productId: productId, shoppingCartId: cartId });
-    if (!shoppingCartProduct) return null;
-    shoppingCartProduct.quantity -= 1;
-    cart.totalPrice -= shoppingCartProduct.price;
 
-    await shoppingCartProduct.save();
+    cart.products.map(p => {     
+      if (p._id.toString() === productId) {
+        p.quantity -= 1;
+        // TODO: jos quantity 0 deletoi producti
+      }
+    });
+
+    cart.totalPrice -= product.price;
     await cart.save();
 
     return cart;
@@ -69,15 +71,15 @@ const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
     const product = await Product.findById(productId);
 
     if (!cart || !product) return null;
-    const cartId = StringParser(cart.id);
-    const shoppingCartProduct = await ShoppingCartProduct.findOne({ productId: productId, shoppingCartId: cartId });
 
-    if (!shoppingCartProduct) return null;
+    cart.products.map(p => {     
+      if (p._id.toString() === productId) {
+        p.quantity += 1;
+      }
+    });
 
-    shoppingCartProduct.quantity += 1;    
-    cart.totalPrice += shoppingCartProduct.price;
-
-    await shoppingCartProduct.save();
+    console.log(cart);
+    cart.totalPrice += product.price;
     await cart.save();
 
     return cart;
@@ -97,22 +99,13 @@ const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
     if (!cart || !product || !cart.id) return null;
 
     const cartId = StringParser(cart.id);
-    const shoppingCartProduct = new ShoppingCartProduct({
-      id: uuid(),
-      name: product.name,
-      price: product.price,
-      quantity: 1,
-      productId: productId,
-      shoppingCartId: cartId
-    });
 
-    console.log('addproduct:', shoppingCartProduct);
-    await shoppingCartProduct.save();
-    cart.products.push(shoppingCartProduct.id);
+    const lista = cart.products.concat({ _id: productId, name: product.name, price: product.price, quantity: 1 });
+    const karry = await ShoppingCart.findByIdAndUpdate(cartId, { products: lista }, { new: true });
+    console.log('Addnewproducttocart', karry);
     cart.totalPrice += product.price;
     await cart.save();
 
-    console.log('CART', cart);
     return cart;
   } catch (e) {
     console.log(e);

@@ -6,6 +6,7 @@ import { Add, Remove } from '@material-ui/icons';
 import { grey, red } from '@material-ui/core/colors';
 
 import { decreaseQuantity, removeProduct, increaseQuantity } from '../store/ShoppingCart/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles({
   container: {
@@ -61,11 +62,20 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
   
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 
+  const user = useAppSelector(state => state.userReducer.user);
+  let userId: string;
+  if (!user) {
+    userId = '';
+  } else {
+    userId = user.id;
+  }
+
   const removeProductFromCart = (item: ShoppingCartProduct) => {
     dispatch(removeProduct(item, cartId));
   };
 
   const decreaseQuantityFromCart = (item: ShoppingCartProduct) => {
+    void shoppingCartService.DecreaseProductQuantity({ productId: product.id, userId, cartId: cartId });
     dispatch(decreaseQuantity(item, cartId));
   };
 

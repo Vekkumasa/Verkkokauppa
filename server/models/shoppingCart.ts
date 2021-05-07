@@ -11,7 +11,12 @@ export interface ShoppingCartInterface extends mongoose.Document {
 const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
   totalPrice: { type: Number, required: true },
   products: [
-    { type: mongoose.Schema.Types.ObjectId, ref: 'ShoppingCartProduct', required: true }
+    {
+      productId: String,
+      name: String,
+      quantity: Number,
+      price: Number
+    }
   ],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   active: { type: Boolean, required: true }
