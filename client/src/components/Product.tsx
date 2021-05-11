@@ -14,7 +14,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
-import { increaseQuantity } from '../store/ShoppingCart/actionCreators';
+import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles({
@@ -37,7 +37,6 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
   const shoppingCart = useAppSelector(state => state.shoppingCartReducer.cart);
 
-  console.log('cartId:', cartId, 'ShoppingCart:', shoppingCart);
   const deleteProduct = () => {
     void productService.deleteProduct(product);
     dispatch(removeProduct(product));
@@ -50,17 +49,15 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   };
 
   const handleShoppingCart = () => {
-    
     const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
     let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
 
-    if (shoppingCartProduct === undefined) {
+    if (shoppingCartProduct === undefined) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
-
+    
     if (isProductAlreadyInCart) {
       console.log("Product already in cart, increasing quantity"); 
-      shoppingCartProduct.quantity += 1;
       updateShoppingCartProductQuantity(shoppingCartProduct);
     } else {
       console.log("Adding new product to cart");    
@@ -68,30 +65,22 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     }
   };
 
-  const addProductToShoppingCart = (shoppingCartProduct: ShoppingCartProduct) => {
-    let response;
-    if (user === null) {
-      response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: '', cartId});
+  const addProductToShoppingCart = (shoppingCartProduct: ShoppingCartProduct) => {  
+    if (!user) {
+      dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
-      response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+      const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+      void response.then((res) => {
+        console.log('res', res);
+        dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
+      });
     }
-    void response.then((res) => {
-      console.log('product.tsx addProductToShoppingCart', res);
-      dispatch(increaseQuantity(product, res.id));
-    });
   };
 
   const updateShoppingCartProductQuantity = (shoppingCartProduct: ShoppingCartProduct) => {
-    let response;
-    if (user === null) {
-      response = shoppingCartService.updateProductQuantity({ product: shoppingCartProduct, userId: '', cartId});
-    } else {
-      response = shoppingCartService.updateProductQuantity({ product: shoppingCartProduct, userId: user.id, cartId});
-    }
-    void response.then((res) => {
-      console.log('product.tsx increaseShoppingCartProductQuantity', res);
-      dispatch(increaseQuantity(product, res.id));
-    });
+    if (!user) {
+      dispatch(increaseQuantity(shoppingCartProduct, cartId));
+    } 
   };
 
   return (

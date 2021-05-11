@@ -1,55 +1,67 @@
 import { v4 as uuid } from 'uuid';
+import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import { CartProduct } from '../types';
-import { StringParser } from '../utils/StringCheck';
+import { CartProduct, ShoppingCartProduct } from '../types';
 
 const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
 };
 
-const getCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const getCart = async (cartId: string): Promise<ShoppingCartInterface | null> => {
   try {
-    const { userId, cartId } = cartProduct;
     let cart;
 
     if (cartId) cart = await ShoppingCart.findById(cartId);   
     if (!cart) {
-      if (userId) {
-        cart = new ShoppingCart({
-          id: uuid(),
-          products: [],
-          user: userId,
-          active: true,
-          totalPrice: 0
-        });
-      } else {
-        cart = new ShoppingCart({
-          id: uuid(),
-          products: [],
-          active: true,
-          totalPrice: 0
-        });
-      } 
+      return null;
     }
 
-    await cart.save();
     return cart;
   } catch (e) {
     return null;
   }
 };
 
+const listOfProducts = async (products: ShoppingCartProduct[]) => {
+  const lista: unknown[] = await Promise.all(products.map(async (item): Promise<unknown> => {
+    const product = await Product.findById(item.id);
+    if (product) {
+      return {
+        productId: product._id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      };
+    }
+    return;
+  }));
+  return lista;
+};
+
+const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: string): Promise<ShoppingCartInterface> => {
+  const totalPrice = products.reduce((prev, cur) => prev + cur.price * cur.quantity, 0);
+  const list = await listOfProducts(products);
+  const cart = new ShoppingCart({
+    id: uuid(),
+    products: list,
+    user: userId,
+    active: true,
+    totalPrice
+  });
+  await cart.save();
+  return cart;
+};
+
 const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
-    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
 
     if (!cart || !product) return null;
 
     cart.products.map(p => {     
-      if (p._id.toString() === product._id) {
+      if (p.productId === product.id) {
         p.quantity -= 1;
-        // TODO: jos quantity 0 deletoi producti
       }
     });
 
@@ -65,12 +77,13 @@ const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
 const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
-    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
 
     if (!cart || !product) return null;
 
+    console.log('product,', product);
     cart.products.map(p => {     
-      if (p._id.toString() === product._id) {
+      if (p.productId === product.id) {
         p.quantity += 1;
       }
     });
@@ -85,40 +98,27 @@ const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
   }
 };
 
-const UpdateProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
-    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
 
-    if (!cart || !product) return null;
-    console.log('before', cart.products);
-    cart.products.map(p => p.name !== product.name ? p : product);
-    console.log('after', cart.products);
-    /*
-    const quantityBefore = product.quantity;
-    let quantityAfter = -5;
-    console.log('ennen',product, cart);
-    cart.products.map(p => {     
-      if (p._id.toString() === product._id) {
-        console.log('HEPHEPHEPHEPHEPHEPHEP');
-        quantityAfter = p.quantity;
-        return product;
-      } else {
-        return p;
+    if (!cart || !product || !cart.id) return null;
+    let totalPriceOfRemovedObjects = 0;
+    const lista = cart.products.filter(p => {
+      if (p.productId === product.id) {
+        totalPriceOfRemovedObjects = product.price * product.quantity;
       }
+      return p.productId !== product.id;
     });
 
-    if (quantityAfter < quantityBefore) {
-      cart.totalPrice -= product.price;
-    } else {
-      cart.totalPrice += product.price;
-    }
-    console.log('jalkeen', quantityAfter , cart);
-    */
+    cart.products = lista;
+    cart.totalPrice -= totalPriceOfRemovedObjects;
+    
     await cart.save();
-
     return cart;
   } catch (e) {
+    console.log(e);
     return null;
   }
 };
@@ -127,15 +127,12 @@ const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
   try {
     const { product } = cartProduct;
 
-    const cart: ShoppingCartInterface | null = await getCart(cartProduct);
+    const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
     
     if (!cart || !product || !cart.id) return null;
 
-    const cartId = StringParser(cart.id);
-
-    const lista = cart.products.concat({ _id: product._id, name: product.name, price: product.price, quantity: 1 });
-    const karry = await ShoppingCart.findByIdAndUpdate(cartId, { products: lista }, { new: true });
-    console.log('Addnewproducttocart', karry);
+    const lista = cart.products.concat({ productId: product.id, name: product.name, price: product.price, quantity: 1 });
+    cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();
 
@@ -151,5 +148,6 @@ export default {
   AddNewProductToCart,
   DecreaseProductQuantity,
   IncreaseProductQuantity,
-  UpdateProductQuantity,
+  createNewShoppingCart,
+  RemoveProductFromCart,
 };

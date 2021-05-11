@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { AddOrRemoveActionCheck } from '../../typeGuards';
+import { addOrRemoveActionCheck, newShoppingCartCheck, clearShoppingCart } from '../../typeGuards';
 
 const initialState: ShoppingCartState = {
   cartId: '',
@@ -26,8 +26,7 @@ const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 
 const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAction): ShoppingCartState => {
 
-  if (AddOrRemoveActionCheck(action)) {
-    console.log('fak');
+  if (addOrRemoveActionCheck(action)) {
     switch (action.type) {
       case actionTypes.INCREASE_QUANTITY:   
         if (!state.cart.some(p => p.id === action.data.id)) {
@@ -54,14 +53,26 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
           cart: state.cart.filter(p => p.id !== action.data.id)
         };
     }
-  } else {
+
+  } else if (newShoppingCartCheck(action)) {
+    
+    switch (action.type) {
+      case actionTypes.CREATE_NEW_SHOPPING_CART:
+        return {
+          // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
+          cartId: action.cartId,
+          cart: state.cart
+        };
+    }
+    
+  } else if (clearShoppingCart(action)) {
     return {
       cartId: '',
       cart: []
     };
+
   }
-  
-  console.log('cart state', state);
+
   return state;
 };
 

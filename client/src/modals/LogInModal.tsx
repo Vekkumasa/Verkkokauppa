@@ -3,7 +3,8 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 
 import LogInForm from '../forms/User/LogInForm';
-
+import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
+import { handleModal } from '../store/modal/actionCreators';
 
 const getModalStyle = () => {
   const top = 50;
@@ -51,24 +52,23 @@ const Header: React.FC = () => {
   );
 };
 
-interface Props {
-  setModalOpen: (values: boolean) => void;
-  modalOpen: boolean
-}
 
-const LogInModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
+const LogInModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
+  const newModalOpen = useAppSelector(state => state.modalReducer.logInModal);
+  const dispatch: AppDispatch = useAppDispatch();
+  
   const handleClose = () => {
-    setModalOpen(!modalOpen);
+    dispatch(handleModal(!newModalOpen, 'LogIn'));
   };
 
   return (
     <Modal
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      open={modalOpen}
+      open={newModalOpen}
       onClose={handleClose}
     >
       <div style={modalStyle} className={classes.paper}>

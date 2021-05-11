@@ -2,19 +2,35 @@ import axios from 'axios';
 
 // TODO: FIX RETURN TYPES
 
-const addProductToShoppingCart = async (productToAdd: CartProduct):Promise<Product> => {
-  const request = await axios.post<Product>('http://localhost:3001/api/shoppingCart', productToAdd);
-  console.log('Shopping service addProductToShoppingCart:', request.data);
+const createNewShoppingCart = async (products: NewShoppingCart): Promise<ShoppingCartProduct> => {
+  const request = await axios.post<ShoppingCartProduct>('http://localhost:3001/api/shoppingCart', products);
   return request.data;
 };
 
-const updateProductQuantity = async (product: CartProduct):Promise<Product> => {
-  const request = await axios.put<Product>(`http://localhost:3001/api/shoppingCart/${product.cartId}/`, product);
-  console.log('Shopping service increaseProductQuantity:', request.data);
+const addProductToShoppingCart = async (productToAdd: CartProduct):Promise<ShoppingCartProduct> => {
+  const request = await axios.post<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${productToAdd.cartId}/addProduct`, productToAdd);
+  return request.data;
+};
+
+const removeProductFromShoppingCart = async (productToRemove: CartProduct): Promise<ShoppingCartProduct> => {
+  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${productToRemove.cartId}/remove`, productToRemove);
+  return request.data;
+};
+
+const increaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
+  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${product.cartId}/increase`, product);
+  return request.data;
+};
+
+const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
+  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${product.cartId}/decrease`, product);
   return request.data;
 };
 
 export default {
+  createNewShoppingCart,
   addProductToShoppingCart,
-  updateProductQuantity,
+  increaseProductQuantity,
+  decreaseProductQuantity,
+  removeProductFromShoppingCart,
 };

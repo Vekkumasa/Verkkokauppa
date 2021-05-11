@@ -2,7 +2,18 @@ import * as actionTypes from "./actionTypes";
 
 type Cart = (dispatch: DispatchType) => void;
 
-export const increaseQuantity = (product: Product, cartId: string): Cart => {
+export const createNewShoppingCart = (cartId: string): Cart => {
+  const action: CreateNewShoppingCartAction = {
+    type: actionTypes.CREATE_NEW_SHOPPING_CART,
+    cartId
+  };
+
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};
+
+export const addNewProductToShoppingCart = (product: Product, cartId: string): Cart => {
   const data: ShoppingCartProduct = { ...product, quantity: 1};
   const action: ShoppingCartAction = {
     type: actionTypes.INCREASE_QUANTITY,
@@ -15,12 +26,24 @@ export const increaseQuantity = (product: Product, cartId: string): Cart => {
   };
 };
 
-export const decreaseQuantity = (product: Product, cartId: string): Cart => {
-  const data: ShoppingCartProduct = { ...product, quantity: 1};
+export const increaseQuantity = (product: ShoppingCartProduct, cartId: string): Cart => {
+  const action: ShoppingCartAction = {
+    type: actionTypes.INCREASE_QUANTITY,
+    cartId,
+    data: {...product, quantity: product.quantity + 1}
+  };
+
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};
+
+export const decreaseQuantity = (product: ShoppingCartProduct, cartId: string): Cart => {
+  console.log('hep', product);
   const action: ShoppingCartAction = {
     type: actionTypes.DECREASE_QUANTITY,
     cartId,
-    data,
+    data: {...product, quantity: product.quantity - 1}
   };
 
   return (dispatch: DispatchType) => {

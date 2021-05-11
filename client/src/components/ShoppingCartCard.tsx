@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     flexDirection: 'row'
   },
   card: {
-    width: 350,
+    width: 380,
     maxHeight: 140,
     marginBottom: 15
   },
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     height: 120
   },
   content: {
-    width: 150,
+    width: 190,
     height: 20,
     flex: '1 0 auto',
     backgroundColor: grey[200],
@@ -70,20 +70,37 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
     userId = user.id;
   }
 
-  const removeProductFromCart = (item: ShoppingCartProduct) => {
-    dispatch(removeProduct(item, cartId));
+  const removeProductFromCart = (product: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(removeProduct(product, cartId));
+    } else {
+      const promise = shoppingCartService.removeProductFromShoppingCart({ cartId, userId, product });
+      void promise.then(() => {
+        dispatch(removeProduct(product, cartId));
+      });
+    }
   };
 
-  const decreaseQuantityFromCart = (item: ShoppingCartProduct) => {
-    dispatch(decreaseQuantity(item, cartId));
+  const decreaseQuantityFromCart = (product: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(decreaseQuantity(product, cartId));
+    } else {
+      const promise = shoppingCartService.decreaseProductQuantity({ cartId, userId, product });
+      void promise.then(() => {
+        dispatch(decreaseQuantity(product, cartId));
+      });
+    }
   };
 
-  const increaseQuantityFromCart = (item: ShoppingCartProduct) => {
-    dispatch(increaseQuantity(item, cartId));
-  };
-  
-  const quantity = () => {
-    if (product.quantity > 1) return 'x' + product.quantity.toString();
+  const increaseQuantityFromCart = (product: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(increaseQuantity(product, cartId));
+    } else {
+      const promise = shoppingCartService.increaseProductQuantity({ cartId, userId, product });
+      void promise.then(() => {
+        dispatch(increaseQuantity(product, cartId));
+      });
+    }
   };
 
   return (
@@ -92,8 +109,8 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
         <div className={classes.contentAndImage}>
           <div className={classes.details}>
             <CardContent className={classes.content}>
-              <Typography className={classes.info} component="h5" variant="h5">
-                {product.name} {quantity()}
+              <Typography className={classes.info} component="h6" variant="h6">
+                {product.name} x {product.quantity.toString()}
               </Typography>
               <Typography className={classes.info} variant="subtitle1" color="textSecondary">
                 {product.description}

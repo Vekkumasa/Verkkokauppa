@@ -1,19 +1,31 @@
 import { Request } from 'express';
 
 type Product = {
-    _id: string,
-    name: string,
-    price: number,
-    stock: number,
-    description?: string,
-    image?: string
+  _id: string,
+  name: string,
+  price: number,
+  stock: number,
+  description?: string,
+  image?: string
 };
 
-type ShoppingCartProduct ={
-  _id: string,
+type ShoppingCartProduct = {
+  id: string,
   name: string,
   quantity: number,
   price: number
+};
+
+type ShoppingCartProductDB = {
+  productId: string,
+  name: string,
+  quantity: number,
+  price: number
+};
+
+type NewShoppingCart = {
+  products: ShoppingCartProduct[],
+  userId: string,
 };
 
 type User = {

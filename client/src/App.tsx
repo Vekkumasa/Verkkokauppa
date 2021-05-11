@@ -19,6 +19,10 @@ const App: React.FC = () => {
     state => state.userReducer.user
   );
 
+  const shoppingCart: ShoppingCartState = useAppSelector(
+    state => state.shoppingCartReducer
+  );
+
   const notification: NotificationState = useAppSelector(
     state => state.notificationReducer
   );
@@ -43,7 +47,7 @@ const App: React.FC = () => {
           <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
 
-   
+        <button onClick={() => console.log(shoppingCart.cart)}> Testi </button>
       </Router>
     </div>
   );

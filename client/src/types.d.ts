@@ -13,6 +13,11 @@ type CartProduct = {
   cartId: string,
 };
 
+type NewShoppingCart = {
+  products: ShoppingCartProduct[],
+  userId: string,
+};
+
 type NoIdProduct = Omit<Product, 'id'>;
 type ShoppingCartProduct = Product & {quantity: number};
 
@@ -53,6 +58,7 @@ type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct';
 declare module "*.jpg" {
   const content: string;
   export = content;

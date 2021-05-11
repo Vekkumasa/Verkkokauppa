@@ -18,6 +18,7 @@ import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
 import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { handleModal } from '../store/modal/actionCreators';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -91,7 +92,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             }
             {user === null ?
               <div>
-                <Button onClick={() => setLoginModalOpen(true)} color="inherit">
+                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Login
                   </Typography>
@@ -126,7 +127,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             </div>
           </div>
         </Toolbar>
-        <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
+        <LogInModal />
         <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
         <CreateUserModal modalOpen={createUserModalOpen} setModalOpen={setCreateUserModalOpen} />
       </AppBar>

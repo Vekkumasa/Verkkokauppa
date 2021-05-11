@@ -1,10 +1,10 @@
 import * as actionTypes from "./actionTypes";
-import { NotificationTypeCheck } from '../../typeGuards';
+import { notificationTypeCheck } from '../../typeGuards';
 
 type SetNotification = (dispatch: DispatchType) => void;
 
 export const setNotification = (data: string, notificationType: NotificationType): SetNotification => {
-  if (NotificationTypeCheck(notificationType)) {
+  if (notificationTypeCheck(notificationType)) {
     const action: SetNotificationAction = {
       type: actionTypes.SET_NOTIFICATION,
       notificationType: notificationType,

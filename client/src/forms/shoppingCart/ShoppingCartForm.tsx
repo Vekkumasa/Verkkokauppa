@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
-import { UserCheck } from '../../typeGuards';
+import { userCheck } from '../../typeGuards';
 
 const useStyles = makeStyles({
   field: {
@@ -78,7 +78,7 @@ const ShoppingCartForm = ():JSX.Element => {
           const { firstName, lastName, address } = values;
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
 
-          if (UserCheck(user)) {
+          if (userCheck(user)) {
             const text = "Delivering products to " + shippingInfo.address;
             const type: NotificationType = 'success';
             dispatch(setNotification(text, type));

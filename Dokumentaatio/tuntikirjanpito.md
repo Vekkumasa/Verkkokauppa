@@ -26,5 +26,7 @@
 | 4.5   |  3   | ShoppingCart.tsx modausta ja bugi fixi yrityksia ostoskorista poistamiseen liittyen |
 | 5.5   |  6   | Shoppingcart.tsx bugi fixattu + ulkoasu muutoksia, Shoppingcart backend parannuksia ym muuta kivaa |
 | 6.5   |  3   | ShoppingCart backendiä uusiksi |
-| 7.5   |  3.5 | Shoppingcart backendiä paranneltu, kesken vielä | 
-| yht   |  92.5  | | 
+| 7.5   |  3.5 | Shoppingcart backendiä paranneltu, kesken vielä |
+| 10.5  |  6   | Shoppingcartin tietokantaa korjattu, hyvin paljon korjattavaa |
+| 11.5  |  5   | Shoppingcart backend ja frontti korjattu toimivaksi. Modalien hallinta reduxin vastuulle aloitettu |
+| yht   |  103.5  | | 

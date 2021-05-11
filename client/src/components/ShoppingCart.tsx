@@ -7,6 +7,7 @@ import { Box, Container, Grid } from '@material-ui/core';
 import ShoppingCartForm from '../forms/shoppingCart/ShoppingCartForm';
 import ShoppingCartCard from './ShoppingCartCard';
 import { removeProduct } from '../store/ShoppingCart/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles({
   box: {
@@ -48,17 +49,33 @@ const ShoppingCart: React.FC = (): JSX.Element => {
     state => state.shoppingCartReducer.cart
   );
 
+  const user: Credentials | null = useAppSelector(
+    state => state.userReducer.user
+  );
+  let userId: string;
+  if (!user) {
+    userId = '';
+  } else {
+    userId = user.id;
+  }
+
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 
-  const removeProductFromCart = (prod: ShoppingCartProduct) => {
-    dispatch(removeProduct(prod, cartId));
+  const removeProductFromCart = (product: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(removeProduct(product, cartId));
+    } else {
+      const promise = shoppingCartService.removeProductFromShoppingCart({ cartId, userId, product });
+      void promise.then(() => {
+        dispatch(removeProduct(product, cartId));
+      });
+    }
   };
 
   const totalPrice = () => {
     return products.reduce((prev, cur) => prev + cur.price * cur.quantity, 0);
   };
 
-  console.log('shopping cart', products);
   return (
     <Box className={classes.box} border={1}>
       <Grid container item xs={12} spacing={3}>

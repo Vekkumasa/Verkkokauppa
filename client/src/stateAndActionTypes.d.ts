@@ -3,8 +3,15 @@ interface AppState {
   products: ProductState,
   user: UserState,
   notification: NotificationState,
-  cart: ShoppingCartState
+  cart: ShoppingCartState,
+  modal: ModalState,
 }
+
+type ModalState = {
+  addProductModal: boolean,
+  logInModal: boolean,
+  createUserModal: boolean,
+};
 
 type ProductState = {
   products: Product[]
@@ -26,12 +33,9 @@ type ShoppingCartState = {
 };
 
 // ACTIONS
-type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction;
+type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction | ModalAction;
 
-type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
-type UserActions = LogInAction
-type NotificationActions = SetNotificationAction
-type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction
+type ProductActions = AddProductAction | GetProductsAction;
 
 type AddProductAction = {
   type: string,
@@ -43,25 +47,42 @@ type GetProductsAction = {
   data: Product[]
 };
 
-type SetNotificationAction = {
-  type: string,
-  notificationType: NotificationType,
-  data: string
-};
+type UserActions = LogInAction
 
 type LogInAction = {
   type: string,
   data: Credentials | null,
 };
 
+type NotificationActions = SetNotificationAction
+
+type SetNotificationAction = {
+  type: string,
+  notificationType: NotificationType,
+  data: string
+};
+
+type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction | CreateNewShoppingCartAction
+
 type AddOrRemoveShoppingCartAction = {
   type: string,
   cartId: string,
   data: ShoppingCartProduct
-}
+};
+
+type CreateNewShoppingCartAction = {
+  type: string,
+  cartId: string,
+};
 
 type ClearShoppingCartAction = {
   type: string,
 };
+
+type ModalAction = {
+  type: string,
+  modal: Modal,
+  data: boolean,
+}
 
 type DispatchType = (args: Actions) => Actions;
