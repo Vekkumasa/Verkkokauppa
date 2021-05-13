@@ -74,9 +74,6 @@ const LogInForm = ():JSX.Element => {
             if (!res.token) {
               const notificationType: NotificationType = 'error';
               dispatch(setNotification("Invalid username / password", notificationType));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
             } else {
               const credentials: Credentials = {
                 id: res.id,
@@ -90,9 +87,6 @@ const LogInForm = ():JSX.Element => {
               dispatch(handleModal(false, 'LogIn'));
               const notificationType: NotificationType = 'success';
               dispatch(setNotification("Logged in as: " + credentials.userName, notificationType));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
               const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, userId: res.id });
               void promise.then((res) => {
                 console.log('response', res);

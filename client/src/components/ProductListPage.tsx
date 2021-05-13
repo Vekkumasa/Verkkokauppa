@@ -18,7 +18,6 @@ const ProductListPage = (): JSX.Element | null => {
   );
 
   if (products.length === 0) {
-    // return null ?
     return null;
   }
 

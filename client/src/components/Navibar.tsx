@@ -12,7 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
+import { setNotification } from '../store/Notification/actionCreators';
 import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
@@ -59,9 +59,6 @@ const Navibar = ({ user }: Props): JSX.Element => {
     dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
   };
 
   const loggedIn = !!user;

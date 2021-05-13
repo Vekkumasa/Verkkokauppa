@@ -81,9 +81,6 @@ const ShoppingCartForm = ():JSX.Element => {
             const text = "Delivering products to " + shippingInfo.address;
             const type: NotificationType = 'success';
             dispatch(setNotification(text, type));
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);
           }    
         }}
       >

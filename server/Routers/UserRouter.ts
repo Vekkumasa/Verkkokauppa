@@ -13,7 +13,7 @@ router.get('/', [] ,  async  (_req: Request, res: Response) => {
 router.post('/', (req: CustomRequest<User>, res: Response) => {
   const user: User = req.body;
   const added: Promise<UserInterface | null> = userController.addUser(user);
-  if (added != null) {
+  if (added) {
     void added.then((response) => {
       res.status(201).json(response);
     });

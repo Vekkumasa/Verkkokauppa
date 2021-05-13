@@ -13,7 +13,7 @@ import Delete from '@material-ui/icons/DeleteForever';
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
+import { setNotification } from '../store/Notification/actionCreators';
 import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -56,9 +56,6 @@ const Product  = ({ product }: Props): JSX.Element => {
     productService.deleteProduct(product).catch(e => console.log(e));
     dispatch(removeProduct(product));
     dispatch(setNotification("Removed " + product.name, 'info'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
   };
 
   const handleShoppingCart = () => {

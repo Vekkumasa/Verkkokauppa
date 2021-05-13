@@ -103,9 +103,6 @@ import { handleModal } from '../../store/modal/actionCreators';
               dispatch(handleModal(false, 'CreateUser'));
               dispatch(setNotification("Created user: " + newUser.userName, 'success'));
             }
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);       
           }).catch(e => console.log(e));    
         }}
       >

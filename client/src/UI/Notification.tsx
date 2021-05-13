@@ -1,10 +1,13 @@
 import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
+import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import { makeStyles } from '@material-ui/core/styles';
+import { hideNotification } from '../store/Notification/actionCreators';
 
 interface NotificationProps {
   type: NotificationType,
-  message: string
+  message: string,
+  tts?: number
 }
 
 const Alert: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
@@ -29,8 +32,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
+const Notification: React.FC<NotificationProps> = ({ type, message, tts = 5000 }: NotificationProps) => {
   const classes = useStyles();
+  const dispatch: AppDispatch = useAppDispatch();
+  setTimeout(() => dispatch(hideNotification()), tts);
 
   return (
     <div className={classes.root}>

@@ -32,7 +32,7 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
     }
 
     const secret = process.env.JWTSECRET;
-    if (secret !== undefined) {
+    if (secret) {
       const token = jwt.sign(userForToken, secret);
       const credentials: Credentials = {
         id: user.id,

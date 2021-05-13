@@ -86,9 +86,6 @@ const useStyles = makeStyles({
               const text = "Product " + product.name + " added";
               const type: NotificationType = 'success';
               dispatch(setNotification(text, type));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
             });
           }}
         >
