@@ -16,14 +16,24 @@ import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
 import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
+    maxWidth: 170,
     marginRight: 20
+  },
+  centerText: {
+    textAlign: 'center',
   },
   media: {
     height: 160,
+  },
+  overflow: {
+    maxWidth: 170,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
 });
 
@@ -38,11 +48,10 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
   const shoppingCart = useAppSelector(state => state.shoppingCartReducer.cart);
 
   const deleteProduct = () => {
+    // Todo: Tarkistus että tuote todella on poistettu kannasta ennen frontista deletointia ?
     void productService.deleteProduct(product);
     dispatch(removeProduct(product));
-    const text = "Removed " + product.name;
-    const type: NotificationType = 'info';
-    dispatch(setNotification(text, type));
+    dispatch(setNotification("Removed " + product.name, 'info'));
     setTimeout(() => {
       dispatch(hideNotification());
     }, 5000);
@@ -91,10 +100,10 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
           image={product.image}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography className={`${classes.overflow} ${classes.centerText}`} style={{ fontSize: 16 }} gutterBottom variant="h6" component="h2">
             {product.name} <br/> {product.price}€ 
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Typography className={`${classes.overflow} ${classes.centerText}`} variant="body2" color="textSecondary" component="p">
             {product.description}
           </Typography>
         </CardContent>
@@ -105,7 +114,9 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
         </Button>
         {user !== null && user.userType === 'Admin' ?         
           <IconButton onClick={() => deleteProduct()}>
-            <Delete />
+            <Tooltip title="Remove product from database">
+              <Delete />
+            </Tooltip>
           </IconButton>
         :
           null

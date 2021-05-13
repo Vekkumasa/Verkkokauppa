@@ -3,6 +3,9 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import AddProductForm from '../forms/product/AddProductForm';
 
+import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
+import { handleModal } from '../store/modal/actionCreators';
+
 const getModalStyle = () => {
   const top = 50;
   const left = 50;
@@ -49,17 +52,15 @@ const Header: React.FC = () => {
   );
 };
 
-interface Props {
-  setModalOpen: (values: boolean) => void;
-  modalOpen: boolean
-}
-
-const AddProductModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
+const AddProductModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
+  const modalOpen = useAppSelector(state => state.modalReducer.addProductModal);
+  const dispatch: AppDispatch = useAppDispatch();
+  
   const handleClose = () => {
-    setModalOpen(!modalOpen);
+    dispatch(handleModal(!modalOpen, 'AddProduct'));
   };
 
   return (

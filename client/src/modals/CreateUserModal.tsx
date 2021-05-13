@@ -3,6 +3,9 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import CreateUserForm from "../forms/User/CreateUserForm";
 
+import { AppDispatch, useAppDispatch, useAppSelector } from '../store/rootReducer';
+import { handleModal } from "../store/modal/actionCreators";
+
 const getModalStyle = () => {
   const top = 50;
   const left = 50;
@@ -50,17 +53,15 @@ const Header: React.FC = () => {
   );
 };
 
-interface Props {
-  setModalOpen: (values: boolean) => void;
-  modalOpen: boolean
-}
-
-const CreateUserModal: React.FC<Props> = ({ modalOpen, setModalOpen }) => {
+const CreateUserModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
+  
+  const dispatch: AppDispatch = useAppDispatch();
+  const modalOpen = useAppSelector(state => state.modalReducer.createUserModal);
 
   const handleClose = () => {
-    setModalOpen(!modalOpen);
+    dispatch(handleModal(false, 'CreateUser'));
   };
 
   return (

@@ -55,10 +55,6 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
-  const [createUserModalOpen, setCreateUserModalOpen] = useState<boolean>(false);
-  const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
-
   const logOut = () => {
     dispatch(logIn(null));
     dispatch(clearShoppingCart());
@@ -82,7 +78,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
           </Typography>
           <div className={classes.buttons}>
             {user !== null && user.userType === 'Admin' ?
-              <IconButton onClick={() => setAddProductModalOpen(true)} color="inherit">
+              <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
                   <AddCircleOutlineIcon className={classes.addProductIcon} />
                 </Tooltip>
@@ -100,7 +96,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
               </div>  
               :
               <div>
-                <Button  onClick={() => logOut()} color="inherit">
+                <Button onClick={() => logOut()} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Log out
                   </Typography>
@@ -109,7 +105,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             }
             {user === null ?
               <div>
-                <Button onClick={() => setCreateUserModalOpen(true)} color="inherit">
+                <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Create User
                   </Typography>
@@ -128,8 +124,8 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
           </div>
         </Toolbar>
         <LogInModal />
-        <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
-        <CreateUserModal modalOpen={createUserModalOpen} setModalOpen={setCreateUserModalOpen} />
+        <AddProductModal />
+        <CreateUserModal />
       </AppBar>
     </div>
   );

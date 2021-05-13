@@ -29,4 +29,5 @@
 | 7.5   |  3.5 | Shoppingcart backendiä paranneltu, kesken vielä |
 | 10.5  |  6   | Shoppingcartin tietokantaa korjattu, hyvin paljon korjattavaa |
 | 11.5  |  5   | Shoppingcart backend ja frontti korjattu toimivaksi. Modalien hallinta reduxin vastuulle aloitettu |
-| yht   |  103.5  | | 
+| 13.5  |  1.5 | Product.tsx style parannuksia, Loput modalit reduxin vastuulle, create user error message |
+| yht   |  105  | | 

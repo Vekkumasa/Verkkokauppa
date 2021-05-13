@@ -7,7 +7,6 @@ const initialState: ModalState = {
 };
 
 const reducer = (state: ModalState = initialState, action: ModalAction): ModalState => {
-  console.log('Modal state', state);
   switch (action.modal) {
     case 'AddProduct':
       return {

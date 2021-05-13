@@ -8,6 +8,7 @@ export const handleModal = (data: boolean, modal: Modal): OpenOrCloseModal => {
     data
   };
 
+  console.log('Handle modal action', action);
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

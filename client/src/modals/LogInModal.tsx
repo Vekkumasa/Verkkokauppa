@@ -57,18 +57,18 @@ const LogInModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
-  const newModalOpen = useAppSelector(state => state.modalReducer.logInModal);
+  const modalOpen = useAppSelector(state => state.modalReducer.logInModal);
   const dispatch: AppDispatch = useAppDispatch();
   
   const handleClose = () => {
-    dispatch(handleModal(!newModalOpen, 'LogIn'));
+    dispatch(handleModal(!modalOpen, 'LogIn'));
   };
 
   return (
     <Modal
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      open={newModalOpen}
+      open={modalOpen}
       onClose={handleClose}
     >
       <div style={modalStyle} className={classes.paper}>
