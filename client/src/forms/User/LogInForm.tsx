@@ -4,11 +4,14 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
-import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
 import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
- 
+import { handleModal } from '../../store/modal/actionCreators';
+import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
+import shoppingCartService from '../../services/shoppingCartService';
+
 const useStyles = makeStyles({
   field: {
     padding: 5,
@@ -52,9 +55,10 @@ const SignupSchema = Yup.object().shape({
     .max(50, 'Too Long!')
     .required('Required'),
 });
- 
+
 const LogInForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
+  const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
   return (
     <div>
@@ -68,14 +72,14 @@ const LogInForm = ():JSX.Element => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
             if (res.token === undefined) {
-              const text = "Invalid username / password";
               const notificationType: NotificationType = 'error';
-              dispatch(setNotification(text, notificationType));
+              dispatch(setNotification("Invalid username / password", notificationType));
               setTimeout(() => {
                 dispatch(hideNotification());
               }, 5000);
             } else {
               const credentials: Credentials = {
+                id: res.id,
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,
@@ -83,12 +87,17 @@ const LogInForm = ():JSX.Element => {
                 token: res.token,
               };
               dispatch(logIn(credentials));
-              const text = "Logged in as: " + credentials.userName;
+              dispatch(handleModal(false, 'LogIn'));
               const notificationType: NotificationType = 'success';
-              dispatch(setNotification(text, notificationType));
+              dispatch(setNotification("Logged in as: " + credentials.userName, notificationType));
               setTimeout(() => {
                 dispatch(hideNotification());
               }, 5000);
+              const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, userId: res.id });
+              void promise.then((res) => {
+                console.log('response', res);
+                dispatch(createNewShoppingCart(res.id));
+              });
             }
           });
         }}

@@ -1,5 +1,6 @@
 import uniqueValidator from 'mongoose-unique-validator';
 import mongoose from "mongoose";
+import { ProductInterface } from './product';
 
 export interface UserInterface extends mongoose.Document {
   email: string;
@@ -8,6 +9,7 @@ export interface UserInterface extends mongoose.Document {
   userName: string;
   password?: string;
   userType: string;
+  shoppingCart: ProductInterface[];
   _id?: string;
 }
 
@@ -17,7 +19,13 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
     lastName: { type: String, required: true },
     userName: { type: String, required: true, unique: true},
     password: { type: String },
-    userType: { type: String, required: true }
+    userType: { type: String, required: true },
+    shoppingCart: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ShoppingCart'
+      }
+    ]
   },
   {
   toJSON: {
@@ -28,13 +36,6 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
       delete returnedObject.password;
     }
   },
-  toObject: {
-    transform: (_document, returnedObject: UserInterface) => {
-      returnedObject.id = returnedObject._id?.toString();
-      delete returnedObject._id;
-      delete returnedObject.__v;
-    }
-  }
 }
 );
 

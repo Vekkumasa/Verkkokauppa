@@ -5,6 +5,8 @@ import cors from 'cors';
 import LogInRouter from './server/Routers/LogInRouter';
 import ProductRouter from './server/Routers/ProductRouter';
 import UserRouter from './server/Routers/UserRouter';
+import ShoppingCartRouter from './server/Routers/ShoppingCartRouter';
+
 import { StringCheck } from './server/utils/StringCheck';
 import connect from './server/connect';
 import { resolve } from 'path';
@@ -30,6 +32,7 @@ if (StringCheck(url)) {
 app.use('/api/login', LogInRouter);
 app.use('/api/products', ProductRouter);
 app.use('/api/users', UserRouter);
+app.use('/api/shoppingCart', ShoppingCartRouter);
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');

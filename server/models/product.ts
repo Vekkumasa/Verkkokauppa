@@ -9,7 +9,8 @@ export interface ProductInterface extends mongoose.Document {
   _id?: string;
 }
 
-const ProductSchema: mongoose.Schema = new mongoose.Schema({
+const ProductSchema: mongoose.Schema = new mongoose.Schema(
+{
   name: { type: String, required: true, unique: true },
   stock: { type: Number, required: true },
   price: { type: Number, required: true },
@@ -24,15 +25,7 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema({
       delete returnedObject.__v;
     }
   },
-  toObject: {
-    transform: (_document, returnedObject: ProductInterface) => {
-      returnedObject.id = returnedObject._id?.toString();
-      delete returnedObject._id;
-      delete returnedObject.__v;
-    }
-  }
-}
-);
+});
 
 const Product = mongoose.model<ProductInterface>("Product", ProductSchema);
 export default Product;

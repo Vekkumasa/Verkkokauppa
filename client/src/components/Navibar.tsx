@@ -7,7 +7,9 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Tooltip from '@material-ui/core/Tooltip';
+import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
@@ -15,6 +17,8 @@ import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
+import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { handleModal } from '../store/modal/actionCreators';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -36,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
   addProductIcon: {
     height: 30,
     width: 30,
+  },
+  shoppingCart: {
+    color: 'white',
+    fontSize: 30
   }
 }));
 
@@ -47,12 +55,9 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
-  const [createUserModalOpen, setCreateUserModalOpen] = useState<boolean>(false);
-  const [addProductModalOpen, setAddProductModalOpen] = useState<boolean>(false);
-
   const logOut = () => {
     dispatch(logIn(null));
+    dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
     setTimeout(() => {
       dispatch(hideNotification());
@@ -63,16 +68,17 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
     <div>
       <AppBar position="static" color="primary">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-
+          <Link to="/">
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          </Link>
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
           <div className={classes.buttons}>
             {user !== null && user.userType === 'Admin' ?
-              <IconButton onClick={() => setAddProductModalOpen(true)} color="inherit">
+              <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
                   <AddCircleOutlineIcon className={classes.addProductIcon} />
                 </Tooltip>
@@ -82,7 +88,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             }
             {user === null ?
               <div>
-                <Button onClick={() => setLoginModalOpen(true)} color="inherit">
+                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Login
                   </Typography>
@@ -90,7 +96,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
               </div>  
               :
               <div>
-                <Button  onClick={() => logOut()} color="inherit">
+                <Button onClick={() => logOut()} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Log out
                   </Typography>
@@ -99,7 +105,7 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             }
             {user === null ?
               <div>
-                <Button onClick={() => setCreateUserModalOpen(true)} color="inherit">
+                <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
                     Create User
                   </Typography>
@@ -108,11 +114,18 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
               :
               null
             }
+            <div>
+              <Link to="/shoppingCart">
+                <IconButton className={classes.shoppingCart} >
+                  <ShoppingCartIcon style={{ fontSize: 30, marginTop: 5}}/>
+                </IconButton>
+              </Link>
+            </div>
           </div>
         </Toolbar>
-        <LogInModal modalOpen={loginModalOpen} setModalOpen={setLoginModalOpen} />
-        <AddProductModal modalOpen={addProductModalOpen} setModalOpen={setAddProductModalOpen} />
-        <CreateUserModal modalOpen={createUserModalOpen} setModalOpen={setCreateUserModalOpen} />
+        <LogInModal />
+        <AddProductModal />
+        <CreateUserModal />
       </AppBar>
     </div>
   );

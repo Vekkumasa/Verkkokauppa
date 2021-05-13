@@ -1,12 +1,13 @@
 import React from 'react';
- import { Formik, Form, Field } from 'formik';
- import { makeStyles } from '@material-ui/styles';
- import Grid from '@material-ui/core/Grid';
- import * as Yup from 'yup';
+import { Formik, Form, Field } from 'formik';
+import { makeStyles } from '@material-ui/styles';
+import Grid from '@material-ui/core/Grid';
+import * as Yup from 'yup';
 
- import userService from '../../services/userService';
- import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
- import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import userService from '../../services/userService';
+import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { handleModal } from '../../store/modal/actionCreators';
 
  const useStyles = makeStyles({
 
@@ -93,14 +94,19 @@ import React from 'react';
             email: values.email,
             userType: 'User' 
           };
-          void userService.createUser(newUser);
-          // TODO: Error notification:  Createuser voi feilata esim jos sama email, backend valittaa.
-          const text = "Created user: " + newUser.userName;
-          const type: NotificationType = 'success';
-          dispatch(setNotification(text, type));
-          setTimeout(() => {
-            dispatch(hideNotification);
-          }, 5000);
+          const promise = userService.createUser(newUser);
+          void promise.then((res) => {
+            // TODO: Korjaa backendi palauttamaan mikä kohta lomakkeessa feilaa
+            if (res === null) {
+              dispatch(setNotification("User creation failed",  'error'));
+            } else {
+              dispatch(handleModal(false, 'CreateUser'));
+              dispatch(setNotification("Created user: " + newUser.userName, 'success'));
+            }
+            setTimeout(() => {
+              dispatch(hideNotification());
+            }, 5000);       
+          });    
         }}
       >
         {({ errors, touched }) => (

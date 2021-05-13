@@ -7,7 +7,19 @@ type Product = {
   description?: string
 };
 
+type CartProduct = {
+  userId: string,
+  product: ShoppingCartProduct,
+  cartId: string,
+};
+
+type NewShoppingCart = {
+  products: ShoppingCartProduct[],
+  userId: string,
+};
+
 type NoIdProduct = Omit<Product, 'id'>;
+type ShoppingCartProduct = Product & {quantity: number};
 
 type User = {
   id: string,
@@ -19,6 +31,12 @@ type User = {
   userType: UserType
 };
 
+type ShippingInfo = {
+  firstName: string,
+  lastName: string,
+  address: string,
+};
+
 type NoIdUser = Omit<User, 'id'>;
 type CreateUserInput = Omit<NoIdUser, 'userType'>;
 
@@ -28,6 +46,7 @@ interface SignInInfo {
 }
 
 type Credentials = {
+  id: string,
   token: string,
   userName: string,
   firstName: string,
@@ -39,55 +58,7 @@ type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
-type ProductState = {
-  products: Product[]
-};
-
-type UserState = {
-  user: Credentials | null
-};
-
-type NotificationState = {
-  message: string,
-  type: NotificationType,
-  visible: boolean
-};
-
-type AddProductAction = {
-  type: string,
-  data: Product,
-};
-
-type GetProductsAction = {
-  type: string,
-  data: Product[]
-};
-
-type SetNotificationAction = {
-  type: string,
-  notificationType: NotificationType,
-  data: string
-};
-
-type ProductActions = AddProductAction | GetProductsAction | RemoveProductAction ;
-type UserActions = LogInAction;
-type NotificationActions = SetNotificationAction
-
-type Actions = ProductActions | UserActions | NotificationActions;
-
-type LogInAction = {
-  type: string,
-  data: Credentials | null,
-};
-
-interface AppState {
-  products: ProductState,
-  user: UserState,
-  notification: NotificationState
-}
-
-type DispatchType = (args: Actions) => Actions;
-
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct';
 declare module "*.jpg" {
   const content: string;
   export = content;

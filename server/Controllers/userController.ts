@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/user";
 import { User as UserType } from '../types';
-import { uuid } from "uuidv4";
+import { v4 as uuid } from 'uuid';
 import bcrypt from 'bcrypt';
 
 const allUsers = async () => {
