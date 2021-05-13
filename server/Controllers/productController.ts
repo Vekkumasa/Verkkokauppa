@@ -27,7 +27,7 @@ const NewProduct = async (product: ProductType) => {
 const DeleteProduct = async (id: string) => {
   const product = await Product.findById(id);
 
-  if (product === null) {
+  if (!product) {
     return null;
   }
 

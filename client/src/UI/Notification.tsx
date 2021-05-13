@@ -1,6 +1,7 @@
 import React from 'react';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+
 interface NotificationProps {
   type: NotificationType,
   message: string
@@ -30,6 +31,7 @@ const useStyles = makeStyles({
 
 const Notification: React.FC<NotificationProps> = ({ type, message }: NotificationProps) => {
   const classes = useStyles();
+
   return (
     <div className={classes.root}>
       <Alert type={type} message={message} />

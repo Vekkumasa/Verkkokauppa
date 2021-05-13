@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
-import shoppingCartController from '../Controllers/shoppingCartController';
+import shoppingCartController from '../Controllers/ShoppingCartController';
 import { CartProduct, CustomRequest, NewShoppingCart } from '../types';
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.post('/:id/addProduct', (req: CustomRequest<CartProduct>, res: Response) 
   console.log('req body', req.body);
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.AddNewProductToCart(req.body);
   void cartProduct.then((response) => {
-    if (response === null) {
+    if (!response) {
       res.status(400).json({ error: 'Something happened' });
     }
     res.status(201).json(response);
@@ -32,7 +32,7 @@ router.post('/:id/addProduct', (req: CustomRequest<CartProduct>, res: Response) 
 router.put('/:id/remove', (req: CustomRequest<CartProduct>, res: Response) => {
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.RemoveProductFromCart(req.body);
   void cartProduct.then((response) => {
-    if (response === null) {
+    if (!response) {
       res.status(400).json({ error: 'Something happened' });
     }
     res.status(201).json(response);
@@ -42,7 +42,7 @@ router.put('/:id/remove', (req: CustomRequest<CartProduct>, res: Response) => {
 router.put('/:id/increase', (req: CustomRequest<CartProduct>, res: Response) => {
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.IncreaseProductQuantity(req.body);
   void cartProduct.then((response) => {
-    if (response === null) {
+    if (!response) {
       res.status(400).json({ error: 'Something happened' });
     }
     res.status(201).json(response);
@@ -52,7 +52,7 @@ router.put('/:id/increase', (req: CustomRequest<CartProduct>, res: Response) => 
 router.put('/:id/decrease', (req: CustomRequest<CartProduct>, res: Response) => {
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.DecreaseProductQuantity(req.body);
   void cartProduct.then((response) => {
-    if (response === null) {
+    if (!response) {
       res.status(400).json({ error: 'Something happened' });
     }
     res.status(201).json(response);

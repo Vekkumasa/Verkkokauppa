@@ -49,15 +49,10 @@ const ShoppingCart: React.FC = (): JSX.Element => {
     state => state.shoppingCartReducer.cart
   );
 
-  const user: Credentials | null = useAppSelector(
+  const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
-  let userId: string;
-  if (!user) {
-    userId = '';
-  } else {
-    userId = user.id;
-  }
+  const userId = user?.id || '';
 
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 
@@ -66,9 +61,9 @@ const ShoppingCart: React.FC = (): JSX.Element => {
       dispatch(removeProduct(product, cartId));
     } else {
       const promise = shoppingCartService.removeProductFromShoppingCart({ cartId, userId, product });
-      void promise.then(() => {
+      promise.then(() => {
         dispatch(removeProduct(product, cartId));
-      });
+      }).catch(e => console.log(e));
     }
   };
 

@@ -9,11 +9,11 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
   const user = await User.findOne({ userName: userName });
   console.log('login user:', user);
 
-  if (user?.password === undefined) {
+  if (!user?.password) {
     return null;
   }
 
-  const passwordCorrect = user === null
+  const passwordCorrect = !user
     ? false
     : await bcrypt.compare(passWord, user.password);
 

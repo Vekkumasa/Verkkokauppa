@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -47,22 +47,24 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-type UserProp = {
-  user: Credentials | null
+type Props = {
+  user?: Credentials
 };
 
-const Navibar: React.FC<UserProp> = ({ user }) => {
+const Navibar = ({ user }: Props): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
   const logOut = () => {
-    dispatch(logIn(null));
+    dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
     setTimeout(() => {
       dispatch(hideNotification());
     }, 5000);
   };
+
+  const loggedIn = !!user;
 
   return (
     <div>
@@ -77,33 +79,21 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             Verkkokauppa
           </Typography>
           <div className={classes.buttons}>
-            {user !== null && user.userType === 'Admin' ?
+            {user?.userType === 'Admin' && (
               <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
                   <AddCircleOutlineIcon className={classes.addProductIcon} />
                 </Tooltip>
               </IconButton>
-            :
-              null
-            }
-            {user === null ?
-              <div>
-                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Login
-                  </Typography>
-                </Button>
-              </div>  
-              :
-              <div>
-                <Button onClick={() => logOut()} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Log out
-                  </Typography>
-                </Button>
-              </div>
-            }
-            {user === null ?
+            )}
+            <div>
+              <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
+                <Typography variant="h6" className={classes.login}>
+                  {loggedIn ? 'Log out' : 'Login'}
+                </Typography>
+              </Button>
+            </div>  
+            {user && 
               <div>
                 <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
@@ -111,8 +101,6 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
                   </Typography>
                 </Button>
               </div>  
-              :
-              null
             }
             <div>
               <Link to="/shoppingCart">
@@ -131,4 +119,4 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   );
 };
 
-export default Navibar;
+export {Navibar};

@@ -108,9 +108,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.name && touched.name ? (
+                    {(errors.name && touched.name) && (
                       <div>{errors.name}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -126,9 +126,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.description && touched.description ? (
+                    {(errors.description && touched.description) && (
                       <div>{errors.description}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -144,9 +144,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.price && touched.price ? (
+                    {(errors.price && touched.price) && (
                       <div>{errors.price}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -162,9 +162,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.stock && touched.stock ? (
+                    {(errors.stock && touched.stock) && (
                       <div>{errors.stock}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -180,9 +180,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.image && touched.image ? (
+                    {(errors.image && touched.image) && (
                       <div>{errors.image}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

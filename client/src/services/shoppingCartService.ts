@@ -2,28 +2,30 @@ import axios from 'axios';
 
 // TODO: FIX RETURN TYPES
 
+const baseURL = 'http://localhost:3001/api/shoppingCart';
+
 const createNewShoppingCart = async (products: NewShoppingCart): Promise<ShoppingCartProduct> => {
-  const request = await axios.post<ShoppingCartProduct>('http://localhost:3001/api/shoppingCart', products);
+  const request = await axios.post<ShoppingCartProduct>(baseURL, products);
   return request.data;
 };
 
 const addProductToShoppingCart = async (productToAdd: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.post<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${productToAdd.cartId}/addProduct`, productToAdd);
+  const request = await axios.post<ShoppingCartProduct>(`${baseURL}/${productToAdd.cartId}/addProduct`, productToAdd);
   return request.data;
 };
 
 const removeProductFromShoppingCart = async (productToRemove: CartProduct): Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${productToRemove.cartId}/remove`, productToRemove);
+  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${productToRemove.cartId}/remove`, productToRemove);
   return request.data;
 };
 
 const increaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${product.cartId}/increase`, product);
+  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${product.cartId}/increase`, product);
   return request.data;
 };
 
 const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`http://localhost:3001/api/shoppingCart/${product.cartId}/decrease`, product);
+  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${product.cartId}/decrease`, product);
   return request.data;
 };
 
