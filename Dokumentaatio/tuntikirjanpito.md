@@ -30,4 +30,5 @@
 | 10.5  |  6   | Shoppingcartin tietokantaa korjattu, hyvin paljon korjattavaa |
 | 11.5  |  5   | Shoppingcart backend ja frontti korjattu toimivaksi. Modalien hallinta reduxin vastuulle aloitettu |
 | 13.5  |  1.5 | Product.tsx style parannuksia, Loput modalit reduxin vastuulle, create user error message |
-| yht   |  105  | | 
+| 14.5  |  6   | Tietokannasta haetaan kayttajan vanha ostoskori mikali kayttaja halutessa kirjautumisen yhteydessa |
+| yht   |  111  | | 

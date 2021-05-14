@@ -62,7 +62,7 @@ type SetNotificationAction = {
   data: string
 };
 
-type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction | CreateNewShoppingCartAction
+type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction | CreateNewShoppingCartAction | RetrieveOldShoppingCartAction
 
 type AddOrRemoveShoppingCartAction = {
   type: string,
@@ -77,6 +77,12 @@ type CreateNewShoppingCartAction = {
 
 type ClearShoppingCartAction = {
   type: string,
+};
+
+type RetrieveOldShoppingCartAction = {
+  type: string,
+  cartId: string,
+  data: ShoppingCartProduct[]
 };
 
 type ModalAction = {

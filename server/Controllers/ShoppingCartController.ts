@@ -3,7 +3,7 @@ import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
 import { CartProduct, ShoppingCartProduct } from '../types';
 
-const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
+const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
 };
 
@@ -46,13 +46,14 @@ const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: st
     products: list,
     user: userId,
     active: true,
+    completed: false,
     totalPrice
   });
   await cart.save();
   return cart;
 };
 
-const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
@@ -74,7 +75,7 @@ const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
   }
 };
 
-const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const increaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
@@ -98,7 +99,7 @@ const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
   }
 };
 
-const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const removeProductFromCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
@@ -123,7 +124,7 @@ const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<Shopping
   }
 };
 
-const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
 
@@ -143,11 +144,51 @@ const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
   }
 };
 
+const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findOne({user: userId});
+    console.log('find users shopping cart: ', cart);
+    if (!cart) return null;
+    
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
+    console.log('Remove shopping cart', cart);
+    if (!cart) return null;
+
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartInterface | null> => {
+  try {
+    console.log('Taalla ollaan', cartId, data);
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
+    console.log('setActivity:' , cart);
+    if (!cart) return null;
+
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
 export default {
-  GetAllCarts,
-  AddNewProductToCart,
-  DecreaseProductQuantity,
-  IncreaseProductQuantity,
+  getAllCarts,
+  addNewProductToCart,
+  decreaseProductQuantity,
+  increaseProductQuantity,
   createNewShoppingCart,
-  RemoveProductFromCart,
+  removeProductFromCart,
+  findUsersShoppingCart,
+  removeShoppingCart,
+  setActivity,
 };

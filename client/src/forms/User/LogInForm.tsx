@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
+import swal from 'sweetalert';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
@@ -11,6 +12,7 @@ import { setNotification, hideNotification } from '../../store/Notification/acti
 import { handleModal } from '../../store/modal/actionCreators';
 import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../../services/shoppingCartService';
+import { retrieveOldShoppingCart } from '../../store/ShoppingCart/actionCreators'; 
 
 const useStyles = makeStyles({
   field: {
@@ -60,6 +62,46 @@ const LogInForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
+
+  const usePreviousShoppingCart = (res: ShoppingCart) => {
+    console.log('swal', res);
+    
+    void swal({
+      title: 'Use unfinished shopping cart?',
+      text: 'Previous unfinished shopping cart found, do you want to use that one or create new one? Old will be removed permanently if new is created',
+      icon: 'info',
+      buttons: ['Create new!', 'Use previous!'],
+    })
+    .then((findPrevious) => {
+      if (findPrevious) {
+        dispatch(retrieveOldShoppingCart(res.id, res.products));
+        void shoppingCartService.setShoppingCartActivity(res.id, true);
+        void swal({
+          title: 'Success',
+          text: 'Retrieved previous shopping cart, happy shopping',
+          icon: 'success',
+        });
+      } else {
+        const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
+          void promise.then((response) => {            
+            console.log('response', response);
+            const testi = shoppingCartService.removeShoppingCart(res.user);
+            void testi.then((testiResponse) => {
+              console.log('testiresponse', testiResponse);
+            });
+            console.log(testi);
+            dispatch(createNewShoppingCart(response.id));
+            void swal({
+              title: 'New Cart',
+              text: 'Created new shopping cart, happy shopping',
+              icon: 'success',
+            });
+          });
+
+      }
+    });
+  };
+
   return (
     <div>
       <Formik
@@ -72,8 +114,7 @@ const LogInForm = ():JSX.Element => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
             if (res.token === undefined) {
-              const notificationType: NotificationType = 'error';
-              dispatch(setNotification("Invalid username / password", notificationType));
+              dispatch(setNotification("Invalid username / password", 'error'));
               setTimeout(() => {
                 dispatch(hideNotification());
               }, 5000);
@@ -88,15 +129,23 @@ const LogInForm = ():JSX.Element => {
               };
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
-              const notificationType: NotificationType = 'success';
-              dispatch(setNotification("Logged in as: " + credentials.userName, notificationType));
+              dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
               setTimeout(() => {
                 dispatch(hideNotification());
               }, 5000);
-              const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, userId: res.id });
-              void promise.then((res) => {
-                console.log('response', res);
-                dispatch(createNewShoppingCart(res.id));
+              
+              const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
+              void usersShoppingCart.then((res) => {
+                console.log('LoginForm get users shopping cart:', res);
+                if (res) {
+                  usePreviousShoppingCart(res);      
+                } else {
+                  const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
+                  void promise.then((res) => {
+                    console.log('response', res);
+                    dispatch(createNewShoppingCart(res.id));
+                  });
+                }
               });
             }
           });
@@ -146,7 +195,7 @@ const LogInForm = ():JSX.Element => {
             <button className={classes.button} type="submit">Submit</button>
           </Form>
         )}
-      </Formik>
+      </Formik>      
     </div>
  );
 };

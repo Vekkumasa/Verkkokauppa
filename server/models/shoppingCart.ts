@@ -4,6 +4,7 @@ export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: ShoppingCartProductDB[];
   active: boolean;
+  completed: boolean;
   user?: string;
   _id?: string;
 }
@@ -19,7 +20,8 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
     }
   ],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  active: { type: Boolean, required: true }
+  active: { type: Boolean, required: true },
+  completed: { type: Boolean, required: true }
 },
 {
   toJSON: {

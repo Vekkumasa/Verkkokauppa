@@ -25,7 +25,11 @@ type ShoppingCartProductDB = {
 
 type NewShoppingCart = {
   products: ShoppingCartProduct[],
-  userId: string,
+  user: string,
+};
+
+type ActivitySwitch = {
+  data: boolean
 };
 
 type User = {

@@ -63,7 +63,6 @@ const ShoppingCartForm = ():JSX.Element => {
   const classes = useStyles();
 
   const user: Credentials | null = useAppSelector(state => state.userReducer.user);
-  const products: ShoppingCartProduct[] = useAppSelector(state => state.shoppingCartReducer.cart);
 
   return (
     <div>
@@ -79,9 +78,7 @@ const ShoppingCartForm = ():JSX.Element => {
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
 
           if (userCheck(user)) {
-            const text = "Delivering products to " + shippingInfo.address;
-            const type: NotificationType = 'success';
-            dispatch(setNotification(text, type));
+            dispatch(setNotification('Delivering products to '+ shippingInfo.address, 'success'));
             setTimeout(() => {
               dispatch(hideNotification());
             }, 5000);

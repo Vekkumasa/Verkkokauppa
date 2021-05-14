@@ -3,7 +3,7 @@
 const initialState: ModalState = {
   createUserModal: false,
   logInModal: false,
-  addProductModal: false
+  addProductModal: false,
 };
 
 const reducer = (state: ModalState = initialState, action: ModalAction): ModalState => {

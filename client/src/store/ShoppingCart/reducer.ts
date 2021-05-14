@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { addOrRemoveActionCheck, newShoppingCartCheck, clearShoppingCart } from '../../typeGuards';
+import { addOrRemoveActionCheck, newShoppingCartCheck, clearShoppingCartCheck, retrieveOldShoppingCartCheck } from '../../typeGuards';
 
 const initialState: ShoppingCartState = {
   cartId: '',
@@ -54,7 +54,16 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
         };
     }
 
-  } else if (newShoppingCartCheck(action)) {
+  }
+  if (retrieveOldShoppingCartCheck(action)) {
+    console.log('Reducer', action);
+    return {
+      cartId: action.cartId,
+      cart: action.data
+    };
+  }
+
+  if (newShoppingCartCheck(action)) {
     
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
@@ -65,14 +74,14 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
         };
     }
     
-  } else if (clearShoppingCart(action)) {
+  }
+  if (clearShoppingCartCheck(action)) {
     return {
       cartId: '',
       cart: []
     };
-
   }
-
+  
   return state;
 };
 
