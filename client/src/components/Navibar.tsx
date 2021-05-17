@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,12 +13,13 @@ import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
 import { setNotification, hideNotification } from '../store/Notification/actionCreators';
-import { useAppDispatch, AppDispatch } from '../store/rootReducer';
+import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
 import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
 import { handleModal } from '../store/modal/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -54,8 +55,11 @@ type UserProp = {
 const Navibar: React.FC<UserProp> = ({ user }) => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
-
+  const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
+  console.log('navibar:', cartId);
+  
   const logOut = () => {
+    void shoppingCartService.setShoppingCartActivity(cartId, false);
     dispatch(logIn(null));
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));

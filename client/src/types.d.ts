@@ -13,9 +13,10 @@ type CartProduct = {
   cartId: string,
 };
 
-type NewShoppingCart = {
+type ShoppingCart = {
   products: ShoppingCartProduct[],
-  userId: string,
+  user: string,
+  id: string,
 };
 
 type NoIdProduct = Omit<Product, 'id'>;

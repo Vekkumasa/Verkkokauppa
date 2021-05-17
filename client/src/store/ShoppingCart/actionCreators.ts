@@ -7,7 +7,18 @@ export const createNewShoppingCart = (cartId: string): Cart => {
     type: actionTypes.CREATE_NEW_SHOPPING_CART,
     cartId
   };
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};
 
+export const retrieveOldShoppingCart = (cartId: string, products: ShoppingCartProduct[]): Cart => {
+  const action: RetrieveOldShoppingCartAction = {
+    type: actionTypes.RETRIEVE_OLD_SHOPPING_CART,
+    cartId,
+    data: products
+  };
+  console.log('Creator', action);
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

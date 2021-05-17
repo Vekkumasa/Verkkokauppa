@@ -24,8 +24,15 @@ export const newShoppingCartCheck = (object: ShoppingCartAction): object is Crea
   return false;
 };
 
-export const clearShoppingCart = (object: ShoppingCartAction): object is ClearShoppingCartAction => {
+export const clearShoppingCartCheck = (object: ShoppingCartAction): object is ClearShoppingCartAction => {
   if (object.type === 'CLEAR_SHOPPINGCART') {
+    return true;
+  }
+  return false;
+};
+
+export const retrieveOldShoppingCartCheck = (object: ShoppingCartAction): object is RetrieveOldShoppingCartAction => {
+  if (object.type === 'RETRIEVE_OLD_SHOPPING_CART') {
     return true;
   }
   return false;
