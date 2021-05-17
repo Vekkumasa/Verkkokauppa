@@ -70,3 +70,4 @@ type Credentials = {
   lastName: string,
   userType: UserType
 };
+

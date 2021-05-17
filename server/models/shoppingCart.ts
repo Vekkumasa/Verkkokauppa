@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ShoppingCartProductDB } from '../types';
+import { ShoppingCartProductDB } from '../types.d';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: ShoppingCartProductDB[];
