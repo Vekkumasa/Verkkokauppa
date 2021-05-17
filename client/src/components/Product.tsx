@@ -13,7 +13,7 @@ import Delete from '@material-ui/icons/DeleteForever';
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
+import { setNotification } from '../store/Notification/actionCreators';
 import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -37,11 +37,15 @@ const useStyles = makeStyles({
   },
 });
 
-const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
+type Props = {
+  product: Product
+};
+
+const Product  = ({ product }: Props): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const user: Credentials | null = useAppSelector(
+  const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
@@ -49,19 +53,16 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
 
   const deleteProduct = () => {
     // Todo: Tarkistus että tuote todella on poistettu kannasta ennen frontista deletointia ?
-    void productService.deleteProduct(product);
+    productService.deleteProduct(product).catch(e => console.log(e));
     dispatch(removeProduct(product));
     dispatch(setNotification("Removed " + product.name, 'info'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
   };
 
   const handleShoppingCart = () => {
     const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
     let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
 
-    if (shoppingCartProduct === undefined) {   
+    if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
     
@@ -79,10 +80,10 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
       const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
-      void response.then((res) => {
+      response.then((res) => {
         console.log('res', res);
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
-      });
+      }).catch(e => console.log(e));
     }
   };
 
@@ -112,18 +113,16 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
         <Button size="small" color="primary" onClick={() => handleShoppingCart()}>
           Lisää ostoskoriin
         </Button>
-        {user !== null && user.userType === 'Admin' ?         
+        {user?.userType === 'Admin' && (
           <IconButton onClick={() => deleteProduct()}>
             <Tooltip title="Remove product from database">
               <Delete />
             </Tooltip>
           </IconButton>
-        :
-          null
-        }
+        )}
       </CardActions>
     </Card>
   );
 };
 
-export default Product;
+export {Product};

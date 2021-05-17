@@ -1,21 +1,21 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Navibar from './components/Navibar';
-import ProductListPage from './components/ProductListPage';
+import {Navibar} from './components/Navibar';
+import {ProductListPage} from './components/ProductListPage';
 import ShoppingCart from './components/ShoppingCart';
 
 import { initializeProducts } from './store/Product/actionCreators';
 import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
 import Notification from './UI/Notification';
 
-const App: React.FC = () => {
+const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   useEffect(() => {
     void dispatch(initializeProducts());
   },[]);
 
-  const user: Credentials | null = useAppSelector(
+  const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
 
@@ -28,13 +28,11 @@ const App: React.FC = () => {
       <Router>
         <Navibar user={user} />
         <br/>
-        {notification.visible ?
-        <div>
-          <Notification type={notification.type} message={notification.message} />
-        </div>
-        :
-          null
-        }
+        {notification.visible && (
+          <div>
+            <Notification type={notification.type} message={notification.message} />
+          </div>
+        )}
         <Switch>
           <Route path="/shoppingCart" render={() => <ShoppingCart />} />
         </Switch> 
@@ -42,7 +40,6 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
-
       </Router>
     </div>
   );

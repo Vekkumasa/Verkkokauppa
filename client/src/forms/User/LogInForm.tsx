@@ -113,11 +113,9 @@ const LogInForm = ():JSX.Element => {
         onSubmit={values => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
-            if (res.token === undefined) {
-              dispatch(setNotification("Invalid username / password", 'error'));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
+            if (!res.token) {
+              const notificationType: NotificationType = 'error';
+              dispatch(setNotification("Invalid username / password", notificationType));
             } else {
               const credentials: Credentials = {
                 id: res.id,
@@ -167,9 +165,9 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.userName && touched.userName ? (
+                  {(errors.userName && touched.userName) && (
                     <div>{errors.userName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               
@@ -186,9 +184,9 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.password && touched.password ? (
+                  {(errors.password && touched.password) && (
                     <div>{errors.password}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>

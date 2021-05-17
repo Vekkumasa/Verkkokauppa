@@ -1,7 +1,7 @@
 import express, { Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
 import shoppingCartController from '../Controllers/ShoppingCartController';
-import { ActivitySwitch, CartProduct, CustomRequest, NewShoppingCart } from '../types';
+import { ActivitySwitch, CartProduct, CustomRequest, NewShoppingCart } from '../types.d';
 
 const router = express.Router();
 

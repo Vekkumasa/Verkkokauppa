@@ -8,7 +8,7 @@ const initialState: ShoppingCartState = {
 
 const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
   const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
-  if (item === undefined) {
+  if (!item) {
     return product;
   }
   product.quantity = item.quantity +1;
@@ -17,7 +17,7 @@ const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 
 const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
   const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
-  if (item === undefined) {
+  if (!item) {
     return product;
   }
   product.quantity = item.quantity -1;
@@ -31,11 +31,13 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
       case actionTypes.INCREASE_QUANTITY:   
         if (!state.cart.some(p => p.id === action.data.id)) {
           return {
+            ...state,
             cartId: action.cartId,
             cart: state.cart.concat(action.data) };
         } 
         const lisattava = increaseQuantity(action.data, state.cart);
         return {
+          ...state,
           cartId: action.cartId,
           cart: state.cart.map(p => p.id === lisattava.id ? lisattava : p)
         };
@@ -43,12 +45,14 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
       case actionTypes.DECREASE_QUANTITY:
         const uusi = decreaseQuantity(action.data, state.cart);
         return {
+          ...state,
           cartId: action.cartId,
           cart: state.cart.map(p => p.id === uusi.id ? uusi : p)
         };
   
       case actionTypes.REMOVE_PRODUCT_FROM_CART:
         return {
+          ...state,
           cartId: action.cartId,
           cart: state.cart.filter(p => p.id !== action.data.id)
         };
@@ -68,6 +72,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
         return {
+          ...state,
           // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
           cartId: action.cartId,
           cart: state.cart
@@ -77,6 +82,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   }
   if (clearShoppingCartCheck(action)) {
     return {
+      ...state,
       cartId: '',
       cart: []
     };

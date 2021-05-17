@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import { CartProduct, ShoppingCartProduct } from '../types';
+import { CartProduct, ShoppingCartProduct } from '../types.d';
 
 const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
@@ -60,7 +60,7 @@ const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
 
     if (!cart || !product) return null;
 
-    cart.products.map(p => {     
+    cart.products.map(p => {    
       if (p.productId === product.id) {
         p.quantity -= 1;
       }

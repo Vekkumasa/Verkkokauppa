@@ -18,7 +18,7 @@ type ProductState = {
 };
 
 type UserState = {
-  user: Credentials | null
+  user?: Credentials
 };
 
 type NotificationState = {
@@ -51,7 +51,7 @@ type UserActions = LogInAction
 
 type LogInAction = {
   type: string,
-  data: Credentials | null,
+  data?: Credentials,
 };
 
 type NotificationActions = SetNotificationAction

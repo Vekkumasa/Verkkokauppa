@@ -12,8 +12,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
 import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
+import { setNotification } from '../store/Notification/actionCreators';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-type UserProp = {
-  user: Credentials | null
+type Props = {
+  user?: Credentials
 };
 
-const Navibar: React.FC<UserProp> = ({ user }) => {
+const Navibar = ({ user }: Props): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
@@ -60,13 +60,12 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   
   const logOut = () => {
     void shoppingCartService.setShoppingCartActivity(cartId, false);
-    dispatch(logIn(null));
+    dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
   };
+
+  const loggedIn = !!user;
 
   return (
     <div>
@@ -81,33 +80,21 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
             Verkkokauppa
           </Typography>
           <div className={classes.buttons}>
-            {user !== null && user.userType === 'Admin' ?
+            {user?.userType === 'Admin' && (
               <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
                   <AddCircleOutlineIcon className={classes.addProductIcon} />
                 </Tooltip>
               </IconButton>
-            :
-              null
-            }
-            {user === null ?
-              <div>
-                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Login
-                  </Typography>
-                </Button>
-              </div>  
-              :
-              <div>
-                <Button onClick={() => logOut()} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Log out
-                  </Typography>
-                </Button>
-              </div>
-            }
-            {user === null ?
+            )}
+            <div>
+              <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
+                <Typography variant="h6" className={classes.login}>
+                  {loggedIn ? 'Log out' : 'Login'}
+                </Typography>
+              </Button>
+            </div>  
+            {user && 
               <div>
                 <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
@@ -115,8 +102,6 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
                   </Typography>
                 </Button>
               </div>  
-              :
-              null
             }
             <div>
               <Link to="/shoppingCart">
@@ -135,4 +120,4 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   );
 };
 
-export default Navibar;
+export {Navibar};

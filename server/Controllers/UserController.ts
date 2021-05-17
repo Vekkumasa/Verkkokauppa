@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import User from "../models/user";
-import { User as UserType } from '../types';
+import { User as UserType } from '../types.d';
 import { uuid } from "uuidv4";
 import bcrypt from 'bcrypt';
 

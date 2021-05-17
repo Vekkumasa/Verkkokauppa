@@ -95,18 +95,15 @@ import { handleModal } from '../../store/modal/actionCreators';
             userType: 'User' 
           };
           const promise = userService.createUser(newUser);
-          void promise.then((res) => {
+          promise.then((res) => {
             // TODO: Korjaa backendi palauttamaan mikä kohta lomakkeessa feilaa
-            if (res === null) {
+            if (!res) {
               dispatch(setNotification("User creation failed",  'error'));
             } else {
               dispatch(handleModal(false, 'CreateUser'));
               dispatch(setNotification("Created user: " + newUser.userName, 'success'));
             }
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);       
-          });    
+          }).catch(e => console.log(e));    
         }}
       >
         {({ errors, touched }) => (
@@ -125,9 +122,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.userName && touched.userName ? (
+                  {(errors.userName && touched.userName) && (
                     <div>{errors.userName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -143,9 +140,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.firstName && touched.firstName ? (
+                  {(errors.firstName && touched.firstName) && (
                     <div>{errors.firstName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -161,9 +158,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.lastName && touched.lastName ? (
+                  {(errors.lastName && touched.lastName) && (
                     <div>{errors.lastName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -179,9 +176,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.password && touched.password ? (
+                  {(errors.password && touched.password) && (
                     <div>{errors.password}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -197,9 +194,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.email && touched.email ? (
+                  {(errors.email && touched.email) && (
                     <div>{errors.email}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>

@@ -1,5 +1,5 @@
 import React from "react";
-import Product from './Product';
+import { Product } from './Product';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector } from '../store/rootReducer';
 
@@ -10,7 +10,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ProductListPage: React.FC = () => {
+const ProductListPage = (): JSX.Element | null => {
   const classes = useStyles();
 
   const products: Product[] = useAppSelector(
@@ -18,7 +18,7 @@ const ProductListPage: React.FC = () => {
   );
 
   if (products.length === 0) {
-    return <div></div>;
+    return null;
   }
 
   return (
@@ -30,4 +30,4 @@ const ProductListPage: React.FC = () => {
   );
 };
 
-export default ProductListPage;  
+export {ProductListPage};  

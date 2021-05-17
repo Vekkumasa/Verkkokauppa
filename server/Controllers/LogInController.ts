@@ -1,5 +1,5 @@
 import User from "../models/user";
- import { Credentials } from '../types';
+ import { Credentials } from '../types.d';
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
 import { StringCheck } from '../utils/StringCheck';
@@ -9,11 +9,11 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
   const user = await User.findOne({ userName: userName });
   console.log('login user:', user);
 
-  if (user?.password === undefined) {
+  if (!user?.password) {
     return null;
   }
 
-  const passwordCorrect = user === null
+  const passwordCorrect = !user
     ? false
     : await bcrypt.compare(passWord, user.password);
 
@@ -32,7 +32,7 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
     }
 
     const secret = process.env.JWTSECRET;
-    if (secret !== undefined) {
+    if (secret) {
       const token = jwt.sign(userForToken, secret);
       const credentials: Credentials = {
         id: user.id,
