@@ -170,9 +170,7 @@ const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface
 
 const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartInterface | null> => {
   try {
-    console.log('Taalla ollaan', cartId, data);
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
-    console.log('setActivity:' , cart);
     if (!cart) return null;
 
     return cart;

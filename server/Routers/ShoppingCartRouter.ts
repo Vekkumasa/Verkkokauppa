@@ -1,6 +1,6 @@
 import express, { Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
-import shoppingCartController from '../Controllers/shoppingCartController';
+import shoppingCartController from '../Controllers/ShoppingCartController';
 import { ActivitySwitch, CartProduct, CustomRequest, NewShoppingCart } from '../types';
 
 const router = express.Router();
