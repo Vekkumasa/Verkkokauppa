@@ -13,6 +13,7 @@ type ShoppingCartProduct = {
   id: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 
@@ -20,6 +21,7 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 

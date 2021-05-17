@@ -1,3 +1,18 @@
+/* eslint-disable  @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+/* eslint-disable  @typescript-eslint/explicit-module-boundary-types */
+
+export const stringCheck = (text: unknown): text is string => {
+  return typeof text === 'string' || text instanceof String;
+};
+
+export const stringParser = (text: unknown): string => {
+  if (!text || !stringCheck(text)) {
+      throw new Error(`Incorrect or missing string `);
+  }
+  return text;
+};
+
 export const notificationTypeCheck = (object: unknown): object is NotificationType => (
   object === 'error'
   || object === 'info'
@@ -20,4 +35,18 @@ export const retrieveOldShoppingCartCheck = (object: ShoppingCartAction): object
   }
   return false;
 };
+
 export const clearShoppingCartCheck = (object: ShoppingCartAction): object is ClearShoppingCartAction => (object.type === 'CLEAR_SHOPPINGCART');
+
+export const isCredentials = (o: any): o is Credentials => {
+  return 'firstName' in o && 'lastName' in o && 'userName' in o && 'id' in o && 'userType' in o && 'token' in o;
+};
+
+export const safeJsonParse = <T>(guard: (o: any) => o is T) => (text: string): ParseResult<T> => {
+  const parsed = JSON.parse(text);
+  return guard(parsed) ? { parsed, hasError: false} : { hasError: true };
+};
+
+type ParseResult<T> =
+  | { parsed: T; hasError: false; error?: undefined }
+  | { parsed?: undefined; hasError: true; error?: unknown };

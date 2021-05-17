@@ -47,14 +47,14 @@ type GetProductsAction = {
   data: Product[]
 };
 
-type UserActions = LogInAction
+type UserActions = LogInAction;
 
 type LogInAction = {
   type: string,
   data?: Credentials,
 };
 
-type NotificationActions = SetNotificationAction
+type NotificationActions = SetNotificationAction;
 
 type SetNotificationAction = {
   type: string,
@@ -62,7 +62,7 @@ type SetNotificationAction = {
   data: string
 };
 
-type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction | CreateNewShoppingCartAction | RetrieveOldShoppingCartAction
+type ShoppingCartAction = AddOrRemoveShoppingCartAction | ClearShoppingCartAction | CreateNewShoppingCartAction | RetrieveOldShoppingCartAction;
 
 type AddOrRemoveShoppingCartAction = {
   type: string,
@@ -89,6 +89,6 @@ type ModalAction = {
   type: string,
   modal: Modal,
   data: boolean,
-}
+};
 
 type DispatchType = (args: Actions) => Actions;

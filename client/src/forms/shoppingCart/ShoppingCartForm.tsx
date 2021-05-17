@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { userCheck } from '../../typeGuards';
 
 const useStyles = makeStyles({
@@ -47,15 +47,15 @@ const useStyles = makeStyles({
 });
 
 const ShippingSchema = Yup.object().shape({
-firstName: Yup
-  .string()
-  .required("Required"),
-lastName: Yup
-  .string()
-  .required("Required"),
-address: Yup
-  .string()
-  .required("Required")
+  firstName: Yup
+    .string()
+    .required("Required"),
+  lastName: Yup
+    .string()
+    .required("Required"),
+  address: Yup
+    .string()
+    .required("Required")
 });
  
 const ShoppingCartForm = ():JSX.Element => {
@@ -79,9 +79,6 @@ const ShoppingCartForm = ():JSX.Element => {
 
           if (userCheck(user)) {
             dispatch(setNotification('Delivering products to '+ shippingInfo.address, 'success'));
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);
           }    
         }}
       >

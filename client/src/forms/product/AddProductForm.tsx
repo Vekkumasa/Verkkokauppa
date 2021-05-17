@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import productService from '../../services/productService';
 import { addProduct } from '../../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 
 const useStyles = makeStyles({
   field: {

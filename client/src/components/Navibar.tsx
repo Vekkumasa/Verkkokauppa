@@ -1,14 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Tooltip from '@material-ui/core/Tooltip';
+import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
+import { AddCircleOutline, Menu, Search, ShoppingCart } from '@material-ui/icons/';
 import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
@@ -45,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
   shoppingCart: {
     color: 'white',
     fontSize: 30
+  },
+  searchIcon: {
+    color: 'white',
   }
 }));
 
@@ -53,16 +49,25 @@ type Props = {
 };
 
 const Navibar = ({ user }: Props): JSX.Element => {
+  const [ searchText, setSearchText ] = useState('');
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
-  console.log('navibar:', cartId);
   
   const logOut = () => {
     void shoppingCartService.setShoppingCartActivity(cartId, false);
     dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
+  };
+
+  const handleSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setSearchText(event.target.value);
+  };
+
+  const searchProducts = () => {
+    console.log(searchText);
   };
 
   const loggedIn = !!user;
@@ -73,17 +78,21 @@ const Navibar = ({ user }: Props): JSX.Element => {
         <Toolbar>
           <Link to="/">
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
+              <Menu />
             </IconButton>
           </Link>
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
+          <TextField onChange={handleSearchText} style={{ backgroundColor: 'whitesmoke'}} size="small" variant="outlined" />
+          <IconButton onClick={() => searchProducts()}>
+            <Search className={classes.searchIcon}/>
+          </IconButton>
           <div className={classes.buttons}>
             {user?.userType === 'Admin' && (
               <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
-                  <AddCircleOutlineIcon className={classes.addProductIcon} />
+                  <AddCircleOutline className={classes.addProductIcon} />
                 </Tooltip>
               </IconButton>
             )}
@@ -94,7 +103,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
                 </Typography>
               </Button>
             </div>  
-            {user && 
+            {!user && 
               <div>
                 <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
@@ -106,7 +115,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
             <div>
               <Link to="/shoppingCart">
                 <IconButton className={classes.shoppingCart} >
-                  <ShoppingCartIcon style={{ fontSize: 30, marginTop: 5}}/>
+                  <ShoppingCart style={{ fontSize: 30, marginTop: 5}}/>
                 </IconButton>
               </Link>
             </div>

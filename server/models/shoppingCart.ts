@@ -15,6 +15,7 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
     {
       productId: String,
       name: String,
+      image: String,
       quantity: Number,
       price: Number
     }

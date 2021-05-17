@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../../services/shoppingCartService';
@@ -97,7 +97,6 @@ const LogInForm = ():JSX.Element => {
               icon: 'success',
             });
           });
-
       }
     });
   };
@@ -114,8 +113,7 @@ const LogInForm = ():JSX.Element => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
             if (!res.token) {
-              const notificationType: NotificationType = 'error';
-              dispatch(setNotification("Invalid username / password", notificationType));
+              dispatch(setNotification("Invalid username / password", 'error'));
             } else {
               const credentials: Credentials = {
                 id: res.id,
@@ -125,12 +123,12 @@ const LogInForm = ():JSX.Element => {
                 userType: res.userType,
                 token: res.token,
               };
+              window.localStorage.setItem(
+                'loggedUser', JSON.stringify(credentials)
+              );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
               dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
               
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
               void usersShoppingCart.then((res) => {
@@ -142,6 +140,7 @@ const LogInForm = ():JSX.Element => {
                   void promise.then((res) => {
                     console.log('response', res);
                     dispatch(createNewShoppingCart(res.id));
+                    // TODO: Deletoi vanha kärry kannasta
                   });
                 }
               });

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import userService from '../../services/userService';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 
  const useStyles = makeStyles({

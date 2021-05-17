@@ -30,6 +30,7 @@ const listOfProducts = async (products: ShoppingCartProduct[]) => {
         productId: product._id,
         name: item.name,
         quantity: item.quantity,
+        image: item.image,
         price: item.price,
       };
     }
@@ -132,7 +133,7 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
     
     if (!cart || !product || !cart.id) return null;
 
-    const lista = cart.products.concat({ productId: product.id, name: product.name, price: product.price, quantity: 1 });
+    const lista = cart.products.concat({ productId: product.id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();
@@ -147,7 +148,6 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
   try {
     const cart = await ShoppingCart.findOne({user: userId});
-    console.log('find users shopping cart: ', cart);
     if (!cart) return null;
     
     return cart;
@@ -159,9 +159,8 @@ const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterfa
 const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
   try {
     const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
-    console.log('Remove shopping cart', cart);
     if (!cart) return null;
-
+    console.log('deleted cart', cart);
     return cart;
   } catch (e) {
     return null;
