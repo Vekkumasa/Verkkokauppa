@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
-import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace, AccountCircle } from '@material-ui/icons/';
+import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace } from '@material-ui/icons/';
 import { Link } from "react-router-dom";
 
+import AccountMenu from './AccountMenu';
 import { logIn } from '../store/User/actionCreators';
 import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
 import { setNotification } from '../store/Notification/actionCreators';
@@ -139,11 +140,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
               </Link>
             </div>
             <div>
-              <Link to="/account">
-                <IconButton className={classes.whiteIcon}>
-                  <AccountCircle style={{ fontSize: 30, marginTop: 5}}/>
-                </IconButton>
-              </Link>
+              <AccountMenu />
             </div>
           </div>
         </Toolbar>

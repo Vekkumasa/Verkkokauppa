@@ -16,6 +16,7 @@ type ModalState = {
   addProductModal: boolean,
   logInModal: boolean,
   createUserModal: boolean,
+  modifyUserInfoModal: boolean,
 };
 
 type ProductState = {
@@ -38,6 +39,7 @@ type ShoppingCartState = {
 };
 
 // ACTIONS
+
 type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction | ModalAction;
 
 type ProductActions = AddProductAction | GetProductsAction;

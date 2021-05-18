@@ -20,7 +20,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 170,
+    width: 170,
     marginRight: 20
   },
   centerText: {

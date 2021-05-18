@@ -117,7 +117,9 @@ const LogInForm = ():JSX.Element => {
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,
+                email: res.email,
                 userType: res.userType,
+                avatar: res.avatar,
                 token: res.token,
               };
               window.localStorage.setItem(

@@ -38,7 +38,6 @@ const App = (): JSX.Element => {
       if (parsedUser.hasError) {
         console.log('error at parsed user');
       } else {
-        console.log('parsed', parsedUser);
         dispatch(logIn(parsedUser.parsed));
         const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed.id);
         void usersShoppingCart.then((res) => {
@@ -59,7 +58,7 @@ const App = (): JSX.Element => {
           </div>
         )}
         <Switch>
-          <Route path="/account" render={() => <Account />} />
+          <Route path="/account" render={() => <Account user={user}/>} />
         </Switch>
 
         <Switch>

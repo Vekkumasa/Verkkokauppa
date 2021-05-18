@@ -69,6 +69,9 @@ import { handleModal } from '../../store/modal/actionCreators';
       .string()
       .email('Invalid email')
       .required('Required'),
+
+    avatar: Yup
+      .string(),
  });
  
  const CreateUserForm = ():JSX.Element => {
@@ -83,6 +86,7 @@ import { handleModal } from '../../store/modal/actionCreators';
           lastName: '',
           password: '',
           email: '',
+          avatar: '',
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
@@ -92,6 +96,7 @@ import { handleModal } from '../../store/modal/actionCreators';
             lastName: values.lastName,
             password: values.password,
             email: values.email,
+            avatar: values.avatar,
             userType: 'User' 
           };
           const promise = userService.createUser(newUser);
@@ -196,6 +201,24 @@ import { handleModal } from '../../store/modal/actionCreators';
                 <Grid item xs={1}>
                   {(errors.email && touched.email) && (
                     <div>{errors.email}</div>
+                  )}
+                </Grid>
+              </Grid>
+              <Grid container item xs={12} spacing={3}>
+                <Grid item xs={2}>
+                  <label>Avatar: </label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Field
+                    className={classes.field}
+                    placeholder="www.avatar.com/avatar.png"
+                    type="text"
+                    name="avatar"
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  {(errors.avatar && touched.avatar) && (
+                    <div>{errors.avatar}</div>
                   )}
                 </Grid>
               </Grid>

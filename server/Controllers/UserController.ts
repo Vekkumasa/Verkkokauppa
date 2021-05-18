@@ -29,6 +29,7 @@ const addUser = async (user: UserType) => {
       userName: user.userName,
       password: password,
       email: user.email,
+      avatar: user.avatar,
       userType: user.userType
     });
     const response = await newUser.save();

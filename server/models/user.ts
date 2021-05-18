@@ -11,6 +11,7 @@ export interface UserInterface extends mongoose.Document {
   userType: string;
   shoppingCart: ProductInterface[];
   _id?: string;
+  avatar?: string;
 }
 
 const UserSchema: mongoose.Schema = new mongoose.Schema({
@@ -18,8 +19,9 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     userName: { type: String, required: true, unique: true},
-    password: { type: String },
+    password: { type: String, required: true },
     userType: { type: String, required: true },
+    avatar: { type: String },
     shoppingCart: [
       {
         type: mongoose.Schema.Types.ObjectId,

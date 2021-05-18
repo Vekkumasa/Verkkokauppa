@@ -2,6 +2,7 @@ const initialState: ModalState = {
   createUserModal: false,
   logInModal: false,
   addProductModal: false,
+  modifyUserInfoModal: false,
 };
 
 const reducer = (state: ModalState = initialState, action: ModalAction): ModalState => {
@@ -17,6 +18,10 @@ const reducer = (state: ModalState = initialState, action: ModalAction): ModalSt
     case 'LogIn':
       return {
         ...state, logInModal: action.data
+      };
+    case 'ModifyUser':
+      return {
+        ...state, modifyUserInfoModal: action.data
       };
     default: 
       return state;

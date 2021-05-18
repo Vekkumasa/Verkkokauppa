@@ -40,6 +40,8 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
         userName: user.userName,
         firstName: user.firstName,
         lastName: user.lastName,
+        email: user.email,
+        avatar: user.avatar,
         userType: user.userType,
       };
       return credentials;

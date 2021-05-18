@@ -32,4 +32,5 @@
 | 13.5  |  1.5 | Product.tsx style parannuksia, Loput modalit reduxin vastuulle, create user error message |
 | 14.5  |  6   | Tietokannasta haetaan kayttajan vanha ostoskori kayttajan halutessa kirjautumisen yhteydessa |
 | 17.5  |  6   | Refactorings, user info talletetaan localstorageen, typeguardit window.localstoragelle, search bar aloitettu |
-| yht   |  117  | | 
+| 18.5  |  6.5 | Hakupalkki, Accountpage, User model muutoksia |
+| yht   |  123.5  | | 
