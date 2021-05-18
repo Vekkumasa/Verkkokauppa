@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
-import { AddCircleOutline, Menu, Search, ShoppingCart } from '@material-ui/icons/';
+import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace, AccountCircle } from '@material-ui/icons/';
 import { Link } from "react-router-dom";
 
 import { logIn } from '../store/User/actionCreators';
 import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
 import { setNotification } from '../store/Notification/actionCreators';
+import { setFilter } from '../store/Filter/actionCreators';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
@@ -30,12 +31,13 @@ const useStyles = makeStyles((theme) => ({
   login: {
     margin: theme.spacing(2),
     fontSize: 15,
+    flexDirection: 'column'
   },
   addProductIcon: {
     height: 30,
     width: 30,
   },
-  shoppingCart: {
+  whiteIcon: {
     color: 'white',
     fontSize: 30
   },
@@ -66,8 +68,13 @@ const Navibar = ({ user }: Props): JSX.Element => {
     setSearchText(event.target.value);
   };
 
-  const searchProducts = () => {
-    console.log(searchText);
+  const filterProducts = () => {
+    dispatch(setFilter(searchText));
+  };
+
+  const clearFilter = () => {
+    setSearchText('');
+    dispatch(setFilter(''));
   };
 
   const loggedIn = !!user;
@@ -84,9 +91,21 @@ const Navibar = ({ user }: Props): JSX.Element => {
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
-          <TextField onChange={handleSearchText} style={{ backgroundColor: 'whitesmoke'}} size="small" variant="outlined" />
-          <IconButton onClick={() => searchProducts()}>
+          <TextField 
+            placeholder="Search products"
+            onChange={handleSearchText}
+            style={{ backgroundColor: '#dae1f0'}}
+            size="small"
+            variant="outlined"
+            value={searchText}
+          />
+          <IconButton onClick={() => filterProducts()}>
             <Search className={classes.searchIcon}/>
+          </IconButton>
+          <IconButton onClick={() => clearFilter()}>
+            <Tooltip title="Clear searchbar">
+              <Backspace className={classes.searchIcon} />
+            </Tooltip>
           </IconButton>
           <div className={classes.buttons}>
             {user?.userType === 'Admin' && (
@@ -114,8 +133,15 @@ const Navibar = ({ user }: Props): JSX.Element => {
             }
             <div>
               <Link to="/shoppingCart">
-                <IconButton className={classes.shoppingCart} >
+                <IconButton className={classes.whiteIcon} >
                   <ShoppingCart style={{ fontSize: 30, marginTop: 5}}/>
+                </IconButton>
+              </Link>
+            </div>
+            <div>
+              <Link to="/account">
+                <IconButton className={classes.whiteIcon}>
+                  <AccountCircle style={{ fontSize: 30, marginTop: 5}}/>
                 </IconButton>
               </Link>
             </div>
@@ -129,4 +155,4 @@ const Navibar = ({ user }: Props): JSX.Element => {
   );
 };
 
-export {Navibar};
+export { Navibar };

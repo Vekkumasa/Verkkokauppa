@@ -1,5 +1,3 @@
-
-
 const initialState: ModalState = {
   createUserModal: false,
   logInModal: false,

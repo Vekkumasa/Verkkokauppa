@@ -63,9 +63,7 @@ const LogInForm = ():JSX.Element => {
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
 
-  const usePreviousShoppingCart = (res: ShoppingCart) => {
-    console.log('swal', res);
-    
+  const usePreviousShoppingCart = (res: ShoppingCart) => { 
     void swal({
       title: 'Use unfinished shopping cart?',
       text: 'Previous unfinished shopping cart found, do you want to use that one or create new one? Old will be removed permanently if new is created',
@@ -85,11 +83,10 @@ const LogInForm = ():JSX.Element => {
         const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
           void promise.then((response) => {            
             console.log('response', response);
-            const testi = shoppingCartService.removeShoppingCart(res.user);
-            void testi.then((testiResponse) => {
-              console.log('testiresponse', testiResponse);
+            const removed = shoppingCartService.removeShoppingCart(res.user);
+            void removed.then((removedResponse) => {
+              console.log('removedresponse', removedResponse);
             });
-            console.log(testi);
             dispatch(createNewShoppingCart(response.id));
             void swal({
               title: 'New Cart',

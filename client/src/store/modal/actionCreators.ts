@@ -1,4 +1,3 @@
-
 type OpenOrCloseModal = (dispatch: DispatchType) => void;
 
 export const handleModal = (data: boolean, modal: Modal): OpenOrCloseModal => {
@@ -7,8 +6,7 @@ export const handleModal = (data: boolean, modal: Modal): OpenOrCloseModal => {
     modal,
     data
   };
-
-  console.log('Handle modal action', action);
+  
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

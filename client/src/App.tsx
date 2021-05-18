@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Navibar } from './components/Navibar';
 import { ProductListPage } from './components/ProductListPage';
+import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart';
 import shoppingCartService from './services/shoppingCartService';
 
@@ -35,7 +36,7 @@ const App = (): JSX.Element => {
       console.log(loggedUser);
       const parsedUser = safeJsonParse(isCredentials)(loggedUser);
       if (parsedUser.hasError) {
-        console.log('error', parsedUser.hasError);
+        console.log('error at parsed user');
       } else {
         console.log('parsed', parsedUser);
         dispatch(logIn(parsedUser.parsed));
@@ -46,10 +47,7 @@ const App = (): JSX.Element => {
       }
     }
   }, []);
-
-  console.log('app.tsx user:', user);
   
-
   return (
     <div>
       <Router>
@@ -60,6 +58,10 @@ const App = (): JSX.Element => {
             <Notification type={notification.type} message={notification.message} />
           </div>
         )}
+        <Switch>
+          <Route path="/account" render={() => <Account />} />
+        </Switch>
+
         <Switch>
           <Route path="/shoppingCart" render={() => <ShoppingCart />} />
         </Switch> 

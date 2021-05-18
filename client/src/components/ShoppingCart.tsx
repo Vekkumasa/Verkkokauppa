@@ -70,8 +70,6 @@ const ShoppingCart: React.FC = (): JSX.Element => {
   const totalPrice = () => {
     return products.reduce((prev, cur) => prev + cur.price * cur.quantity, 0);
   };
-
-  console.log('Shopping cart', products);
   
   return (
     <Box className={classes.box} border={1}>

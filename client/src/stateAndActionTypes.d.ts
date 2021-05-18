@@ -5,7 +5,12 @@ interface AppState {
   notification: NotificationState,
   cart: ShoppingCartState,
   modal: ModalState,
+  filter: FilterState,
 }
+
+type FilterState = {
+  productFilter: string
+};
 
 type ModalState = {
   addProductModal: boolean,
@@ -89,6 +94,11 @@ type ModalAction = {
   type: string,
   modal: Modal,
   data: boolean,
+};
+
+type SetFilterAction = {
+  type: string,
+  data: string,
 };
 
 type DispatchType = (args: Actions) => Actions;
