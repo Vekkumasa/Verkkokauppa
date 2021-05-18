@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import userController from '../Controllers/UserController';
 import { UserInterface } from '../models/user';
-import { User, CustomRequest } from '../types';
+import { User, CustomRequest } from '../types.d';
 
 const router = express.Router();
 

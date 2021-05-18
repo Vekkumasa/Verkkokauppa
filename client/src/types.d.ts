@@ -29,7 +29,8 @@ type User = {
   userName: string,
   password: string,
   email: string,
-  userType: UserType
+  userType: UserType,
+  avatar?: string,
 };
 
 type ShippingInfo = {
@@ -52,14 +53,16 @@ type Credentials = {
   userName: string,
   firstName: string,
   lastName: string,
-  userType: UserType
+  email: string,
+  userType: UserType,
+  avatar?: string,
 };
 
 type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
-type Modal = 'LogIn' | 'CreateUser' | 'AddProduct';
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser';
 declare module "*.jpg" {
   const content: string;
   export = content;

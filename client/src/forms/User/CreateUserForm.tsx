@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import userService from '../../services/userService';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 
  const useStyles = makeStyles({
@@ -69,6 +69,9 @@ import { handleModal } from '../../store/modal/actionCreators';
       .string()
       .email('Invalid email')
       .required('Required'),
+
+    avatar: Yup
+      .string(),
  });
  
  const CreateUserForm = ():JSX.Element => {
@@ -83,6 +86,7 @@ import { handleModal } from '../../store/modal/actionCreators';
           lastName: '',
           password: '',
           email: '',
+          avatar: '',
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
@@ -92,21 +96,19 @@ import { handleModal } from '../../store/modal/actionCreators';
             lastName: values.lastName,
             password: values.password,
             email: values.email,
+            avatar: values.avatar,
             userType: 'User' 
           };
           const promise = userService.createUser(newUser);
-          void promise.then((res) => {
+          promise.then((res) => {
             // TODO: Korjaa backendi palauttamaan mikä kohta lomakkeessa feilaa
-            if (res === null) {
+            if (!res) {
               dispatch(setNotification("User creation failed",  'error'));
             } else {
               dispatch(handleModal(false, 'CreateUser'));
               dispatch(setNotification("Created user: " + newUser.userName, 'success'));
             }
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);       
-          });    
+          }).catch(e => console.log(e));    
         }}
       >
         {({ errors, touched }) => (
@@ -125,9 +127,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.userName && touched.userName ? (
+                  {(errors.userName && touched.userName) && (
                     <div>{errors.userName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -143,9 +145,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.firstName && touched.firstName ? (
+                  {(errors.firstName && touched.firstName) && (
                     <div>{errors.firstName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -161,9 +163,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.lastName && touched.lastName ? (
+                  {(errors.lastName && touched.lastName) && (
                     <div>{errors.lastName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -179,9 +181,9 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.password && touched.password ? (
+                  {(errors.password && touched.password) && (
                     <div>{errors.password}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -197,9 +199,27 @@ import { handleModal } from '../../store/modal/actionCreators';
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.email && touched.email ? (
+                  {(errors.email && touched.email) && (
                     <div>{errors.email}</div>
-                  ) : null}
+                  )}
+                </Grid>
+              </Grid>
+              <Grid container item xs={12} spacing={3}>
+                <Grid item xs={2}>
+                  <label>Avatar: </label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Field
+                    className={classes.field}
+                    placeholder="www.avatar.com/avatar.png"
+                    type="text"
+                    name="avatar"
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  {(errors.avatar && touched.avatar) && (
+                    <div>{errors.avatar}</div>
+                  )}
                 </Grid>
               </Grid>
             </Grid>

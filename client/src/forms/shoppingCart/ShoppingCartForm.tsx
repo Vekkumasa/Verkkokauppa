@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { userCheck } from '../../typeGuards';
 
 const useStyles = makeStyles({
@@ -47,22 +47,22 @@ const useStyles = makeStyles({
 });
 
 const ShippingSchema = Yup.object().shape({
-firstName: Yup
-  .string()
-  .required("Required"),
-lastName: Yup
-  .string()
-  .required("Required"),
-address: Yup
-  .string()
-  .required("Required")
+  firstName: Yup
+    .string()
+    .required("Required"),
+  lastName: Yup
+    .string()
+    .required("Required"),
+  address: Yup
+    .string()
+    .required("Required")
 });
  
 const ShoppingCartForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const classes = useStyles();
 
-  const user: Credentials | null = useAppSelector(state => state.userReducer.user);
+  const user: Credentials | undefined = useAppSelector(state => state.userReducer.user);
 
   return (
     <div>
@@ -79,9 +79,6 @@ const ShoppingCartForm = ():JSX.Element => {
 
           if (userCheck(user)) {
             dispatch(setNotification('Delivering products to '+ shippingInfo.address, 'success'));
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);
           }    
         }}
       >
@@ -101,9 +98,9 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.firstName && touched.firstName ? (
+                  {(errors.firstName && touched.firstName) && (
                     <div>{errors.firstName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -119,9 +116,9 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.lastName && touched.lastName ? (
+                  {(errors.lastName && touched.lastName) && (
                     <div>{errors.lastName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
@@ -137,18 +134,16 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.address && touched.address ? (
+                  {(errors.address && touched.address) && (
                     <div>{errors.address}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button disabled={user === null} className={classes.button} type="submit"> Submit </button>
-                {user === null ?
+              <button disabled={!user} className={classes.button} type="submit"> Submit </button>
+                {!user &&
                   <Typography variant="subtitle1" className={classes.logInText}> Please sign in first </Typography>
-                  :
-                  null
                 }
             </div>
           </Form>

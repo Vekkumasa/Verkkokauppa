@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import Navibar from './components/Navibar';
-import ProductListPage from './components/ProductListPage';
+import { Navibar } from './components/Navibar';
+import { ProductListPage } from './components/ProductListPage';
+import Account from './components/Account';
 import ShoppingCart from './components/ShoppingCart';
+import shoppingCartService from './services/shoppingCartService';
 
 import { initializeProducts } from './store/Product/actionCreators';
+import { retrieveOldShoppingCart } from './store/ShoppingCart/actionCreators';
+import { logIn } from './store/User/actionCreators';
+import { safeJsonParse, isCredentials } from './typeGuards';
+
 import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
 import Notification from './UI/Notification';
 
-const App: React.FC = () => {
+const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
-  useEffect(() => {
-    void dispatch(initializeProducts());
-  },[]);
 
-  const user: Credentials | null = useAppSelector(
+  const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
 
@@ -23,18 +26,41 @@ const App: React.FC = () => {
     state => state.notificationReducer
   );
 
+  useEffect(() => {
+    void dispatch(initializeProducts());
+  }, []);
+
+  useEffect(() => {
+    const loggedUser = window.localStorage.getItem('loggedUser');
+    if (loggedUser) {
+      console.log(loggedUser);
+      const parsedUser = safeJsonParse(isCredentials)(loggedUser);
+      if (parsedUser.hasError) {
+        console.log('error at parsed user');
+      } else {
+        dispatch(logIn(parsedUser.parsed));
+        const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed.id);
+        void usersShoppingCart.then((res) => {
+          dispatch(retrieveOldShoppingCart(res.id, res.products));
+        });
+      }
+    }
+  }, []);
+  
   return (
     <div>
       <Router>
         <Navibar user={user} />
         <br/>
-        {notification.visible ?
-        <div>
-          <Notification type={notification.type} message={notification.message} />
-        </div>
-        :
-          null
-        }
+        {notification.visible && (
+          <div>
+            <Notification type={notification.type} message={notification.message} />
+          </div>
+        )}
+        <Switch>
+          <Route path="/account" render={() => <Account user={user}/>} />
+        </Switch>
+
         <Switch>
           <Route path="/shoppingCart" render={() => <ShoppingCart />} />
         </Switch> 
@@ -42,7 +68,6 @@ const App: React.FC = () => {
         <Switch>
           <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
-
       </Router>
     </div>
   );

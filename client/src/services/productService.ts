@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const getAll = ():Promise<Product[]> => {
   const request = axios.get<Product[]>('http://localhost:3001/api/products');
-  return request.then(response => response.data);
+  return request.then((response: AxiosResponse<Product[]>) => response.data);
 };
 
 const addProduct = async (product: NoIdProduct):Promise<Product> => {

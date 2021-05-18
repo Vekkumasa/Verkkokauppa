@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import { CartProduct, ShoppingCartProduct } from '../types';
+import { CartProduct, ShoppingCartProduct } from '../types.d';
 
 const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
@@ -30,6 +30,7 @@ const listOfProducts = async (products: ShoppingCartProduct[]) => {
         productId: product._id,
         name: item.name,
         quantity: item.quantity,
+        image: item.image,
         price: item.price,
       };
     }
@@ -60,7 +61,7 @@ const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
 
     if (!cart || !product) return null;
 
-    cart.products.map(p => {     
+    cart.products.map(p => {    
       if (p.productId === product.id) {
         p.quantity -= 1;
       }
@@ -132,7 +133,7 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
     
     if (!cart || !product || !cart.id) return null;
 
-    const lista = cart.products.concat({ productId: product.id, name: product.name, price: product.price, quantity: 1 });
+    const lista = cart.products.concat({ productId: product.id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();
@@ -147,7 +148,6 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
   try {
     const cart = await ShoppingCart.findOne({user: userId});
-    console.log('find users shopping cart: ', cart);
     if (!cart) return null;
     
     return cart;
@@ -159,9 +159,8 @@ const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterfa
 const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
   try {
     const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
-    console.log('Remove shopping cart', cart);
     if (!cart) return null;
-
+    console.log('deleted cart', cart);
     return cart;
   } catch (e) {
     return null;
@@ -170,9 +169,7 @@ const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface
 
 const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartInterface | null> => {
   try {
-    console.log('Taalla ollaan', cartId, data);
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
-    console.log('setActivity:' , cart);
     if (!cart) return null;
 
     return cart;

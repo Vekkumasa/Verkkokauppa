@@ -8,7 +8,7 @@ import swal from 'sweetalert';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../../services/shoppingCartService';
@@ -63,9 +63,7 @@ const LogInForm = ():JSX.Element => {
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
 
-  const usePreviousShoppingCart = (res: ShoppingCart) => {
-    console.log('swal', res);
-    
+  const usePreviousShoppingCart = (res: ShoppingCart) => { 
     void swal({
       title: 'Use unfinished shopping cart?',
       text: 'Previous unfinished shopping cart found, do you want to use that one or create new one? Old will be removed permanently if new is created',
@@ -85,11 +83,10 @@ const LogInForm = ():JSX.Element => {
         const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
           void promise.then((response) => {            
             console.log('response', response);
-            const testi = shoppingCartService.removeShoppingCart(res.user);
-            void testi.then((testiResponse) => {
-              console.log('testiresponse', testiResponse);
+            const removed = shoppingCartService.removeShoppingCart(res.user);
+            void removed.then((removedResponse) => {
+              console.log('removedresponse', removedResponse);
             });
-            console.log(testi);
             dispatch(createNewShoppingCart(response.id));
             void swal({
               title: 'New Cart',
@@ -97,7 +94,6 @@ const LogInForm = ():JSX.Element => {
               icon: 'success',
             });
           });
-
       }
     });
   };
@@ -113,26 +109,25 @@ const LogInForm = ():JSX.Element => {
         onSubmit={values => {
           const user = userService.signIn(values.userName, values.password);
           void user.then((res) => {
-            if (res.token === undefined) {
+            if (!res.token) {
               dispatch(setNotification("Invalid username / password", 'error'));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
             } else {
               const credentials: Credentials = {
                 id: res.id,
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,
+                email: res.email,
                 userType: res.userType,
+                avatar: res.avatar,
                 token: res.token,
               };
+              window.localStorage.setItem(
+                'loggedUser', JSON.stringify(credentials)
+              );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
               dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
               
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
               void usersShoppingCart.then((res) => {
@@ -144,6 +139,7 @@ const LogInForm = ():JSX.Element => {
                   void promise.then((res) => {
                     console.log('response', res);
                     dispatch(createNewShoppingCart(res.id));
+                    // TODO: Deletoi vanha kärry kannasta
                   });
                 }
               });
@@ -167,9 +163,9 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.userName && touched.userName ? (
+                  {(errors.userName && touched.userName) && (
                     <div>{errors.userName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               
@@ -186,9 +182,9 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.password && touched.password ? (
+                  {(errors.password && touched.password) && (
                     <div>{errors.password}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>

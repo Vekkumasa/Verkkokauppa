@@ -13,6 +13,7 @@ type ShoppingCartProduct = {
   id: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 
@@ -20,6 +21,7 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 
@@ -39,7 +41,8 @@ type User = {
   lastName: string,
   userName: string,
   password: string,
-  userType: string
+  userType: string,
+  avatar?: string,
 };
 
 type CartProduct = {
@@ -72,5 +75,8 @@ type Credentials = {
   userName: string,
   firstName: string,
   lastName: string,
-  userType: UserType
+  email: string,
+  userType: UserType,
+  avatar?: string,
 };
+

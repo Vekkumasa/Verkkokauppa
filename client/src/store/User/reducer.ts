@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState: UserState = {
-  user: null
+  user: undefined
 };
 
 const reducer = (state: UserState = initialState, action: LogInAction): UserState => {

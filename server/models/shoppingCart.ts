@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ShoppingCartProductDB } from '../types';
+import { ShoppingCartProductDB } from '../types.d';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: ShoppingCartProductDB[];
@@ -15,6 +15,7 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
     {
       productId: String,
       name: String,
+      image: String,
       quantity: Number,
       price: Number
     }

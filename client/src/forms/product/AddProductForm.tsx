@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import productService from '../../services/productService';
 import { addProduct } from '../../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -86,9 +86,6 @@ const useStyles = makeStyles({
               const text = "Product " + product.name + " added";
               const type: NotificationType = 'success';
               dispatch(setNotification(text, type));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
             });
           }}
         >
@@ -108,9 +105,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.name && touched.name ? (
+                    {(errors.name && touched.name) && (
                       <div>{errors.name}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -126,9 +123,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.description && touched.description ? (
+                    {(errors.description && touched.description) && (
                       <div>{errors.description}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -144,9 +141,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.price && touched.price ? (
+                    {(errors.price && touched.price) && (
                       <div>{errors.price}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -162,9 +159,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.stock && touched.stock ? (
+                    {(errors.stock && touched.stock) && (
                       <div>{errors.stock}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -180,9 +177,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.image && touched.image ? (
+                    {(errors.image && touched.image) && (
                       <div>{errors.image}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

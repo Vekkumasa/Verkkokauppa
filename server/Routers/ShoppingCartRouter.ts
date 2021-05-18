@@ -1,7 +1,7 @@
 import express, { Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
-import shoppingCartController from '../Controllers/shoppingCartController';
-import { ActivitySwitch, CartProduct, CustomRequest, NewShoppingCart } from '../types';
+import shoppingCartController from '../Controllers/ShoppingCartController';
+import { ActivitySwitch, CartProduct, CustomRequest, NewShoppingCart } from '../types.d';
 
 const router = express.Router();
 
@@ -76,6 +76,7 @@ router.put('/:id/activity', (req: CustomRequest<ActivitySwitch>, res: Response) 
 });
 
 router.delete('/:id', (req: CustomRequest<string>, res: Response) => {
+  console.log('delete id:', req.params.id);
   const cart: Promise<ShoppingCartInterface | null> = shoppingCartController.removeShoppingCart(req.params.id);
   void cart.then((response) => {
     res.status(200).json(response);
