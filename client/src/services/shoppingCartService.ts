@@ -11,7 +11,6 @@ const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCa
 
 const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart> => {
   const request = await axios.get<ShoppingCart>(`http://localhost:3001/api/shoppingCart/${userId}`);
-  console.log('Shoppingcartservice request.data:', request.data);
   return request.data;
 };
 

@@ -27,10 +27,9 @@ const ProductListPage = (): JSX.Element | null => {
   const filteredProducts: Product[] = filter.length === 0 ?
     products :
     products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
-
-  console.log('filteredproducts', filteredProducts);
   
   if (filteredProducts.length === 0) {
+    // TODO: Stylet filtteri ilmotukseen
     return (
       <div>
         <Typography variant="h5"> No results with current filter </Typography>

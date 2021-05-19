@@ -76,7 +76,6 @@ router.put('/:id/activity', (req: CustomRequest<ActivitySwitch>, res: Response) 
 });
 
 router.delete('/:id', (req: CustomRequest<string>, res: Response) => {
-  console.log('delete id:', req.params.id);
   const cart: Promise<ShoppingCartInterface | null> = shoppingCartController.removeShoppingCart(req.params.id);
   void cart.then((response) => {
     res.status(200).json(response);

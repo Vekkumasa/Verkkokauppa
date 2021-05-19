@@ -94,7 +94,7 @@ const useStyles = makeStyles({
               <Grid container spacing={1}>
                 <Grid container item xs={12} spacing={3}>
                   <Grid item xs={2}>
-                    <label>Name: </label>
+                    <label>Name: <b style={{color: 'red'}}>*</b> </label>
                   </Grid>
                   <Grid item xs={9}>
                     <Field
@@ -117,7 +117,7 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="So useless product that Wish.com should sell these"
+                      placeholder="So useless product that Wish.com should sell these (optional)"
                       type="text"
                       name="description"
                     />
@@ -130,7 +130,7 @@ const useStyles = makeStyles({
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
                   <Grid item xs={2}>
-                    <label>Price: </label>
+                    <label>Price: <b style={{color: 'red'}}>*</b> </label>
                   </Grid>
                   <Grid item xs={9}>
                     <Field
@@ -153,7 +153,7 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="Stock"
+                      placeholder="Stock (optional)"
                       type="number"
                       name="stock"
                     />
@@ -171,7 +171,7 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="www.image.com"
+                      placeholder="www.image.com (optional)"
                       type="text"
                       name="image"
                     />

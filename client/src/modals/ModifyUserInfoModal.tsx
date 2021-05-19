@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
-import CreateUserForm from "../forms/User/CreateUserForm";
+import ModifyUserForm from "../forms/User/ModifyUserForm";
 
 
 const getModalStyle = () => {
@@ -74,7 +74,7 @@ const ModifyUserInfoModal: React.FC = () => {
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <CreateUserForm />
+        <ModifyUserForm />
       </div>
     </Modal>
   );

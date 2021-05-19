@@ -82,10 +82,9 @@ const LogInForm = ():JSX.Element => {
       } else {
         const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
           void promise.then((response) => {            
-            console.log('response', response);
             const removed = shoppingCartService.removeShoppingCart(res.user);
             void removed.then((removedResponse) => {
-              console.log('removedresponse', removedResponse);
+              console.log('loginform', removedResponse);
             });
             dispatch(createNewShoppingCart(response.id));
             void swal({
@@ -121,6 +120,7 @@ const LogInForm = ():JSX.Element => {
                 userType: res.userType,
                 avatar: res.avatar,
                 token: res.token,
+                recentActivity: res.recentActivity
               };
               window.localStorage.setItem(
                 'loggedUser', JSON.stringify(credentials)
@@ -131,13 +131,11 @@ const LogInForm = ():JSX.Element => {
               
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
               void usersShoppingCart.then((res) => {
-                console.log('LoginForm get users shopping cart:', res);
                 if (res) {
                   usePreviousShoppingCart(res);      
                 } else {
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
                   void promise.then((res) => {
-                    console.log('response', res);
                     dispatch(createNewShoppingCart(res.id));
                     // TODO: Deletoi vanha kärry kannasta
                   });

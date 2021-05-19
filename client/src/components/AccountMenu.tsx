@@ -61,7 +61,7 @@ const AccountMenu = (): JSX.Element => {
         onClose={handleClose}
       >
         <Link to="/account" style={{ textDecoration: 'none' }}>
-          <StyledMenuItem onClick={() => console.log('testi')}>
+          <StyledMenuItem>
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>

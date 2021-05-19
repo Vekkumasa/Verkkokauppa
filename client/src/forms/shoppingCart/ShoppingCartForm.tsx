@@ -87,7 +87,7 @@ const ShoppingCartForm = ():JSX.Element => {
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>First name: </label>
+                  <label>First name: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -105,7 +105,7 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Last name: </label>
+                  <label>Last name: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -123,7 +123,7 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Address: </label>
+                  <label>Address: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field

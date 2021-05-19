@@ -67,10 +67,8 @@ const Product  = ({ product }: Props): JSX.Element => {
     }
     
     if (isProductAlreadyInCart) {
-      console.log("Product already in cart, increasing quantity"); 
       updateShoppingCartProductQuantity(shoppingCartProduct);
-    } else {
-      console.log("Adding new product to cart");    
+    } else {  
       addProductToShoppingCart(shoppingCartProduct);
     }
   };
@@ -81,7 +79,6 @@ const Product  = ({ product }: Props): JSX.Element => {
     } else {
       const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
       response.then((res) => {
-        console.log('res', res);
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
       }).catch(e => console.log(e));
     }

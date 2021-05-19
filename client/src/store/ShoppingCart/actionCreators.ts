@@ -18,7 +18,6 @@ export const retrieveOldShoppingCart = (cartId: string, products: ShoppingCartPr
     cartId,
     data: products
   };
-  console.log('Creator', action);
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

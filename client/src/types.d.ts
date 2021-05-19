@@ -24,12 +24,13 @@ type ShoppingCartProduct = Product & {quantity: number};
 
 type User = {
   id: string,
+  token?: string,
   firstName: string,
   lastName: string,
   userName: string,
   password: string,
   email: string,
-  userType: UserType,
+  userType?: UserType,
   avatar?: string,
 };
 
@@ -56,6 +57,7 @@ type Credentials = {
   email: string,
   userType: UserType,
   avatar?: string,
+  recentActivity: Date[];
 };
 
 type UserType = 'Admin' | 'User';

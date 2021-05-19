@@ -3,11 +3,10 @@ import User from "../models/user";
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
 import { StringCheck } from '../utils/StringCheck';
-import { UserTypeParser } from '../utils/UserTypeCheck';
+import { UserTypeCheck } from '../utils/UserTypeCheck';
 
-const logIn = async (userName: string, passWord: string): Promise<Credentials | null> => {
+const logIn = async (userName: string, passWord: string, date: Date): Promise<Credentials | null> => {
   const user = await User.findOne({ userName: userName });
-  console.log('login user:', user);
 
   if (!user?.password) {
     return null;
@@ -27,10 +26,12 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
       id: user.id,
     };
 
-    if (!UserTypeParser(user.userType)) {
+    if (!UserTypeCheck(user.userType)) {
       return null;
     }
 
+    user.recentActivity.push(date);
+    await user.save();
     const secret = process.env.JWTSECRET;
     if (secret) {
       const token = jwt.sign(userForToken, secret);
@@ -43,6 +44,7 @@ const logIn = async (userName: string, passWord: string): Promise<Credentials | 
         email: user.email,
         avatar: user.avatar,
         userType: user.userType,
+        recentActivity: user.recentActivity
       };
       return credentials;
     }

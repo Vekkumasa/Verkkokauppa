@@ -12,6 +12,7 @@ export interface UserInterface extends mongoose.Document {
   shoppingCart: ProductInterface[];
   _id?: string;
   avatar?: string;
+  recentActivity: Date[];
 }
 
 const UserSchema: mongoose.Schema = new mongoose.Schema({
@@ -26,6 +27,12 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ShoppingCart'
+      }
+    ],
+    recentActivity: [
+      {
+        type: Date,
+        default: Date.now
       }
     ]
   },

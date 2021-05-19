@@ -83,14 +83,12 @@ const increaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
 
     if (!cart || !product) return null;
 
-    console.log('product,', product);
     cart.products.map(p => {     
       if (p.productId === product.id) {
         p.quantity += 1;
       }
     });
 
-    console.log(cart);
     cart.totalPrice += product.price;
     await cart.save();
 
@@ -160,7 +158,6 @@ const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface
   try {
     const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
     if (!cart) return null;
-    console.log('deleted cart', cart);
     return cart;
   } catch (e) {
     return null;

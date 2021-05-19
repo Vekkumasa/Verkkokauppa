@@ -60,7 +60,6 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
 
   }
   if (retrieveOldShoppingCartCheck(action)) {
-    console.log('Reducer', action);
     return {
       cartId: action.cartId,
       cart: action.data

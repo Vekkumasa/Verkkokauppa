@@ -32,8 +32,7 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      console.log(loggedUser);
+      if (loggedUser) {
       const parsedUser = safeJsonParse(isCredentials)(loggedUser);
       if (parsedUser.hasError) {
         console.log('error at parsed user');
