@@ -40,7 +40,7 @@ const ProductListPage = (): JSX.Element | null => {
   return (
     <div className={classes.root}>
       {filteredProducts.map((product: Product) => (
-        <Product key={product.id} product={product} />
+        <Product key={product._id} product={product} />
       ))}
     </div>
   );

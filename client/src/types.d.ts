@@ -1,5 +1,5 @@
 type Product = {
-  id: string,
+  _id: string,
   name: string,
   price: number,
   stock: number,
@@ -19,7 +19,7 @@ type ShoppingCart = {
   id: string,
 };
 
-type NoIdProduct = Omit<Product, 'id'>;
+type NoIdProduct = Omit<Product, '_id'>;
 type ShoppingCartProduct = Product & {quantity: number};
 
 type User = {

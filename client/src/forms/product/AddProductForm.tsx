@@ -80,7 +80,7 @@ const useStyles = makeStyles({
                 price: res.price,
                 stock: res.stock,
                 image: res.image,
-                id: res.id
+                _id: res._id
               };
               dispatch(addProduct(addedProduct));
               const text = "Product " + product.name + " added";

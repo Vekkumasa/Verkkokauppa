@@ -59,8 +59,8 @@ const Product  = ({ product }: Props): JSX.Element => {
   };
 
   const handleShoppingCart = () => {
-    const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
-    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
+    const isProductAlreadyInCart = shoppingCart.some(p => p._id === product._id);
+    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p._id === product._id);
 
     if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
@@ -122,4 +122,4 @@ const Product  = ({ product }: Props): JSX.Element => {
   );
 };
 
-export {Product};
+export { Product };

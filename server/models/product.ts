@@ -20,8 +20,6 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema(
 {
   toJSON: {
     transform: (_document, returnedObject: ProductInterface) => {
-      returnedObject.id = returnedObject._id?.toString();
-      delete returnedObject._id;
       delete returnedObject.__v;
     }
   },

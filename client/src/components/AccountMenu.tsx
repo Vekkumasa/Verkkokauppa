@@ -68,12 +68,14 @@ const AccountMenu = (): JSX.Element => {
             <ListItemText primary="Personal info" />
           </StyledMenuItem>
         </Link>
-        <StyledMenuItem onClick={() => alert('Not ready yet')}>
-          <ListItemIcon>
-            <ShoppingBasket fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Past orders" />
-        </StyledMenuItem>
+        <Link to="/pastOrders" style={{ textDecoration: 'none'}}>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <ShoppingBasket fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Past orders" />
+          </StyledMenuItem>
+        </Link>
       </StyledMenu>
     </div>
   );

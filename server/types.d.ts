@@ -10,7 +10,7 @@ type Product = {
 };
 
 type ShoppingCartProduct = {
-  id: string,
+  _id: string,
   name: string,
   quantity: number,
   image: string,

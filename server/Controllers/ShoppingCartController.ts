@@ -24,7 +24,7 @@ const getCart = async (cartId: string): Promise<ShoppingCartInterface | null> =>
 
 const listOfProducts = async (products: ShoppingCartProduct[]) => {
   const lista: unknown[] = await Promise.all(products.map(async (item): Promise<unknown> => {
-    const product = await Product.findById(item.id);
+    const product = await Product.findById(item._id);
     if (product) {
       return {
         productId: product._id,
@@ -62,7 +62,7 @@ const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
     if (!cart || !product) return null;
 
     cart.products.map(p => {    
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         p.quantity -= 1;
       }
     });
@@ -84,7 +84,7 @@ const increaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
     if (!cart || !product) return null;
 
     cart.products.map(p => {     
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         p.quantity += 1;
       }
     });
@@ -106,10 +106,10 @@ const removeProductFromCart = async (cartProduct: CartProduct): Promise<Shopping
     if (!cart || !product || !cart.id) return null;
     let totalPriceOfRemovedObjects = 0;
     const lista = cart.products.filter(p => {
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         totalPriceOfRemovedObjects = product.price * product.quantity;
       }
-      return p.productId !== product.id;
+      return p.productId !== product._id;
     });
 
     cart.products = lista;
@@ -131,7 +131,7 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
     
     if (!cart || !product || !cart.id) return null;
 
-    const lista = cart.products.concat({ productId: product.id, name: product.name, image: product.image, price: product.price, quantity: 1 });
+    const lista = cart.products.concat({ productId: product._id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();

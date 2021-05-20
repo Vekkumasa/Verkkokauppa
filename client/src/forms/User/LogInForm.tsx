@@ -90,7 +90,7 @@ const LogInForm = ():JSX.Element => {
             void removed.then((removedResponse) => {
               console.log('loginform', removedResponse);
             });
-            dispatch(createNewShoppingCart(response.id));
+            dispatch(createNewShoppingCart(response._id));
             void swal({
               title: 'New Cart',
               text: 'Created new shopping cart, happy shopping',
@@ -141,7 +141,7 @@ const LogInForm = ():JSX.Element => {
                 } else {
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
                   void promise.then((res) => {
-                    dispatch(createNewShoppingCart(res.id));
+                    dispatch(createNewShoppingCart(res._id));
                     // TODO: Deletoi vanha kärry kannasta
                   });
                 }

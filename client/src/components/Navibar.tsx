@@ -140,9 +140,11 @@ const Navibar = ({ user }: Props): JSX.Element => {
                 </IconButton>
               </Link>
             </div>
-            <div>
-              <AccountMenu />
-            </div>
+            {user &&
+              <div>
+                <AccountMenu />
+              </div>
+            }
           </div>
         </Toolbar>
         <LogInModal />

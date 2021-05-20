@@ -83,8 +83,8 @@ const ShoppingCart: React.FC = (): JSX.Element => {
                 {products.map(product => {
                   if (product.quantity > 0) {
                     return (
-                      <Container className={classes.container} maxWidth="sm">
-                        <ShoppingCartCard key={product.id} product={product} />
+                      <Container key={product._id} className={classes.container} maxWidth="sm">
+                        <ShoppingCartCard key={product._id} product={product} />
                       </Container>
                     );
                   } else {

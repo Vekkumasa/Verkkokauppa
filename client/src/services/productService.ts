@@ -11,7 +11,7 @@ const addProduct = async (product: NoIdProduct):Promise<Product> => {
 };
 
 const deleteProduct = async (product: Product): Promise<Product> => {
-  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product.id}`);
+  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product._id}`);
   return request.data;
 };
 

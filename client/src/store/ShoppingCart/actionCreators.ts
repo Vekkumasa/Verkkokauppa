@@ -49,7 +49,6 @@ export const increaseQuantity = (product: ShoppingCartProduct, cartId: string): 
 };
 
 export const decreaseQuantity = (product: ShoppingCartProduct, cartId: string): Cart => {
-  console.log('hep', product);
   const action: ShoppingCartAction = {
     type: actionTypes.DECREASE_QUANTITY,
     cartId,
