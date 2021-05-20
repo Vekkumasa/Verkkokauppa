@@ -2,6 +2,7 @@ import User from "../models/user";
 import { User as UserType } from '../types.d';
 import { uuid } from "uuidv4";
 import bcrypt from 'bcrypt';
+import { ShoppingCartInterface } from "../models/shoppingCart";
 
 const allUsers = async () => {
   return await User.find({});
@@ -56,8 +57,19 @@ const modifyUser = async (user: UserType) => {
   }
 };
 
+const getCompletedShoppingCarts = async (userId: string):Promise<ShoppingCartInterface[] | null> => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) return null;
+    return user.shoppingCart.filter(cart => cart.completed === true);
+  } catch (e) {
+    return null;
+  }
+};
+
 export default {
   addUser,
   allUsers,
-  modifyUser
+  modifyUser,
+  getCompletedShoppingCarts
 }; 

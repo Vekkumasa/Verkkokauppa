@@ -90,7 +90,8 @@ const LogInForm = ():JSX.Element => {
             void removed.then((removedResponse) => {
               console.log('loginform', removedResponse);
             });
-            dispatch(createNewShoppingCart(response._id));
+            console.log('LOG IN response', response);
+            dispatch(createNewShoppingCart(response.id));
             void swal({
               title: 'New Cart',
               text: 'Created new shopping cart, happy shopping',
@@ -137,11 +138,15 @@ const LogInForm = ():JSX.Element => {
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
               void usersShoppingCart.then((res) => {
                 if (res) {
+                  console.log('login form', res);
                   usePreviousShoppingCart(res);      
                 } else {
+                  console.log('luodaan uusi karry');
+                  
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
                   void promise.then((res) => {
-                    dispatch(createNewShoppingCart(res._id));
+                    console.log('login form new shopping cart', res);
+                    dispatch(createNewShoppingCart(res.id));
                     // TODO: Deletoi vanha kärry kannasta
                   });
                 }

@@ -67,12 +67,11 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   }
 
   if (newShoppingCartCheck(action)) {
-    
+    console.log('new shopping cart reducerissa', action);
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
         return {
           ...state,
-          // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
           cartId: action.cartId,
           cart: state.cart
         };
@@ -80,6 +79,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
     
   }
   if (clearShoppingCartCheck(action)) {
+    console.log('clear cart reducerissa', action);
     return {
       ...state,
       cartId: '',

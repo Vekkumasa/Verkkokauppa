@@ -17,8 +17,14 @@ const modifyUser = async (user: CreateUserInput):Promise<User> => {
   return request.data;
 };
 
+const getUsersCompletedShoppingcarts = async (userId: string):Promise<ShoppingCart[]> => {
+  const request = await axios.get<ShoppingCart[]>(`${baseURL}/${userId}`);
+  return request.data;
+};
+
 export default {
   signIn,
   createUser,
   modifyUser,
+  getUsersCompletedShoppingcarts,
 };

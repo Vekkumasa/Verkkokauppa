@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
+import User from '../models/user';
 import { CartProduct, ShoppingCartProduct } from '../types.d';
 
 const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
@@ -51,6 +52,11 @@ const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: st
     totalPrice
   });
   await cart.save();
+  const user = await User.findById(userId);
+  if (user) {
+    user.shoppingCart.push(cart);
+    await user.save();
+  }
   return cart;
 };
 
@@ -129,7 +135,8 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
     
-    if (!cart || !product || !cart.id) return null;
+    console.log('add new, cart:', cart, ' product: ', product);
+    if (!cart || !product || !cart._id) return null;
 
     const lista = cart.products.concat({ productId: product._id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
@@ -145,7 +152,7 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 
 const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
   try {
-    const cart = await ShoppingCart.findOne({user: userId});
+    const cart = await ShoppingCart.findOne({ user: userId, completed: false });
     if (!cart) return null;
     
     return cart;
@@ -168,7 +175,7 @@ const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartIn
   try {
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
     if (!cart) return null;
-
+    console.log('cart:', cart);
     return cart;
   } catch (e) {
     return null;

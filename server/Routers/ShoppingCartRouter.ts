@@ -21,6 +21,7 @@ router.post('/', (req: CustomRequest<NewShoppingCart>, res: Response) => {
 });
 
 router.post('/:id/addProduct', (req: CustomRequest<CartProduct>, res: Response) => {
+  console.log('add product body', req.body);
   const cartProduct: Promise<ShoppingCartInterface | null> = shoppingCartController.addNewProductToCart(req.body);
   void cartProduct.then((response) => {
     if (response === null) {

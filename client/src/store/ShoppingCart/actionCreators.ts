@@ -7,6 +7,9 @@ export const createNewShoppingCart = (cartId: string): Cart => {
     type: actionTypes.CREATE_NEW_SHOPPING_CART,
     cartId
   };
+
+  console.log('Create new shopping cart');
+  
   return (dispatch: DispatchType) => {
     dispatch(action);
   };
@@ -76,6 +79,8 @@ export const clearShoppingCart = (): Cart => {
   const action: ClearShoppingCartAction = {
     type: actionTypes.CLEAR_SHOPPINGCART,
   };
+
+  console.log('clear shopping cart');
 
   return (dispatch: DispatchType) => {
     dispatch(action);

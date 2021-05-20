@@ -60,12 +60,14 @@ const Product  = ({ product }: Props): JSX.Element => {
 
   const handleShoppingCart = () => {
     const isProductAlreadyInCart = shoppingCart.some(p => p._id === product._id);
+    console.log('shopping cart: ', shoppingCart);
+    
     let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p._id === product._id);
 
     if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
-    
+    console.log('cart id (Product.tsx)', cartId);
     if (isProductAlreadyInCart) {
       updateShoppingCartProductQuantity(shoppingCartProduct);
     } else {  
@@ -77,6 +79,7 @@ const Product  = ({ product }: Props): JSX.Element => {
     if (!user) {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
+      
       const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
       response.then(() => {
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
