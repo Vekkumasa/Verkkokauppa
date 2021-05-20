@@ -60,14 +60,16 @@ const Account = ({user}: AccountProps): JSX.Element => {
   };
 
   const dates: string[] = [];
+  const platformInfo: string[] = [];
+
   let counter = 0;
   for (let i = user.recentActivity.length -1; i >= 0; i--) {
     dates.push(parseDate(user.recentActivity[i]));
+    platformInfo.push(user.platformInfo[i]);
     counter++;
     if (counter === 4) break;
   }
 
-  console.log(dates);
   return (
     <div>
       {user &&
@@ -109,7 +111,7 @@ const Account = ({user}: AccountProps): JSX.Element => {
               <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
               <Header text="Recent activity" />
               {dates.map((date, index) => (
-                <Typography key={index}>{date}</Typography>
+                <Typography key={index}>{date}: {platformInfo[index]}</Typography>
               ))}
               </Box>
             </Grid>

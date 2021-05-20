@@ -4,7 +4,9 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import swal from 'sweetalert';
+import platform from 'platform';
 
+import { platformParser } from '../../utils/platformParser';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
@@ -62,6 +64,8 @@ const LogInForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
+  
+  const platformInfo = platformParser(platform.name, platform.os?.family, platform.os?.version); 
 
   const usePreviousShoppingCart = (res: ShoppingCart) => { 
     void swal({
@@ -106,7 +110,7 @@ const LogInForm = ():JSX.Element => {
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
-          const user = userService.signIn(values.userName, values.password);
+          const user = userService.signIn(values.userName, values.password, platformInfo);
           void user.then((res) => {
             if (!res.token) {
               dispatch(setNotification("Invalid username / password", 'error'));
@@ -120,7 +124,8 @@ const LogInForm = ():JSX.Element => {
                 userType: res.userType,
                 avatar: res.avatar,
                 token: res.token,
-                recentActivity: res.recentActivity
+                recentActivity: res.recentActivity,
+                platformInfo: res.platformInfo
               };
               window.localStorage.setItem(
                 'loggedUser', JSON.stringify(credentials)

@@ -5,7 +5,7 @@ import * as jwt from "jsonwebtoken";
 import { StringCheck } from '../utils/StringCheck';
 import { UserTypeCheck } from '../utils/UserTypeCheck';
 
-const logIn = async (userName: string, passWord: string, date: Date): Promise<Credentials | null> => {
+const logIn = async (userName: string, passWord: string, platformInfo: string): Promise<Credentials | null> => {
   const user = await User.findOne({ userName: userName });
 
   if (!user?.password) {
@@ -30,7 +30,14 @@ const logIn = async (userName: string, passWord: string, date: Date): Promise<Cr
       return null;
     }
 
-    user.recentActivity.push(date);
+    user.recentActivity.push(new Date);
+    user.platformInfo.push(platformInfo);
+
+    if (user.recentActivity.length > 4) {
+      user.recentActivity.splice(0, 1);
+      user.platformInfo.splice(0, 1);
+    }
+
     await user.save();
     const secret = process.env.JWTSECRET;
     if (secret) {
@@ -44,7 +51,8 @@ const logIn = async (userName: string, passWord: string, date: Date): Promise<Cr
         email: user.email,
         avatar: user.avatar,
         userType: user.userType,
-        recentActivity: user.recentActivity
+        recentActivity: user.recentActivity,
+        platformInfo: user.platformInfo,
       };
       return credentials;
     }

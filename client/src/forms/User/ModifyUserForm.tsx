@@ -105,7 +105,14 @@ import { logIn } from '../../store/User/actionCreators';
               dispatch(setNotification("User modification failed",  'error'));
             } else {
               dispatch(handleModal(false, 'ModifyUser'));
-              dispatch(logIn({ ...modifiedUser, id: loggedUser.id, userType: loggedUser.userType, token: loggedUser.token, recentActivity: loggedUser.recentActivity }));
+              dispatch(logIn({
+                ...modifiedUser,
+                id: loggedUser.id,
+                userType: loggedUser.userType,
+                token: loggedUser.token,
+                recentActivity: loggedUser.recentActivity,
+                platformInfo: loggedUser.platformInfo
+              }));
               window.localStorage.setItem(
                 'loggedUser', JSON.stringify({ ...modifiedUser, id: loggedUser.id, userType: loggedUser.userType, token: loggedUser.token })
               );

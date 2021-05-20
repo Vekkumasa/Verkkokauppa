@@ -78,7 +78,7 @@ const Product  = ({ product }: Props): JSX.Element => {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
       const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
-      response.then((res) => {
+      response.then(() => {
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
       }).catch(e => console.log(e));
     }

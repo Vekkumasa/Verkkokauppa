@@ -2,10 +2,8 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/api';
 
-const signIn = async (username: string, password: string):Promise<Credentials> => {
-  const date = new Date;
-  console.log(date.getDate());
-  const request = await axios.post<Credentials>(`${baseURL}/login`, { username, password, date });
+const signIn = async (username: string, password: string, platformInfo: string):Promise<Credentials> => {
+  const request = await axios.post<Credentials>(`${baseURL}/login`, { username, password, platformInfo });
   return request.data;
 };
 

@@ -13,6 +13,7 @@ export interface UserInterface extends mongoose.Document {
   _id?: string;
   avatar?: string;
   recentActivity: Date[];
+  platformInfo: string[];
 }
 
 const UserSchema: mongoose.Schema = new mongoose.Schema({
@@ -34,7 +35,8 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
         type: Date,
         default: Date.now
       }
-    ]
+    ],
+    platformInfo: [{ type: String }]
   },
   {
   toJSON: {

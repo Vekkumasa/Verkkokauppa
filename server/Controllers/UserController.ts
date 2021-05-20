@@ -10,7 +10,6 @@ const allUsers = async () => {
 const addUser = async (user: UserType) => {
   try {
     const password = await bcrypt.hash(user.password, 10);
-    const date = new Date();
     const newUser = new User({
       id: uuid(),
       firstName: user.firstName,
@@ -20,7 +19,7 @@ const addUser = async (user: UserType) => {
       email: user.email,
       avatar: user.avatar,
       userType: user.userType,
-      recentActivity: [ date ],
+      recentActivity: [],
     });
     const response = await newUser.save();
     return response;

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Navibar } from './components/Navibar';
 import { ProductListPage } from './components/ProductListPage';
 import Account from './components/Account';
+import PastOrders from './components/PastOrders';
 import ShoppingCart from './components/ShoppingCart';
 import shoppingCartService from './services/shoppingCartService';
 
@@ -61,8 +62,12 @@ const App = (): JSX.Element => {
         </Switch>
 
         <Switch>
+          <Route path='/pastOrders' render={() => <PastOrders />} />
+        </Switch>
+
+        <Switch>
           <Route path="/shoppingCart" render={() => <ShoppingCart />} />
-        </Switch> 
+        </Switch>
 
         <Switch>
           <Route exact path="/" render={() => <ProductListPage />} />

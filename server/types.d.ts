@@ -55,7 +55,8 @@ type Credentials = {
   email: string,
   userType: UserType,
   avatar?: string,
-  recentActivity: Date[];
+  recentActivity: Date[],
+  platformInfo: string[],
 };
 
 type CartProduct = {
@@ -67,7 +68,7 @@ type CartProduct = {
 type LoginInfo = {
   username: string,
   password: string,
-  date: Date
+  platformInfo: string,
 };
 
 type ShoppingCart = {

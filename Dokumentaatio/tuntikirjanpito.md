@@ -33,4 +33,5 @@
 | 14.5  |  6   | Tietokannasta haetaan kayttajan vanha ostoskori kayttajan halutessa kirjautumisen yhteydessa |
 | 17.5  |  6   | Refactorings, user info talletetaan localstorageen, typeguardit window.localstoragelle, search bar aloitettu |
 | 18.5  |  6.5 | Hakupalkki, Accountpage, User model muutoksia |
-| yht   |  123.5  | | 
+| 19.5  |  6.5 | Account page + user recent activity + user modaus |
+| yht   |  130 | | 
