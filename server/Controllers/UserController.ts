@@ -1,11 +1,6 @@
 import User from "../models/user";
-<<<<<<< HEAD
-import { User as UserType } from '../types';
-import { v4 as uuid } from 'uuid';
-=======
 import { User as UserType } from '../types.d';
 import { uuid } from "uuidv4";
->>>>>>> 0a0263c0db5c9a9fcd8ea60bd8c374c5a5d7a09f
 import bcrypt from 'bcrypt';
 import { ShoppingCartInterface } from "../models/shoppingCart";
 
