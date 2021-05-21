@@ -128,8 +128,9 @@ const LogInForm = ():JSX.Element => {
                 recentActivity: res.recentActivity,
                 platformInfo: res.platformInfo
               };
+              const storeInfo: CredentialsWithTimeStamp = { ...credentials, timestamp: new Date };
               window.localStorage.setItem(
-                'loggedUser', JSON.stringify(credentials)
+                'loggedUser', JSON.stringify(storeInfo)
               );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));

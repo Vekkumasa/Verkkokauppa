@@ -38,8 +38,8 @@ export const retrieveOldShoppingCartCheck = (object: ShoppingCartAction): object
 
 export const clearShoppingCartCheck = (object: ShoppingCartAction): object is ClearShoppingCartAction => (object.type === 'CLEAR_SHOPPINGCART');
 
-export const isCredentials = (o: any): o is Credentials => {
-  return 'firstName' in o && 'lastName' in o && 'userName' in o && 'id' in o && 'userType' in o && 'token' in o;
+export const isCredentialsWithTimestamp = (o: any): o is CredentialsWithTimeStamp => {
+  return 'firstName' in o && 'lastName' in o && 'userName' in o && 'id' in o && 'userType' in o && 'token' in o && 'timestamp' in o;
 };
 
 export const safeJsonParse = <T>(guard: (o: any) => o is T) => (text: string): ParseResult<T> => {

@@ -80,8 +80,6 @@ export const clearShoppingCart = (): Cart => {
     type: actionTypes.CLEAR_SHOPPINGCART,
   };
 
-  console.log('clear shopping cart');
-
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

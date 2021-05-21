@@ -9,8 +9,8 @@ const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCa
   return request.data;
 };
 
-const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart> => {
-  const request = await axios.get<ShoppingCart>(`http://localhost:3001/api/shoppingCart/${userId}`);
+const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart | null> => {
+  const request = await axios.get<ShoppingCart | null>(`http://localhost:3001/api/shoppingCart/${userId}`);
   return request.data;
 };
 

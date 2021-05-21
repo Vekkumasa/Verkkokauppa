@@ -20,7 +20,7 @@ type ShoppingCart = {
 };
 
 type NoIdProduct = Omit<Product, '_id'>;
-type ShoppingCartProduct = Product & {quantity: number};
+type ShoppingCartProduct = Product & { quantity: number };
 
 type User = {
   id: string,
@@ -60,6 +60,8 @@ type Credentials = {
   recentActivity: Date[],
   platformInfo: string[],
 };
+
+type CredentialsWithTimeStamp = Credentials & { timestamp: Date };
 
 type UserType = 'Admin' | 'User';
 

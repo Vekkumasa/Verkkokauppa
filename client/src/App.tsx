@@ -9,12 +9,13 @@ import ShoppingCart from './components/ShoppingCart';
 import shoppingCartService from './services/shoppingCartService';
 
 import { initializeProducts } from './store/Product/actionCreators';
-import { retrieveOldShoppingCart } from './store/ShoppingCart/actionCreators';
+import { createNewShoppingCart, retrieveOldShoppingCart, clearShoppingCart } from './store/ShoppingCart/actionCreators';
 import { logIn } from './store/User/actionCreators';
-import { safeJsonParse, isCredentials } from './typeGuards';
-
 import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer';
+
 import Notification from './UI/Notification';
+import { safeJsonParse, isCredentialsWithTimestamp } from './typeGuards';
+import { validTimeStamp } from './utils/ValidTimeStamp';
 
 const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -27,6 +28,10 @@ const App = (): JSX.Element => {
     state => state.notificationReducer
   );
 
+  const shoppingCart: ShoppingCartState = useAppSelector(
+    state => state.shoppingCartReducer
+  );
+
   useEffect(() => {
     void dispatch(initializeProducts());
   }, []);
@@ -34,15 +39,34 @@ const App = (): JSX.Element => {
   useEffect(() => {
     const loggedUser = window.localStorage.getItem('loggedUser');
       if (loggedUser) {
-      const parsedUser = safeJsonParse(isCredentials)(loggedUser);
+      const parsedUser = safeJsonParse(isCredentialsWithTimestamp)(loggedUser);
       if (parsedUser.hasError) {
         console.log('error at parsed user');
       } else {
-        dispatch(logIn(parsedUser.parsed));
-        const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed.id);
-        void usersShoppingCart.then((res) => {
-          dispatch(retrieveOldShoppingCart(res.id, res.products));
-        });
+        if (validTimeStamp(parsedUser.parsed.timestamp)) {
+          console.log('valid timestamp');
+          dispatch(logIn(parsedUser.parsed));
+          const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed.id);
+          void usersShoppingCart.then((res) => {
+            if (res) {
+              dispatch(retrieveOldShoppingCart(res.id, res.products));
+            } else {
+              void shoppingCartService.createNewShoppingCart({ 
+                products: shoppingCart.cart,
+                user: parsedUser.parsed.id,
+                id: shoppingCart.cartId
+              }).then((res => {
+                dispatch(createNewShoppingCart(res.id));
+              }));
+            }
+          });
+        } else {
+          console.log('invalid timestamp');
+          void shoppingCartService.setShoppingCartActivity(shoppingCart.cartId, false);
+          dispatch(logIn());
+          dispatch(clearShoppingCart());
+          window.localStorage.removeItem('loggedUser');
+        } 
       }
     }
   }, []);
