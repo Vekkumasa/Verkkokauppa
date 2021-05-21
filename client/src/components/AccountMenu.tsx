@@ -61,19 +61,21 @@ const AccountMenu = (): JSX.Element => {
         onClose={handleClose}
       >
         <Link to="/account" style={{ textDecoration: 'none' }}>
-          <StyledMenuItem onClick={() => console.log('testi')}>
+          <StyledMenuItem>
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>
             <ListItemText primary="Personal info" />
           </StyledMenuItem>
         </Link>
-        <StyledMenuItem onClick={() => alert('Not ready yet')}>
-          <ListItemIcon>
-            <ShoppingBasket fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Past orders" />
-        </StyledMenuItem>
+        <Link to="/pastOrders" style={{ textDecoration: 'none'}}>
+          <StyledMenuItem>
+            <ListItemIcon>
+              <ShoppingBasket fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Past orders" />
+          </StyledMenuItem>
+        </Link>
       </StyledMenu>
     </div>
   );

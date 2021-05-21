@@ -71,6 +71,7 @@ const ShoppingCart: React.FC = (): JSX.Element => {
     return products.reduce((prev, cur) => prev + cur.price * cur.quantity, 0);
   };
   
+  console.log('shopping cart', products);
   return (
     <Box className={classes.box} border={1}>
       <Grid container item xs={12} spacing={3}>
@@ -83,8 +84,8 @@ const ShoppingCart: React.FC = (): JSX.Element => {
                 {products.map(product => {
                   if (product.quantity > 0) {
                     return (
-                      <Container className={classes.container} maxWidth="sm">
-                        <ShoppingCartCard key={product.id} product={product} />
+                      <Container key={product._id} className={classes.container} maxWidth="sm">
+                        <ShoppingCartCard key={product._id} product={product} />
                       </Container>
                     );
                   } else {

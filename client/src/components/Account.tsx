@@ -6,7 +6,7 @@ import { AccountCircle, Edit } from '@material-ui/icons/';
 import { AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
 import ModifyUserInfoModal from '../modals/ModifyUserInfoModal';
-
+import { parseDate } from '../utils/DateParser';
 
 const useStyles = makeStyles({
   nameAndIcon: {
@@ -17,10 +17,21 @@ const useStyles = makeStyles({
   column: {
     display: 'flex',
     flexDirection: 'column',
-  }
+  },
+  header: {
+    textAlign: 'center',
+    height: 20,
+    color: 'white',
+    borderRadius: '15%',
+    backgroundColor: '#2525b8',
+  },
 });
 interface AccountProps {
   user: Credentials | undefined  
+}
+
+interface HeaderProps {
+  text: string
 }
 
 const defaultProps = {
@@ -31,8 +42,25 @@ const defaultProps = {
 const Account = ({user}: AccountProps): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
-  console.log('accountpage user', user);
-  
+  if (!user) return <div></div>;
+
+  const Header = ({text}: HeaderProps): JSX.Element => {
+    return (
+      <Typography className={`${classes.header}`}>{text}</Typography>
+    );
+  };
+
+  const dates: string[] = [];
+  const platformInfo: string[] = [];
+
+  let counter = 0;
+  for (let i = user.recentActivity.length -1; i >= 0; i--) {
+    dates.push(parseDate(user.recentActivity[i]));
+    platformInfo.push(user.platformInfo[i]);
+    counter++;
+    if (counter === 4) break;
+  }
+
   return (
     <div>
       {user &&
@@ -54,8 +82,9 @@ const Account = ({user}: AccountProps): JSX.Element => {
             </Box>
           </Grid>
           <div className={classes.column}>
-            <Grid item xs={9}>
-              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 700 }} {...defaultProps}>
+            <Grid item xs={12}>
+              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
+                <Header text="User info" />
                 <Typography variant='subtitle1'>
                   Email: {user.email} <br/>
                   Firstname: {user.firstName} <br/>
@@ -69,11 +98,12 @@ const Account = ({user}: AccountProps): JSX.Element => {
                
               </Box>
             </Grid>
-            <Grid item xs={9}>
-              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 700 }} {...defaultProps}>
-                <Typography variant='subtitle1'>
-                  Lorem ipsumia ynnä muuta
-                </Typography>
+            <Grid item xs={12}>
+              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
+              <Header text="Recent activity" />
+              {dates.map((date, index) => (
+                <Typography key={index}>{date}: {platformInfo[index]}</Typography>
+              ))}
               </Box>
             </Grid>
           </div>

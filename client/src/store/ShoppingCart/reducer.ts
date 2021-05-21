@@ -7,7 +7,7 @@ const initialState: ShoppingCartState = {
 };
 
 const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
-  const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
+  const item: ShoppingCartProduct | undefined = list.find(p => p._id === product._id);
   if (!item) {
     return product;
   }
@@ -16,7 +16,7 @@ const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 };
 
 const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
-  const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
+  const item: ShoppingCartProduct | undefined = list.find(p => p._id === product._id);
   if (!item) {
     return product;
   }
@@ -29,7 +29,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   if (addOrRemoveActionCheck(action)) {
     switch (action.type) {
       case actionTypes.INCREASE_QUANTITY:   
-        if (!state.cart.some(p => p.id === action.data.id)) {
+        if (!state.cart.some(p => p._id === action.data._id)) {
           return {
             ...state,
             cartId: action.cartId,
@@ -39,7 +39,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
         return {
           ...state,
           cartId: action.cartId,
-          cart: state.cart.map(p => p.id === lisattava.id ? lisattava : p)
+          cart: state.cart.map(p => p._id === lisattava._id ? lisattava : p)
         };
   
       case actionTypes.DECREASE_QUANTITY:
@@ -47,20 +47,19 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
         return {
           ...state,
           cartId: action.cartId,
-          cart: state.cart.map(p => p.id === uusi.id ? uusi : p)
+          cart: state.cart.map(p => p._id === uusi._id ? uusi : p)
         };
   
       case actionTypes.REMOVE_PRODUCT_FROM_CART:
         return {
           ...state,
           cartId: action.cartId,
-          cart: state.cart.filter(p => p.id !== action.data.id)
+          cart: state.cart.filter(p => p._id !== action.data._id)
         };
     }
 
   }
   if (retrieveOldShoppingCartCheck(action)) {
-    console.log('Reducer', action);
     return {
       cartId: action.cartId,
       cart: action.data
@@ -68,12 +67,11 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   }
 
   if (newShoppingCartCheck(action)) {
-    
+    console.log('new shopping cart reducerissa', action);
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
         return {
           ...state,
-          // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
           cartId: action.cartId,
           cart: state.cart
         };
@@ -81,6 +79,7 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
     
   }
   if (clearShoppingCartCheck(action)) {
+    console.log('clear cart reducerissa', action);
     return {
       ...state,
       cartId: '',

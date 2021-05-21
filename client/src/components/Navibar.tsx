@@ -62,6 +62,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
     dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
+    window.localStorage.removeItem('loggedUser');
   };
 
   const handleSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,9 +140,11 @@ const Navibar = ({ user }: Props): JSX.Element => {
                 </IconButton>
               </Link>
             </div>
-            <div>
-              <AccountMenu />
-            </div>
+            {user &&
+              <div>
+                <AccountMenu />
+              </div>
+            }
           </div>
         </Toolbar>
         <LogInModal />

@@ -33,4 +33,7 @@
 | 14.5  |  6   | Tietokannasta haetaan kayttajan vanha ostoskori kayttajan halutessa kirjautumisen yhteydessa |
 | 17.5  |  6   | Refactorings, user info talletetaan localstorageen, typeguardit window.localstoragelle, search bar aloitettu |
 | 18.5  |  6.5 | Hakupalkki, Accountpage, User model muutoksia |
-| yht   |  123.5  | | 
+| 19.5  |  6.5 | Account page + user recent activity + user modaus |
+| 20.5  |  4.5 | Account pagelle viimeisimmät loggaukset + platform info & bugi fiksailuja |
+| 21.5  |   8  | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
+| yht   | 142.5 | | 

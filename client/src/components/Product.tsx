@@ -14,7 +14,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification } from '../store/Notification/actionCreators';
-import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { increaseQuantity, addNewProductToShoppingCart, createNewShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -59,18 +59,18 @@ const Product  = ({ product }: Props): JSX.Element => {
   };
 
   const handleShoppingCart = () => {
-    const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
-    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
+    const isProductAlreadyInCart = shoppingCart.some(p => p._id === product._id);
+    console.log('shopping cart: ', shoppingCart);
+    
+    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p._id === product._id);
 
     if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
-    
+    console.log('cart id (Product.tsx)', cartId);
     if (isProductAlreadyInCart) {
-      console.log("Product already in cart, increasing quantity"); 
       updateShoppingCartProductQuantity(shoppingCartProduct);
-    } else {
-      console.log("Adding new product to cart");    
+    } else {  
       addProductToShoppingCart(shoppingCartProduct);
     }
   };
@@ -79,18 +79,34 @@ const Product  = ({ product }: Props): JSX.Element => {
     if (!user) {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
-      const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
-      response.then((res) => {
-        console.log('res', res);
+      if (!cartId) {
+        console.log('cart id unknown');
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
-      }).catch(e => console.log(e));
+        const newProduct = [ shoppingCartProduct ];
+        void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user.id, id: ''})
+          .then((response) => {
+            dispatch(createNewShoppingCart(response.id));
+          }).catch(e => console.log(e));
+      } else {
+        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+        response.then(() => {
+          dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
+            }).catch(e => console.log(e));
+      }
+      
     }
   };
 
   const updateShoppingCartProductQuantity = (shoppingCartProduct: ShoppingCartProduct) => {
     if (!user) {
       dispatch(increaseQuantity(shoppingCartProduct, cartId));
-    } 
+    } else {
+      void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId: user.id, cartId: cartId })
+        .then((response) => {
+          console.log(response);
+          dispatch(increaseQuantity(shoppingCartProduct, cartId));
+        });
+    }
   };
 
   return (
@@ -125,4 +141,4 @@ const Product  = ({ product }: Props): JSX.Element => {
   );
 };
 
-export {Product};
+export { Product };

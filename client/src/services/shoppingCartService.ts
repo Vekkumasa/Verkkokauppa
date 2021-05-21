@@ -4,14 +4,13 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/api/shoppingCart';
 
-const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCartProduct> => {
-  const request = await axios.post<ShoppingCartProduct>(baseURL, products);
+const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCart> => {
+  const request = await axios.post<ShoppingCart>(baseURL, products);
   return request.data;
 };
 
-const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart> => {
-  const request = await axios.get<ShoppingCart>(`http://localhost:3001/api/shoppingCart/${userId}`);
-  console.log('Shoppingcartservice request.data:', request.data);
+const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart | null> => {
+  const request = await axios.get<ShoppingCart | null>(`${baseURL}/${userId}`);
   return request.data;
 };
 
@@ -36,7 +35,13 @@ const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCar
 };
 
 const setShoppingCartActivity = async (cartId: string, data: boolean):Promise<ShoppingCart> => {
+  console.log('set shopping cart activity cartid', cartId);
   const request = await axios.put<ShoppingCart>(`${baseURL}/${cartId}/activity`, { data: data });
+  return request.data;
+};
+
+const setShoppingCartCompleted = async (cartId: string):Promise<ShoppingCart | null> => {
+  const request = await axios.put<ShoppingCart | null>(`${baseURL}/${cartId}/completed`);
   return request.data;
 };
 
@@ -54,4 +59,5 @@ export default {
   getUsersShoppingCart,
   removeShoppingCart,
   setShoppingCartActivity,
+  setShoppingCartCompleted,
 };

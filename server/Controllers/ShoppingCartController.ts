@@ -1,6 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
+import User from '../models/user';
 import { CartProduct, ShoppingCartProduct } from '../types.d';
 
 const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
@@ -24,7 +25,7 @@ const getCart = async (cartId: string): Promise<ShoppingCartInterface | null> =>
 
 const listOfProducts = async (products: ShoppingCartProduct[]) => {
   const lista: unknown[] = await Promise.all(products.map(async (item): Promise<unknown> => {
-    const product = await Product.findById(item.id);
+    const product = await Product.findById(item._id);
     if (product) {
       return {
         productId: product._id,
@@ -51,6 +52,12 @@ const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: st
     totalPrice
   });
   await cart.save();
+  const user = await User.findById(userId);
+  if (user) {
+    user.shoppingCart.push(cart);
+    await user.save();
+  }
+  console.log('create new shopping cart', products, cart);
   return cart;
 };
 
@@ -62,7 +69,7 @@ const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
     if (!cart || !product) return null;
 
     cart.products.map(p => {    
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         p.quantity -= 1;
       }
     });
@@ -83,14 +90,12 @@ const increaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
 
     if (!cart || !product) return null;
 
-    console.log('product,', product);
     cart.products.map(p => {     
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         p.quantity += 1;
       }
     });
 
-    console.log(cart);
     cart.totalPrice += product.price;
     await cart.save();
 
@@ -108,10 +113,10 @@ const removeProductFromCart = async (cartProduct: CartProduct): Promise<Shopping
     if (!cart || !product || !cart.id) return null;
     let totalPriceOfRemovedObjects = 0;
     const lista = cart.products.filter(p => {
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         totalPriceOfRemovedObjects = product.price * product.quantity;
       }
-      return p.productId !== product.id;
+      return p.productId !== product._id;
     });
 
     cart.products = lista;
@@ -131,9 +136,10 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
     
-    if (!cart || !product || !cart.id) return null;
+    console.log('add new, cart:', cart, ' product: ', product);
+    if (!cart || !product || !cart._id) return null;
 
-    const lista = cart.products.concat({ productId: product.id, name: product.name, image: product.image, price: product.price, quantity: 1 });
+    const lista = cart.products.concat({ productId: product._id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();
@@ -147,7 +153,7 @@ const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
 
 const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
   try {
-    const cart = await ShoppingCart.findOne({user: userId});
+    const cart = await ShoppingCart.findOne({ user: userId, completed: false });
     if (!cart) return null;
     
     return cart;
@@ -158,9 +164,8 @@ const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterfa
 
 const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
   try {
-    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
+    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false, completed: false });
     if (!cart) return null;
-    console.log('deleted cart', cart);
     return cart;
   } catch (e) {
     return null;
@@ -171,7 +176,18 @@ const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartIn
   try {
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
     if (!cart) return null;
+    console.log('(shopping cart controller) setActivity cart:', cart);
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
 
+const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true, active: false, completionDate: new Date }, { new: true });
+    if (!cart) return null;
+    console.log('(Shopping cart controller) setCompleted cart', cart);
     return cart;
   } catch (e) {
     return null;
@@ -188,4 +204,5 @@ export default {
   findUsersShoppingCart,
   removeShoppingCart,
   setActivity,
+  setCompleted,
 };

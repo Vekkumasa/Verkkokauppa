@@ -4,7 +4,9 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import swal from 'sweetalert';
+import platform from 'platform';
 
+import { platformParser } from '../../utils/platformParser';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
@@ -62,6 +64,8 @@ const LogInForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
+  
+  const platformInfo = platformParser(platform.name, platform.os?.family, platform.os?.version); 
 
   const usePreviousShoppingCart = (res: ShoppingCart) => { 
     void swal({
@@ -74,26 +78,16 @@ const LogInForm = ():JSX.Element => {
       if (findPrevious) {
         dispatch(retrieveOldShoppingCart(res.id, res.products));
         void shoppingCartService.setShoppingCartActivity(res.id, true);
-        void swal({
-          title: 'Success',
-          text: 'Retrieved previous shopping cart, happy shopping',
-          icon: 'success',
-        });
       } else {
         const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
-          void promise.then((response) => {            
-            console.log('response', response);
-            const removed = shoppingCartService.removeShoppingCart(res.user);
-            void removed.then((removedResponse) => {
-              console.log('removedresponse', removedResponse);
-            });
-            dispatch(createNewShoppingCart(response.id));
-            void swal({
-              title: 'New Cart',
-              text: 'Created new shopping cart, happy shopping',
-              icon: 'success',
-            });
+        void promise.then((response) => {            
+          const removed = shoppingCartService.removeShoppingCart(res.user);
+          void removed.then((removedResponse) => {
+            console.log('loginform', removedResponse);
           });
+          console.log('LOG IN response', response);
+          dispatch(createNewShoppingCart(response.id));
+        });
       }
     });
   };
@@ -107,7 +101,7 @@ const LogInForm = ():JSX.Element => {
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
-          const user = userService.signIn(values.userName, values.password);
+          const user = userService.signIn(values.userName, values.password, platformInfo);
           void user.then((res) => {
             if (!res.token) {
               dispatch(setNotification("Invalid username / password", 'error'));
@@ -121,9 +115,12 @@ const LogInForm = ():JSX.Element => {
                 userType: res.userType,
                 avatar: res.avatar,
                 token: res.token,
+                recentActivity: res.recentActivity,
+                platformInfo: res.platformInfo
               };
+              const storeInfo: CredentialsWithTimeStamp = { ...credentials, timestamp: new Date };
               window.localStorage.setItem(
-                'loggedUser', JSON.stringify(credentials)
+                'loggedUser', JSON.stringify(storeInfo)
               );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
@@ -131,15 +128,15 @@ const LogInForm = ():JSX.Element => {
               
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
               void usersShoppingCart.then((res) => {
-                console.log('LoginForm get users shopping cart:', res);
                 if (res) {
+                  console.log('login form', res);
                   usePreviousShoppingCart(res);      
                 } else {
+                  console.log('luodaan uusi karry');
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
                   void promise.then((res) => {
-                    console.log('response', res);
+                    console.log('login form new shopping cart', res);
                     dispatch(createNewShoppingCart(res.id));
-                    // TODO: Deletoi vanha kärry kannasta
                   });
                 }
               });
