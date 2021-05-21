@@ -1,5 +1,5 @@
 type Product = {
-  id: string,
+  _id: string,
   name: string,
   price: number,
   stock: number,
@@ -13,22 +13,26 @@ type CartProduct = {
   cartId: string,
 };
 
-type NewShoppingCart = {
+type ShoppingCart = {
   products: ShoppingCartProduct[],
-  userId: string,
+  user: string,
+  id: string,
+  completionDate?: Date,
 };
 
-type NoIdProduct = Omit<Product, 'id'>;
-type ShoppingCartProduct = Product & {quantity: number};
+type NoIdProduct = Omit<Product, '_id'>;
+type ShoppingCartProduct = Product & { quantity: number };
 
 type User = {
   id: string,
+  token?: string,
   firstName: string,
   lastName: string,
   userName: string,
   password: string,
   email: string,
-  userType: UserType
+  userType?: UserType,
+  avatar?: string,
 };
 
 type ShippingInfo = {
@@ -51,14 +55,20 @@ type Credentials = {
   userName: string,
   firstName: string,
   lastName: string,
-  userType: UserType
+  email: string,
+  userType: UserType,
+  avatar?: string,
+  recentActivity: Date[],
+  platformInfo: string[],
 };
+
+type CredentialsWithTimeStamp = Credentials & { timestamp: Date };
 
 type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
-type Modal = 'LogIn' | 'CreateUser' | 'AddProduct';
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser';
 declare module "*.jpg" {
   const content: string;
   export = content;

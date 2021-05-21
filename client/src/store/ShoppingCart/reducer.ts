@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import { addOrRemoveActionCheck, newShoppingCartCheck, clearShoppingCart } from '../../typeGuards';
+import { addOrRemoveActionCheck, newShoppingCartCheck, clearShoppingCartCheck, retrieveOldShoppingCartCheck } from '../../typeGuards';
 
 const initialState: ShoppingCartState = {
   cartId: '',
@@ -7,8 +7,8 @@ const initialState: ShoppingCartState = {
 };
 
 const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
-  const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
-  if (item === undefined) {
+  const item: ShoppingCartProduct | undefined = list.find(p => p._id === product._id);
+  if (!item) {
     return product;
   }
   product.quantity = item.quantity +1;
@@ -16,8 +16,8 @@ const increaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduc
 };
 
 const decreaseQuantity = (product: ShoppingCartProduct, list: ShoppingCartProduct[]): ShoppingCartProduct => {
-  const item: ShoppingCartProduct | undefined = list.find(p => p.id === product.id);
-  if (item === undefined) {
+  const item: ShoppingCartProduct | undefined = list.find(p => p._id === product._id);
+  if (!item) {
     return product;
   }
   product.quantity = item.quantity -1;
@@ -29,50 +29,64 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   if (addOrRemoveActionCheck(action)) {
     switch (action.type) {
       case actionTypes.INCREASE_QUANTITY:   
-        if (!state.cart.some(p => p.id === action.data.id)) {
+        if (!state.cart.some(p => p._id === action.data._id)) {
           return {
+            ...state,
             cartId: action.cartId,
             cart: state.cart.concat(action.data) };
         } 
         const lisattava = increaseQuantity(action.data, state.cart);
         return {
+          ...state,
           cartId: action.cartId,
-          cart: state.cart.map(p => p.id === lisattava.id ? lisattava : p)
+          cart: state.cart.map(p => p._id === lisattava._id ? lisattava : p)
         };
   
       case actionTypes.DECREASE_QUANTITY:
         const uusi = decreaseQuantity(action.data, state.cart);
         return {
+          ...state,
           cartId: action.cartId,
-          cart: state.cart.map(p => p.id === uusi.id ? uusi : p)
+          cart: state.cart.map(p => p._id === uusi._id ? uusi : p)
         };
   
       case actionTypes.REMOVE_PRODUCT_FROM_CART:
         return {
+          ...state,
           cartId: action.cartId,
-          cart: state.cart.filter(p => p.id !== action.data.id)
+          cart: state.cart.filter(p => p._id !== action.data._id)
         };
     }
 
-  } else if (newShoppingCartCheck(action)) {
-    
+  }
+  if (retrieveOldShoppingCartCheck(action)) {
+    return {
+      cartId: action.cartId,
+      cart: action.data
+    };
+  }
+
+  if (newShoppingCartCheck(action)) {
+    console.log('new shopping cart reducerissa', action);
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
         return {
-          // eslint-disable-next-line  @typescript-eslint/no-unsafe-assignment
+          ...state,
           cartId: action.cartId,
           cart: state.cart
         };
     }
     
-  } else if (clearShoppingCart(action)) {
+  }
+  if (clearShoppingCartCheck(action)) {
+    console.log('clear cart reducerissa', action);
     return {
+      ...state,
       cartId: '',
       cart: []
     };
-
   }
-
+  
   return state;
 };
 

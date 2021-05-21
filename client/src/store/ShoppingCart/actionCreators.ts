@@ -7,7 +7,18 @@ export const createNewShoppingCart = (cartId: string): Cart => {
     type: actionTypes.CREATE_NEW_SHOPPING_CART,
     cartId
   };
+  
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};
 
+export const retrieveOldShoppingCart = (cartId: string, products: ShoppingCartProduct[]): Cart => {
+  const action: RetrieveOldShoppingCartAction = {
+    type: actionTypes.RETRIEVE_OLD_SHOPPING_CART,
+    cartId,
+    data: products
+  };
   return (dispatch: DispatchType) => {
     dispatch(action);
   };
@@ -39,7 +50,6 @@ export const increaseQuantity = (product: ShoppingCartProduct, cartId: string): 
 };
 
 export const decreaseQuantity = (product: ShoppingCartProduct, cartId: string): Cart => {
-  console.log('hep', product);
   const action: ShoppingCartAction = {
     type: actionTypes.DECREASE_QUANTITY,
     cartId,

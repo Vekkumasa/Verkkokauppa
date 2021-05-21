@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const getAll = ():Promise<Product[]> => {
   const request = axios.get<Product[]>('http://localhost:3001/api/products');
-  return request.then(response => response.data);
+  return request.then((response: AxiosResponse<Product[]>) => response.data);
 };
 
 const addProduct = async (product: NoIdProduct):Promise<Product> => {
@@ -11,7 +11,7 @@ const addProduct = async (product: NoIdProduct):Promise<Product> => {
 };
 
 const deleteProduct = async (product: Product): Promise<Product> => {
-  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product.id}`);
+  const request = await axios.delete<Product>(`http://localhost:3001/api/products/${product._id}`);
   return request.data;
 };
 

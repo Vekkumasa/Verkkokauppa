@@ -102,7 +102,7 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
       });
     }
   };
-
+  
   return (
     <div className={classes.container}>
       <Card className={classes.card}>

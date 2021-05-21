@@ -3,14 +3,18 @@ import { Formik, Form, Field } from 'formik';
 import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
+import swal from 'sweetalert';
+import platform from 'platform';
 
+import { platformParser } from '../../utils/platformParser';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../../services/shoppingCartService';
+import { retrieveOldShoppingCart } from '../../store/ShoppingCart/actionCreators'; 
 
 const useStyles = makeStyles({
   field: {
@@ -60,6 +64,34 @@ const LogInForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
   const classes = useStyles();
+  
+  const platformInfo = platformParser(platform.name, platform.os?.family, platform.os?.version); 
+
+  const usePreviousShoppingCart = (res: ShoppingCart) => { 
+    void swal({
+      title: 'Use unfinished shopping cart?',
+      text: 'Previous unfinished shopping cart found, do you want to use that one or create new one? Old will be removed permanently if new is created',
+      icon: 'info',
+      buttons: ['Create new!', 'Use previous!'],
+    })
+    .then((findPrevious) => {
+      if (findPrevious) {
+        dispatch(retrieveOldShoppingCart(res.id, res.products));
+        void shoppingCartService.setShoppingCartActivity(res.id, true);
+      } else {
+        const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
+        void promise.then((response) => {            
+          const removed = shoppingCartService.removeShoppingCart(res.user);
+          void removed.then((removedResponse) => {
+            console.log('loginform', removedResponse);
+          });
+          console.log('LOG IN response', response);
+          dispatch(createNewShoppingCart(response.id));
+        });
+      }
+    });
+  };
+
   return (
     <div>
       <Formik
@@ -69,34 +101,44 @@ const LogInForm = ():JSX.Element => {
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
-          const user = userService.signIn(values.userName, values.password);
+          const user = userService.signIn(values.userName, values.password, platformInfo);
           void user.then((res) => {
-            if (res.token === undefined) {
-              const notificationType: NotificationType = 'error';
-              dispatch(setNotification("Invalid username / password", notificationType));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
+            if (!res.token) {
+              dispatch(setNotification("Invalid username / password", 'error'));
             } else {
               const credentials: Credentials = {
                 id: res.id,
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,
+                email: res.email,
                 userType: res.userType,
+                avatar: res.avatar,
                 token: res.token,
+                recentActivity: res.recentActivity,
+                platformInfo: res.platformInfo
               };
+              const storeInfo: CredentialsWithTimeStamp = { ...credentials, timestamp: new Date };
+              window.localStorage.setItem(
+                'loggedUser', JSON.stringify(storeInfo)
+              );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
-              const notificationType: NotificationType = 'success';
-              dispatch(setNotification("Logged in as: " + credentials.userName, notificationType));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
-              const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, userId: res.id });
-              void promise.then((res) => {
-                console.log('response', res);
-                dispatch(createNewShoppingCart(res.id));
+              dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
+              
+              const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
+              void usersShoppingCart.then((res) => {
+                if (res) {
+                  console.log('login form', res);
+                  usePreviousShoppingCart(res);      
+                } else {
+                  console.log('luodaan uusi karry');
+                  const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
+                  void promise.then((res) => {
+                    console.log('login form new shopping cart', res);
+                    dispatch(createNewShoppingCart(res.id));
+                  });
+                }
               });
             }
           });
@@ -118,9 +160,9 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.userName && touched.userName ? (
+                  {(errors.userName && touched.userName) && (
                     <div>{errors.userName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               
@@ -137,16 +179,16 @@ const LogInForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.password && touched.password ? (
+                  {(errors.password && touched.password) && (
                     <div>{errors.password}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>
             <button className={classes.button} type="submit">Submit</button>
           </Form>
         )}
-      </Formik>
+      </Formik>      
     </div>
  );
 };

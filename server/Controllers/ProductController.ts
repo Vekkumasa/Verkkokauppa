@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import Product, { ProductInterface } from "../models/product";
-import { Product as ProductType } from '../types';
+import { Product as ProductType } from '../types.d';
 
 const GetProducts = async (): Promise<ProductInterface[]> => {
   return await Product.find({});
@@ -39,4 +39,3 @@ export default {
   NewProduct,
   DeleteProduct,
 };
-

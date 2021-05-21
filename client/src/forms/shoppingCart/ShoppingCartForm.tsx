@@ -6,8 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 import { userCheck } from '../../typeGuards';
+import shoppingCartService from '../../services/shoppingCartService';
+import { clearShoppingCart } from '../../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -47,44 +49,50 @@ const useStyles = makeStyles({
 });
 
 const ShippingSchema = Yup.object().shape({
-firstName: Yup
-  .string()
-  .required("Required"),
-lastName: Yup
-  .string()
-  .required("Required"),
-address: Yup
-  .string()
-  .required("Required")
+  firstName: Yup
+    .string()
+    .required("Required"),
+  lastName: Yup
+    .string()
+    .required("Required"),
+  address: Yup
+    .string()
+    .required("Required")
 });
  
 const ShoppingCartForm = ():JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   const classes = useStyles();
 
-  const user: Credentials | null = useAppSelector(state => state.userReducer.user);
-  const products: ShoppingCartProduct[] = useAppSelector(state => state.shoppingCartReducer.cart);
+  const user: Credentials | undefined = useAppSelector(state => state.userReducer.user);
+  const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
 
   return (
     <div>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
+          firstName: user ? user.firstName : '',
+          lastName: user ? user.lastName : '',
           address: '',
         }}
         validationSchema={ShippingSchema}
         onSubmit={values => {
-          const { firstName, lastName, address } = values;
+          const { firstName, lastName, address } = values;      
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
-
+          // TODO: Checkaa ettei kärry ole tyhjä
           if (userCheck(user)) {
-            const text = "Delivering products to " + shippingInfo.address;
-            const type: NotificationType = 'success';
-            dispatch(setNotification(text, type));
-            setTimeout(() => {
-              dispatch(hideNotification());
-            }, 5000);
+            void shoppingCartService.setShoppingCartCompleted(cartState.cartId)
+              .then((response) => {
+                if (!response) {
+                  console.log(response);
+                  dispatch(setNotification('Unexpected error', 'error'));
+                  // TODO: ??
+                } else {
+                  console.log(response);
+                  dispatch(clearShoppingCart());
+                  dispatch(setNotification('Delivering products to ' + shippingInfo.address, 'success'));
+                }
+            });
           }    
         }}
       >
@@ -93,7 +101,7 @@ const ShoppingCartForm = ():JSX.Element => {
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>First name: </label>
+                  <label>First name: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -104,14 +112,14 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.firstName && touched.firstName ? (
+                  {(errors.firstName && touched.firstName) && (
                     <div>{errors.firstName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Last name: </label>
+                  <label>Last name: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -122,14 +130,14 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.lastName && touched.lastName ? (
+                  {(errors.lastName && touched.lastName) && (
                     <div>{errors.lastName}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Address: </label>
+                  <label>Address: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -140,18 +148,16 @@ const ShoppingCartForm = ():JSX.Element => {
                   />
                 </Grid>
                 <Grid item xs={1}>
-                  {errors.address && touched.address ? (
+                  {(errors.address && touched.address) && (
                     <div>{errors.address}</div>
-                  ) : null}
+                  )}
                 </Grid>
               </Grid>
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button disabled={user === null} className={classes.button} type="submit"> Submit </button>
-                {user === null ?
+              <button disabled={!user} className={classes.button} type="submit"> Submit </button>
+                {!user &&
                   <Typography variant="subtitle1" className={classes.logInText}> Please sign in first </Typography>
-                  :
-                  null
                 }
             </div>
           </Form>

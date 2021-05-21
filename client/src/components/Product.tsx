@@ -13,14 +13,14 @@ import Delete from '@material-ui/icons/DeleteForever';
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
-import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { setNotification } from '../store/Notification/actionCreators';
+import { increaseQuantity, addNewProductToShoppingCart, createNewShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 170,
+    width: 170,
     marginRight: 20
   },
   centerText: {
@@ -37,11 +37,15 @@ const useStyles = makeStyles({
   },
 });
 
-const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
+type Props = {
+  product: Product
+};
+
+const Product  = ({ product }: Props): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
-  const user: Credentials | null = useAppSelector(
+  const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
@@ -49,27 +53,24 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
 
   const deleteProduct = () => {
     // Todo: Tarkistus että tuote todella on poistettu kannasta ennen frontista deletointia ?
-    void productService.deleteProduct(product);
+    productService.deleteProduct(product).catch(e => console.log(e));
     dispatch(removeProduct(product));
     dispatch(setNotification("Removed " + product.name, 'info'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
   };
 
   const handleShoppingCart = () => {
-    const isProductAlreadyInCart = shoppingCart.some(p => p.id === product.id);
-    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p.id === product.id);
+    const isProductAlreadyInCart = shoppingCart.some(p => p._id === product._id);
+    console.log('shopping cart: ', shoppingCart);
+    
+    let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p._id === product._id);
 
-    if (shoppingCartProduct === undefined) {   
+    if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
-    
+    console.log('cart id (Product.tsx)', cartId);
     if (isProductAlreadyInCart) {
-      console.log("Product already in cart, increasing quantity"); 
       updateShoppingCartProductQuantity(shoppingCartProduct);
-    } else {
-      console.log("Adding new product to cart");    
+    } else {  
       addProductToShoppingCart(shoppingCartProduct);
     }
   };
@@ -78,18 +79,34 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
     if (!user) {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
-      const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
-      void response.then((res) => {
-        console.log('res', res);
+      if (!cartId) {
+        console.log('cart id unknown');
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
-      });
+        const newProduct = [ shoppingCartProduct ];
+        void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user.id, id: ''})
+          .then((response) => {
+            dispatch(createNewShoppingCart(response.id));
+          }).catch(e => console.log(e));
+      } else {
+        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+        response.then(() => {
+          dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
+            }).catch(e => console.log(e));
+      }
+      
     }
   };
 
   const updateShoppingCartProductQuantity = (shoppingCartProduct: ShoppingCartProduct) => {
     if (!user) {
       dispatch(increaseQuantity(shoppingCartProduct, cartId));
-    } 
+    } else {
+      void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId: user.id, cartId: cartId })
+        .then((response) => {
+          console.log(response);
+          dispatch(increaseQuantity(shoppingCartProduct, cartId));
+        });
+    }
   };
 
   return (
@@ -112,18 +129,16 @@ const Product: React.FC<{ product: Product }> = ({ product }): JSX.Element => {
         <Button size="small" color="primary" onClick={() => handleShoppingCart()}>
           Lisää ostoskoriin
         </Button>
-        {user !== null && user.userType === 'Admin' ?         
+        {user?.userType === 'Admin' && (
           <IconButton onClick={() => deleteProduct()}>
             <Tooltip title="Remove product from database">
               <Delete />
             </Tooltip>
           </IconButton>
-        :
-          null
-        }
+        )}
       </CardActions>
     </Card>
   );
 };
 
-export default Product;
+export { Product };

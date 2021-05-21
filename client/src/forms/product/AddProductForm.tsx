@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import productService from '../../services/productService';
 import { addProduct } from '../../store/Product/actionCreators';
-import { setNotification, hideNotification } from '../../store/Notification/actionCreators';
+import { setNotification } from '../../store/Notification/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -80,15 +80,12 @@ const useStyles = makeStyles({
                 price: res.price,
                 stock: res.stock,
                 image: res.image,
-                id: res.id
+                _id: res._id
               };
               dispatch(addProduct(addedProduct));
               const text = "Product " + product.name + " added";
               const type: NotificationType = 'success';
               dispatch(setNotification(text, type));
-              setTimeout(() => {
-                dispatch(hideNotification());
-              }, 5000);
             });
           }}
         >
@@ -97,7 +94,7 @@ const useStyles = makeStyles({
               <Grid container spacing={1}>
                 <Grid container item xs={12} spacing={3}>
                   <Grid item xs={2}>
-                    <label>Name: </label>
+                    <label>Name: <b style={{color: 'red'}}>*</b> </label>
                   </Grid>
                   <Grid item xs={9}>
                     <Field
@@ -108,9 +105,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.name && touched.name ? (
+                    {(errors.name && touched.name) && (
                       <div>{errors.name}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -120,20 +117,20 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="So useless product that Wish.com should sell these"
+                      placeholder="So useless product that Wish.com should sell these (optional)"
                       type="text"
                       name="description"
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.description && touched.description ? (
+                    {(errors.description && touched.description) && (
                       <div>{errors.description}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
                   <Grid item xs={2}>
-                    <label>Price: </label>
+                    <label>Price: <b style={{color: 'red'}}>*</b> </label>
                   </Grid>
                   <Grid item xs={9}>
                     <Field
@@ -144,9 +141,9 @@ const useStyles = makeStyles({
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.price && touched.price ? (
+                    {(errors.price && touched.price) && (
                       <div>{errors.price}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -156,15 +153,15 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="Stock"
+                      placeholder="Stock (optional)"
                       type="number"
                       name="stock"
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.stock && touched.stock ? (
+                    {(errors.stock && touched.stock) && (
                       <div>{errors.stock}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={3}>
@@ -174,15 +171,15 @@ const useStyles = makeStyles({
                   <Grid item xs={9}>
                     <Field
                       className={classes.field}
-                      placeholder="www.image.com"
+                      placeholder="www.image.com (optional)"
                       type="text"
                       name="image"
                     />
                   </Grid>
                   <Grid item xs={1}>
-                    {errors.image && touched.image ? (
+                    {(errors.image && touched.image) && (
                       <div>{errors.image}</div>
-                    ) : null}
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

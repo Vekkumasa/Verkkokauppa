@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
-import { ShoppingCartProductDB } from '../types';
+import { ShoppingCartProductDB } from '../types.d';
 export interface ShoppingCartInterface extends mongoose.Document {
   totalPrice: number;
   products: ShoppingCartProductDB[];
   active: boolean;
+  completed: boolean;
+  completionDate?: Date;
   user?: string;
   _id?: string;
 }
@@ -14,12 +16,15 @@ const ShoppingCartSchema: mongoose.Schema = new mongoose.Schema({
     {
       productId: String,
       name: String,
+      image: String,
       quantity: Number,
       price: Number
     }
   ],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  active: { type: Boolean, required: true }
+  active: { type: Boolean, required: true },
+  completed: { type: Boolean, required: true },
+  completionDate: { type: Date },
 },
 {
   toJSON: {

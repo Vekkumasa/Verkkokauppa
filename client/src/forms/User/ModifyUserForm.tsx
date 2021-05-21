@@ -5,9 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 
 import userService from '../../services/userService';
-import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
+import { logIn } from '../../store/User/actionCreators';
 
  const useStyles = makeStyles({
 
@@ -60,48 +61,61 @@ import { handleModal } from '../../store/modal/actionCreators';
       .required('Required'),
 
     password: Yup
-      .string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
+      .string(),
 
     email: Yup
       .string()
       .email('Invalid email')
       .required('Required'),
+
+    avatar: Yup
+      .string(),
  });
  
- const CreateUserForm = ():JSX.Element => {
+ const ModifyUserForm = ():JSX.Element => {
    const classes = useStyles();
    const dispatch: AppDispatch = useAppDispatch();
+   const loggedUser: Credentials | undefined = useAppSelector(state => state.userReducer.user);
+   if (!loggedUser) return <div></div>;
    return (
     <div>
       <Formik
         initialValues={{
-          userName: '',
-          firstName: '',
-          lastName: '',
+          userName: loggedUser.userName,
+          firstName: loggedUser.firstName,
+          lastName: loggedUser.lastName,
           password: '',
-          email: '',
+          email: loggedUser.email,
+          avatar: loggedUser.avatar,
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
-          const newUser: NoIdUser = { 
+          const modifiedUser: NoIdUser = { 
             userName: values.userName,
             firstName: values.firstName,
             lastName: values.lastName,
             password: values.password,
             email: values.email,
-            userType: 'User',
+            avatar: values.avatar,
           };
-          const promise = userService.createUser(newUser);
+          const promise = userService.modifyUser(modifiedUser);
           promise.then((res) => {
             // TODO: Korjaa backendi palauttamaan mikä kohta lomakkeessa feilaa
             if (!res) {
-              dispatch(setNotification("User creation failed",  'error'));
+              dispatch(setNotification("User modification failed",  'error'));
             } else {
-              dispatch(handleModal(false, 'CreateUser'));
-              dispatch(setNotification("Created user: " + newUser.userName, 'success'));
+              dispatch(handleModal(false, 'ModifyUser'));
+              dispatch(logIn({
+                ...modifiedUser,
+                id: loggedUser.id,
+                userType: loggedUser.userType,
+                token: loggedUser.token,
+                recentActivity: loggedUser.recentActivity,
+                platformInfo: loggedUser.platformInfo
+              }));
+              window.localStorage.setItem(
+                'loggedUser', JSON.stringify({ ...modifiedUser, id: loggedUser.id, userType: loggedUser.userType, token: loggedUser.token })
+              );
             }
           }).catch(e => console.log(e));    
         }}
@@ -111,7 +125,7 @@ import { handleModal } from '../../store/modal/actionCreators';
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                <label>Username: <b style={{color: 'red'}}>*</b> </label>
+                  <label>Username: <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -165,12 +179,12 @@ import { handleModal } from '../../store/modal/actionCreators';
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Password: <b style={{color: 'red'}}>*</b> </label>
+                  <label>Password: </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
                     className={classes.field}
-                    placeholder="Password"
+                    placeholder="If password field is left empty, it will not be changed"
                     type="password"
                     name="password"
                   />
@@ -199,6 +213,24 @@ import { handleModal } from '../../store/modal/actionCreators';
                   )}
                 </Grid>
               </Grid>
+              <Grid container item xs={12} spacing={3}>
+                <Grid item xs={2}>
+                  <label>Avatar: </label>
+                </Grid>
+                <Grid item xs={9}>
+                  <Field
+                    className={classes.field}
+                    placeholder="www.avatar/org/avatar.png (optional)"
+                    type="text"
+                    name="avatar"
+                  />
+                </Grid>
+                <Grid item xs={1}>
+                  {(errors.avatar && touched.avatar) && (
+                    <div>{errors.avatar}</div>
+                  )}
+                </Grid>
+              </Grid>
             </Grid>
             <button className={classes.button} type="submit">Submit</button>
           </Form>
@@ -208,4 +240,4 @@ import { handleModal } from '../../store/modal/actionCreators';
  );
 };
 
- export default CreateUserForm;
+ export default ModifyUserForm;

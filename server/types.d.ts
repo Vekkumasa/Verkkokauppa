@@ -10,9 +10,10 @@ type Product = {
 };
 
 type ShoppingCartProduct = {
-  id: string,
+  _id: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 
@@ -20,22 +21,42 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
+  image: string,
   price: number
 };
 
 type NewShoppingCart = {
   products: ShoppingCartProduct[],
-  userId: string,
+  user: string,
+};
+
+type CustomBoolean = {
+  data: boolean
 };
 
 type User = {
   _id: string,
+  token?: string,
   email: string,
   firstName: string,
   lastName: string,
   userName: string,
   password: string,
-  userType: string
+  userType: string,
+  avatar?: string,
+};
+
+type Credentials = {
+  id: string,
+  token: string,
+  userName: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  userType: UserType,
+  avatar?: string,
+  recentActivity: Date[],
+  platformInfo: string[],
 };
 
 type CartProduct = {
@@ -46,7 +67,8 @@ type CartProduct = {
 
 type LoginInfo = {
   username: string,
-  password: string
+  password: string,
+  platformInfo: string,
 };
 
 type ShoppingCart = {
@@ -61,12 +83,3 @@ type UserType = 'Admin' | 'User';
 interface CustomRequest<T> extends Request {
   body: T
 }
-
-type Credentials = {
-  id: string,
-  token: string,
-  userName: string,
-  firstName: string,
-  lastName: string,
-  userType: UserType
-};

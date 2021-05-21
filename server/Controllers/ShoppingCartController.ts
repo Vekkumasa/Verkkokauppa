@@ -1,9 +1,10 @@
 import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
-import { CartProduct, ShoppingCartProduct } from '../types';
+import User from '../models/user';
+import { CartProduct, ShoppingCartProduct } from '../types.d';
 
-const GetAllCarts = async (): Promise<ShoppingCartInterface[]> => {
+const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
 };
 
@@ -24,12 +25,13 @@ const getCart = async (cartId: string): Promise<ShoppingCartInterface | null> =>
 
 const listOfProducts = async (products: ShoppingCartProduct[]) => {
   const lista: unknown[] = await Promise.all(products.map(async (item): Promise<unknown> => {
-    const product = await Product.findById(item.id);
+    const product = await Product.findById(item._id);
     if (product) {
       return {
         productId: product._id,
         name: item.name,
         quantity: item.quantity,
+        image: item.image,
         price: item.price,
       };
     }
@@ -46,21 +48,28 @@ const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: st
     products: list,
     user: userId,
     active: true,
+    completed: false,
     totalPrice
   });
   await cart.save();
+  const user = await User.findById(userId);
+  if (user) {
+    user.shoppingCart.push(cart);
+    await user.save();
+  }
+  console.log('create new shopping cart', products, cart);
   return cart;
 };
 
-const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const decreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
 
     if (!cart || !product) return null;
 
-    cart.products.map(p => {     
-      if (p.productId === product.id) {
+    cart.products.map(p => {    
+      if (p.productId === product._id) {
         p.quantity -= 1;
       }
     });
@@ -74,21 +83,19 @@ const DecreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
   }
 };
 
-const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const increaseProductQuantity = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
 
     if (!cart || !product) return null;
 
-    console.log('product,', product);
     cart.products.map(p => {     
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         p.quantity += 1;
       }
     });
 
-    console.log(cart);
     cart.totalPrice += product.price;
     await cart.save();
 
@@ -98,7 +105,7 @@ const IncreaseProductQuantity = async (cartProduct: CartProduct): Promise<Shoppi
   }
 };
 
-const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const removeProductFromCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
@@ -106,10 +113,10 @@ const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<Shopping
     if (!cart || !product || !cart.id) return null;
     let totalPriceOfRemovedObjects = 0;
     const lista = cart.products.filter(p => {
-      if (p.productId === product.id) {
+      if (p.productId === product._id) {
         totalPriceOfRemovedObjects = product.price * product.quantity;
       }
-      return p.productId !== product.id;
+      return p.productId !== product._id;
     });
 
     cart.products = lista;
@@ -123,15 +130,16 @@ const RemoveProductFromCart = async (cartProduct: CartProduct): Promise<Shopping
   }
 };
 
-const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
+const addNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCartInterface | null> => {
   try {
     const { product } = cartProduct;
 
     const cart: ShoppingCartInterface | null = await getCart(cartProduct.cartId);
     
-    if (!cart || !product || !cart.id) return null;
+    console.log('add new, cart:', cart, ' product: ', product);
+    if (!cart || !product || !cart._id) return null;
 
-    const lista = cart.products.concat({ productId: product.id, name: product.name, price: product.price, quantity: 1 });
+    const lista = cart.products.concat({ productId: product._id, name: product.name, image: product.image, price: product.price, quantity: 1 });
     cart.products = lista;
     cart.totalPrice += product.price;
     await cart.save();
@@ -143,11 +151,58 @@ const AddNewProductToCart = async (cartProduct: CartProduct): Promise<ShoppingCa
   }
 };
 
+const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findOne({ user: userId, completed: false });
+    if (!cart) return null;
+    
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false, completed: false });
+    if (!cart) return null;
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
+    if (!cart) return null;
+    console.log('(shopping cart controller) setActivity cart:', cart);
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true, active: false, completionDate: new Date }, { new: true });
+    if (!cart) return null;
+    console.log('(Shopping cart controller) setCompleted cart', cart);
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
 export default {
-  GetAllCarts,
-  AddNewProductToCart,
-  DecreaseProductQuantity,
-  IncreaseProductQuantity,
+  getAllCarts,
+  addNewProductToCart,
+  decreaseProductQuantity,
+  increaseProductQuantity,
   createNewShoppingCart,
-  RemoveProductFromCart,
+  removeProductFromCart,
+  findUsersShoppingCart,
+  removeShoppingCart,
+  setActivity,
+  setCompleted,
 };

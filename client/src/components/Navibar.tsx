@@ -1,24 +1,20 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import Tooltip from '@material-ui/core/Tooltip';
+import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
+import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace } from '@material-ui/icons/';
 import { Link } from "react-router-dom";
 
+import AccountMenu from './AccountMenu';
 import { logIn } from '../store/User/actionCreators';
-import { setNotification, hideNotification } from '../store/Notification/actionCreators';
-import { useAppDispatch, AppDispatch } from '../store/rootReducer';
+import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
+import { setNotification } from '../store/Notification/actionCreators';
+import { setFilter } from '../store/Filter/actionCreators';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
 import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
 import { handleModal } from '../store/modal/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -36,33 +32,54 @@ const useStyles = makeStyles((theme) => ({
   login: {
     margin: theme.spacing(2),
     fontSize: 15,
+    flexDirection: 'column'
   },
   addProductIcon: {
     height: 30,
     width: 30,
   },
-  shoppingCart: {
+  whiteIcon: {
     color: 'white',
     fontSize: 30
+  },
+  searchIcon: {
+    color: 'white',
   }
 }));
 
-type UserProp = {
-  user: Credentials | null
+type Props = {
+  user?: Credentials
 };
 
-const Navibar: React.FC<UserProp> = ({ user }) => {
+const Navibar = ({ user }: Props): JSX.Element => {
+  const [ searchText, setSearchText ] = useState('');
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
-
+  const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
+  
   const logOut = () => {
-    dispatch(logIn(null));
+    void shoppingCartService.setShoppingCartActivity(cartId, false);
+    dispatch(logIn());
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
-    setTimeout(() => {
-      dispatch(hideNotification());
-    }, 5000);
+    window.localStorage.removeItem('loggedUser');
   };
+
+  const handleSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setSearchText(event.target.value);
+  };
+
+  const filterProducts = () => {
+    dispatch(setFilter(searchText));
+  };
+
+  const clearFilter = () => {
+    setSearchText('');
+    dispatch(setFilter(''));
+  };
+
+  const loggedIn = !!user;
 
   return (
     <div>
@@ -70,40 +87,44 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
         <Toolbar>
           <Link to="/">
             <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
+              <Menu />
             </IconButton>
           </Link>
           <Typography variant="h6" className={classes.title}>
             Verkkokauppa
           </Typography>
+          <TextField 
+            placeholder="Search products"
+            onChange={handleSearchText}
+            style={{ backgroundColor: '#dae1f0'}}
+            size="small"
+            variant="outlined"
+            value={searchText}
+          />
+          <IconButton onClick={() => filterProducts()}>
+            <Search className={classes.searchIcon}/>
+          </IconButton>
+          <IconButton onClick={() => clearFilter()}>
+            <Tooltip title="Clear searchbar">
+              <Backspace className={classes.searchIcon} />
+            </Tooltip>
+          </IconButton>
           <div className={classes.buttons}>
-            {user !== null && user.userType === 'Admin' ?
+            {user?.userType === 'Admin' && (
               <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
                 <Tooltip title="Add product">
-                  <AddCircleOutlineIcon className={classes.addProductIcon} />
+                  <AddCircleOutline className={classes.addProductIcon} />
                 </Tooltip>
               </IconButton>
-            :
-              null
-            }
-            {user === null ?
-              <div>
-                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Login
-                  </Typography>
-                </Button>
-              </div>  
-              :
-              <div>
-                <Button onClick={() => logOut()} color="inherit">
-                  <Typography variant="h6" className={classes.login}>
-                    Log out
-                  </Typography>
-                </Button>
-              </div>
-            }
-            {user === null ?
+            )}
+            <div>
+              <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
+                <Typography variant="h6" className={classes.login}>
+                  {loggedIn ? 'Log out' : 'Login'}
+                </Typography>
+              </Button>
+            </div>  
+            {!user && 
               <div>
                 <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
@@ -111,16 +132,19 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
                   </Typography>
                 </Button>
               </div>  
-              :
-              null
             }
             <div>
               <Link to="/shoppingCart">
-                <IconButton className={classes.shoppingCart} >
-                  <ShoppingCartIcon style={{ fontSize: 30, marginTop: 5}}/>
+                <IconButton className={classes.whiteIcon} >
+                  <ShoppingCart style={{ fontSize: 30, marginTop: 5}}/>
                 </IconButton>
               </Link>
             </div>
+            {user &&
+              <div>
+                <AccountMenu />
+              </div>
+            }
           </div>
         </Toolbar>
         <LogInModal />
@@ -131,4 +155,4 @@ const Navibar: React.FC<UserProp> = ({ user }) => {
   );
 };
 
-export default Navibar;
+export { Navibar };
