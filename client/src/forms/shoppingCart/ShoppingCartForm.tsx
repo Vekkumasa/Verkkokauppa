@@ -79,7 +79,7 @@ const ShoppingCartForm = ():JSX.Element => {
         onSubmit={values => {
           const { firstName, lastName, address } = values;      
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
-
+          // TODO: Checkaa ettei kärry ole tyhjä
           if (userCheck(user)) {
             void shoppingCartService.setShoppingCartCompleted(cartState.cartId)
               .then((response) => {

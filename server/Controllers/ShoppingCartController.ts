@@ -185,7 +185,7 @@ const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartIn
 
 const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null> => {
   try {
-    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true , active: false }, { new: true });
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true, active: false, completionDate: new Date }, { new: true });
     if (!cart) return null;
     console.log('(Shopping cart controller) setCompleted cart', cart);
     return cart;

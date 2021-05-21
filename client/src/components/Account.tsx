@@ -6,6 +6,7 @@ import { AccountCircle, Edit } from '@material-ui/icons/';
 import { AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
 import ModifyUserInfoModal from '../modals/ModifyUserInfoModal';
+import { parseDate } from '../utils/DateParser';
 
 const useStyles = makeStyles({
   nameAndIcon: {
@@ -47,16 +48,6 @@ const Account = ({user}: AccountProps): JSX.Element => {
     return (
       <Typography className={`${classes.header}`}>{text}</Typography>
     );
-  };
-
-  const parseDate = (date: Date):string => {
-    const d = new Date(date);
-    const day = d.getDate().toString();
-    const month = `${d.getMonth() + 1}`;
-    const year = d.getFullYear().toString();
-    const hour = d.getHours().toString();
-    const minutes = d.getMinutes().toString();
-    return day + '.' + month + '.' + year + '  ' + hour + ':' + minutes;
   };
 
   const dates: string[] = [];

@@ -59,8 +59,9 @@ const modifyUser = async (user: UserType) => {
 
 const getCompletedShoppingCarts = async (userId: string):Promise<ShoppingCartInterface[] | null> => {
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate('shoppingCart');
     if (!user) return null;
+
     return user.shoppingCart.filter(cart => cart.completed === true);
   } catch (e) {
     return null;

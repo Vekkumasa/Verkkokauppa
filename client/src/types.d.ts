@@ -17,6 +17,7 @@ type ShoppingCart = {
   products: ShoppingCartProduct[],
   user: string,
   id: string,
+  completionDate?: Date,
 };
 
 type NoIdProduct = Omit<Product, '_id'>;

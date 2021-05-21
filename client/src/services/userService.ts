@@ -18,7 +18,7 @@ const modifyUser = async (user: CreateUserInput):Promise<User> => {
 };
 
 const getUsersCompletedShoppingcarts = async (userId: string):Promise<ShoppingCart[]> => {
-  const request = await axios.get<ShoppingCart[]>(`${baseURL}/${userId}`);
+  const request = await axios.get<ShoppingCart[]>(`${baseURL}/users/${userId}`);
   return request.data;
 };
 
