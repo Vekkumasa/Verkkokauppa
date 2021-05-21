@@ -8,6 +8,8 @@ import * as Yup from 'yup';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import { setNotification } from '../../store/Notification/actionCreators';
 import { userCheck } from '../../typeGuards';
+import shoppingCartService from '../../services/shoppingCartService';
+import { clearShoppingCart } from '../../store/ShoppingCart/actionCreators';
 
 const useStyles = makeStyles({
   field: {
@@ -63,22 +65,34 @@ const ShoppingCartForm = ():JSX.Element => {
   const classes = useStyles();
 
   const user: Credentials | undefined = useAppSelector(state => state.userReducer.user);
+  const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
 
   return (
     <div>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: '',
+          firstName: user ? user.firstName : '',
+          lastName: user ? user.lastName : '',
           address: '',
         }}
         validationSchema={ShippingSchema}
         onSubmit={values => {
-          const { firstName, lastName, address } = values;
+          const { firstName, lastName, address } = values;      
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
 
           if (userCheck(user)) {
-            dispatch(setNotification('Delivering products to '+ shippingInfo.address, 'success'));
+            void shoppingCartService.setShoppingCartCompleted(cartState.cartId)
+              .then((response) => {
+                if (!response) {
+                  console.log(response);
+                  dispatch(setNotification('Unexpected error', 'error'));
+                  // TODO: ??
+                } else {
+                  console.log(response);
+                  dispatch(clearShoppingCart());
+                  dispatch(setNotification('Delivering products to ' + shippingInfo.address, 'success'));
+                }
+            });
           }    
         }}
       >

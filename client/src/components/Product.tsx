@@ -14,7 +14,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification } from '../store/Notification/actionCreators';
-import { increaseQuantity, addNewProductToShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { increaseQuantity, addNewProductToShoppingCart, createNewShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -79,11 +79,20 @@ const Product  = ({ product }: Props): JSX.Element => {
     if (!user) {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
-      
-      const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
-      response.then(() => {
+      if (!cartId) {
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
-      }).catch(e => console.log(e));
+        const newProduct = [ shoppingCartProduct ];
+        void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user.id, id: ''})
+          .then((response) => {
+            dispatch(createNewShoppingCart(response.id));
+          }).catch(e => console.log(e));
+      } else {
+        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+        response.then(() => {
+          dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
+            }).catch(e => console.log(e));
+      }
+      
     }
   };
 

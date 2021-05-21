@@ -30,7 +30,7 @@ type NewShoppingCart = {
   user: string,
 };
 
-type ActivitySwitch = {
+type CustomBoolean = {
   data: boolean
 };
 

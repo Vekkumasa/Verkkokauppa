@@ -57,6 +57,7 @@ const createNewShoppingCart = async (products: ShoppingCartProduct[], userId: st
     user.shoppingCart.push(cart);
     await user.save();
   }
+  console.log('create new shopping cart', products, cart);
   return cart;
 };
 
@@ -163,7 +164,7 @@ const findUsersShoppingCart = async (userId: string):Promise<ShoppingCartInterfa
 
 const removeShoppingCart = async (userId: string): Promise<ShoppingCartInterface | null> => {
   try {
-    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false });
+    const cart = await ShoppingCart.findOneAndDelete({ user: userId, active: false, completed: false });
     if (!cart) return null;
     return cart;
   } catch (e) {
@@ -175,7 +176,18 @@ const setActivity = async (cartId: string, data: boolean):Promise<ShoppingCartIn
   try {
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { active: data }, { new: true });
     if (!cart) return null;
-    console.log('cart:', cart);
+    console.log('(shopping cart controller) setActivity cart:', cart);
+    return cart;
+  } catch (e) {
+    return null;
+  }
+};
+
+const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null> => {
+  try {
+    const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true , active: false }, { new: true });
+    if (!cart) return null;
+    console.log('(Shopping cart controller) setCompleted cart', cart);
     return cart;
   } catch (e) {
     return null;
@@ -192,4 +204,5 @@ export default {
   findUsersShoppingCart,
   removeShoppingCart,
   setActivity,
+  setCompleted,
 };

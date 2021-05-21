@@ -7,8 +7,6 @@ export const createNewShoppingCart = (cartId: string): Cart => {
     type: actionTypes.CREATE_NEW_SHOPPING_CART,
     cartId
   };
-
-  console.log('Create new shopping cart');
   
   return (dispatch: DispatchType) => {
     dispatch(action);

@@ -32,6 +32,7 @@ const App = (): JSX.Element => {
     state => state.shoppingCartReducer
   );
 
+  console.log('shoppingCart', shoppingCart);
   useEffect(() => {
     void dispatch(initializeProducts());
   }, []);

@@ -35,8 +35,13 @@ const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCar
 };
 
 const setShoppingCartActivity = async (cartId: string, data: boolean):Promise<ShoppingCart> => {
-  console.log('cartid', cartId);
+  console.log('set shopping cart activity cartid', cartId);
   const request = await axios.put<ShoppingCart>(`${baseURL}/${cartId}/activity`, { data: data });
+  return request.data;
+};
+
+const setShoppingCartCompleted = async (cartId: string):Promise<ShoppingCart | null> => {
+  const request = await axios.put<ShoppingCart | null>(`${baseURL}/${cartId}/completed`);
   return request.data;
 };
 
@@ -54,4 +59,5 @@ export default {
   getUsersShoppingCart,
   removeShoppingCart,
   setShoppingCartActivity,
+  setShoppingCartCompleted,
 };

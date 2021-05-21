@@ -78,26 +78,16 @@ const LogInForm = ():JSX.Element => {
       if (findPrevious) {
         dispatch(retrieveOldShoppingCart(res.id, res.products));
         void shoppingCartService.setShoppingCartActivity(res.id, true);
-        void swal({
-          title: 'Success',
-          text: 'Retrieved previous shopping cart, happy shopping',
-          icon: 'success',
-        });
       } else {
         const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
-          void promise.then((response) => {            
-            const removed = shoppingCartService.removeShoppingCart(res.user);
-            void removed.then((removedResponse) => {
-              console.log('loginform', removedResponse);
-            });
-            console.log('LOG IN response', response);
-            dispatch(createNewShoppingCart(response.id));
-            void swal({
-              title: 'New Cart',
-              text: 'Created new shopping cart, happy shopping',
-              icon: 'success',
-            });
+        void promise.then((response) => {            
+          const removed = shoppingCartService.removeShoppingCart(res.user);
+          void removed.then((removedResponse) => {
+            console.log('loginform', removedResponse);
           });
+          console.log('LOG IN response', response);
+          dispatch(createNewShoppingCart(response.id));
+        });
       }
     });
   };
@@ -143,12 +133,10 @@ const LogInForm = ():JSX.Element => {
                   usePreviousShoppingCart(res);      
                 } else {
                   console.log('luodaan uusi karry');
-                  
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
                   void promise.then((res) => {
                     console.log('login form new shopping cart', res);
                     dispatch(createNewShoppingCart(res.id));
-                    // TODO: Deletoi vanha kärry kannasta
                   });
                 }
               });
