@@ -52,7 +52,7 @@ const ShoppingCart: React.FC = (): JSX.Element => {
   const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
   );
-  const userId = user?.id || '';
+  const userId = user?._id || '';
 
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 

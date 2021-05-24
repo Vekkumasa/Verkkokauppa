@@ -12,6 +12,7 @@ const logIn = async (userName: string, passWord: string, platformInfo: string): 
     return null;
   }
 
+  console.log('controller', user);
   const passwordCorrect = !user
     ? false
     : await bcrypt.compare(passWord, user.password);
@@ -20,6 +21,7 @@ const logIn = async (userName: string, passWord: string, platformInfo: string): 
     return null;
   }
 
+  console.log(StringCheck(user.id));
   if (StringCheck(user.id)) {
     const userForToken = {
       username: user.userName,
@@ -43,7 +45,7 @@ const logIn = async (userName: string, passWord: string, platformInfo: string): 
     if (secret) {
       const token = jwt.sign(userForToken, secret);
       const credentials: Credentials = {
-        id: user.id,
+        _id: user.id,
         token: token,
         userName: user.userName,
         firstName: user.firstName,

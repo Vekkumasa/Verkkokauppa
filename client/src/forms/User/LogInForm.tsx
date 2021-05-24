@@ -107,7 +107,7 @@ const LogInForm = ():JSX.Element => {
               dispatch(setNotification("Invalid username / password", 'error'));
             } else {
               const credentials: Credentials = {
-                id: res.id,
+                _id: res._id,
                 firstName: res.firstName,
                 lastName: res.lastName,
                 userName: res.userName,
@@ -126,14 +126,14 @@ const LogInForm = ():JSX.Element => {
               dispatch(handleModal(false, 'LogIn'));
               dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
               
-              const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials.id);
+              const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials._id);
               void usersShoppingCart.then((res) => {
                 if (res) {
                   console.log('login form', res);
                   usePreviousShoppingCart(res);      
                 } else {
                   console.log('luodaan uusi karry');
-                  const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials.id, id: '' });
+                  const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials._id, id: '' });
                   void promise.then((res) => {
                     console.log('login form new shopping cart', res);
                     dispatch(createNewShoppingCart(res.id));

@@ -83,12 +83,12 @@ const Product  = ({ product }: Props): JSX.Element => {
         console.log('cart id unknown');
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
         const newProduct = [ shoppingCartProduct ];
-        void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user.id, id: ''})
+        void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user._id, id: ''})
           .then((response) => {
             dispatch(createNewShoppingCart(response.id));
           }).catch(e => console.log(e));
       } else {
-        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user.id, cartId});
+        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user._id, cartId});
         response.then(() => {
           dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
             }).catch(e => console.log(e));
@@ -101,7 +101,7 @@ const Product  = ({ product }: Props): JSX.Element => {
     if (!user) {
       dispatch(increaseQuantity(shoppingCartProduct, cartId));
     } else {
-      void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId: user.id, cartId: cartId })
+      void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId: user._id, cartId: cartId })
         .then((response) => {
           console.log(response);
           dispatch(increaseQuantity(shoppingCartProduct, cartId));

@@ -30,27 +30,28 @@ const addUser = async (user: UserType) => {
   }
 };
 
-const modifyUser = async (user: UserType) => {
+const modifyUser = async (newUserInfo: UserType) => {
   let password;
-  if (user.password) password = await bcrypt.hash(user.password, 10);
+  if (newUserInfo.password) password = await bcrypt.hash(newUserInfo.password, 10);
   try {
-    const userToModify = await User.findOne({ email: user.email });
+    const userToModify = await User.findById(newUserInfo._id);
 
+    console.log('usercontroller', userToModify);
     if (!userToModify) return null;
 
-    userToModify.avatar = user.avatar;
-    userToModify.userName = user.userName;
-    userToModify.firstName = user.firstName;
-    userToModify.lastName = user.lastName;
+    userToModify.avatar = newUserInfo.avatar;
+    userToModify.userName = newUserInfo.userName;
+    userToModify.firstName = newUserInfo.firstName;
+    userToModify.lastName = newUserInfo.lastName;
     if (password) {
       userToModify.password = password;
-    } else {
-      userToModify.password = user.password;
     }
-    userToModify.email = user.email;
+    userToModify.email = newUserInfo.email;
 
-    await userToModify.save();
-
+    void userToModify.save().then((saved) => {
+      console.log(saved);
+    });
+    console.log('jep');
     return userToModify;
   } catch (e) {
     return null;

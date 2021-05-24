@@ -36,6 +36,7 @@ router.post('/', (req: CustomRequest<User>, res: Response) => {
 
 router.put('/', (req: CustomRequest<User>, res: Response) => {
   const user: User = req.body;
+  console.log('router', user);
   const modified: Promise<UserInterface | null> = userController.modifyUser(user);
   if (modified != null) {
     void modified.then((response) => {

@@ -47,7 +47,7 @@ type User = {
 };
 
 type Credentials = {
-  id: string,
+  _id: string,
   token: string,
   userName: string,
   firstName: string,
