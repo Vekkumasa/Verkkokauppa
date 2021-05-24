@@ -7,6 +7,13 @@ import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons/';
 import { parseDate } from '../utils/DateParser';
 import { blue, grey } from '@material-ui/core/colors/';
 
+type ShoppingCartWithCompletionDate = {
+  products: ShoppingCartProduct[],
+  user: string,
+  id: string,
+  completionDate: Date,
+};
+
 import {
   Table,
   TableBody,
@@ -23,13 +30,13 @@ import {
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: grey[400],
+    backgroundColor: grey[300],
     '& > *': {
       borderBottom: 'unset',
     },
   },
   header: {
-    backgroundColor: blue[500],
+    backgroundColor: blue[300],
   },
   mainRow: {
     backgroundColor: blue[200],
@@ -109,16 +116,21 @@ const Row = ({ order }: RowProps):JSX.Element => {
   );
 };
 
+const sortOrders = (orders: ShoppingCart[]): ShoppingCartWithCompletionDate[] => {
+  const newList: ShoppingCartWithCompletionDate[] = orders as ShoppingCartWithCompletionDate[];
+  return newList.sort((o1, o2) => new Date(o2.completionDate).getTime() - new Date(o1.completionDate).getTime());
+};
+
 const PastOrders = (): JSX.Element => {
   const [ orders, setOrders ] = useState<ShoppingCart[]>([]);
-  
+  const sortedOrders = sortOrders(orders);
   const classes = useStyles();
   const user = useAppSelector(state => state.userReducer.user);
 
   if (!user) return <div></div>;
 
   useEffect(() => {
-    void userService.getUsersCompletedShoppingcarts(user.id)
+    void userService.getUsersCompletedShoppingcarts(user._id)
       .then((res) => {
         setOrders(res);
       });
@@ -138,7 +150,7 @@ const PastOrders = (): JSX.Element => {
           </TableRow>
         </TableHead>
         <TableBody className={classes.body}>
-          {orders.map((order) => (
+          {sortedOrders.map((order) => (
             <Row key={order.id} order={order}/>
           ))}
         </TableBody>

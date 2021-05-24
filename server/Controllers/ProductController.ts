@@ -1,4 +1,4 @@
-import { uuid } from "uuidv4";
+import { v4 as uuid } from 'uuid';
 import Product, { ProductInterface } from "../models/product";
 import { Product as ProductType } from '../types.d';
 

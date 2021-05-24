@@ -90,7 +90,8 @@ import { logIn } from '../../store/User/actionCreators';
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
-          const modifiedUser: NoIdUser = { 
+          const modifiedUser: User = { 
+            _id: loggedUser._id,
             userName: values.userName,
             firstName: values.firstName,
             lastName: values.lastName,
@@ -98,6 +99,7 @@ import { logIn } from '../../store/User/actionCreators';
             email: values.email,
             avatar: values.avatar,
           };
+          console.log(modifiedUser);
           const promise = userService.modifyUser(modifiedUser);
           promise.then((res) => {
             // TODO: Korjaa backendi palauttamaan mikä kohta lomakkeessa feilaa
@@ -107,14 +109,14 @@ import { logIn } from '../../store/User/actionCreators';
               dispatch(handleModal(false, 'ModifyUser'));
               dispatch(logIn({
                 ...modifiedUser,
-                id: loggedUser.id,
+                _id: loggedUser._id,
                 userType: loggedUser.userType,
                 token: loggedUser.token,
                 recentActivity: loggedUser.recentActivity,
                 platformInfo: loggedUser.platformInfo
               }));
               window.localStorage.setItem(
-                'loggedUser', JSON.stringify({ ...modifiedUser, id: loggedUser.id, userType: loggedUser.userType, token: loggedUser.token })
+                'loggedUser', JSON.stringify({ ...modifiedUser, _id: loggedUser._id, userType: loggedUser.userType, token: loggedUser.token })
               );
             }
           }).catch(e => console.log(e));    

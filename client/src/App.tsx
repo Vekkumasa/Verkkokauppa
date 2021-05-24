@@ -47,14 +47,14 @@ const App = (): JSX.Element => {
         if (validTimeStamp(parsedUser.parsed.timestamp)) {
           console.log('valid timestamp');
           dispatch(logIn(parsedUser.parsed));
-          const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed.id);
+          const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed._id);
           void usersShoppingCart.then((res) => {
             if (res) {
               dispatch(retrieveOldShoppingCart(res.id, res.products));
             } else {
               void shoppingCartService.createNewShoppingCart({ 
                 products: shoppingCart.cart,
-                user: parsedUser.parsed.id,
+                user: parsedUser.parsed._id,
                 id: shoppingCart.cartId
               }).then((res => {
                 dispatch(createNewShoppingCart(res.id));

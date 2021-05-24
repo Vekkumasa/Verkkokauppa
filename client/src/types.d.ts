@@ -24,7 +24,7 @@ type NoIdProduct = Omit<Product, '_id'>;
 type ShoppingCartProduct = Product & { quantity: number };
 
 type User = {
-  id: string,
+  _id: string,
   token?: string,
   firstName: string,
   lastName: string,
@@ -41,7 +41,7 @@ type ShippingInfo = {
   address: string,
 };
 
-type NoIdUser = Omit<User, 'id'>;
+type NoIdUser = Omit<User, '_id'>;
 type CreateUserInput = Omit<NoIdUser, 'userType'>;
 
 interface SignInInfo {
@@ -50,7 +50,7 @@ interface SignInInfo {
 }
 
 type Credentials = {
-  id: string,
+  _id: string,
   token: string,
   userName: string,
   firstName: string,

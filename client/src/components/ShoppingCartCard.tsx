@@ -67,7 +67,7 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
   if (!user) {
     userId = '';
   } else {
-    userId = user.id;
+    userId = user._id;
   }
 
   const removeProductFromCart = (product: ShoppingCartProduct) => {

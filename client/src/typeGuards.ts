@@ -42,7 +42,7 @@ export const isCredentialsWithTimestamp = (o: any): o is CredentialsWithTimeStam
   return 'firstName' in o &&
   'lastName' in o &&
   'userName' in o &&
-  'id' in o &&
+  '_id' in o &&
   'userType' in o &&
   'token' in o &&
   'timestamp' in o;
