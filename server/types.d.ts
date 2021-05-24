@@ -80,6 +80,12 @@ type ShoppingCart = {
 
 type UserType = 'Admin' | 'User';
 
+type Email = {
+  from: string,
+  to: string,
+  subject: string,
+  text: string,
+};
 interface CustomRequest<T> extends Request {
   body: T
 }

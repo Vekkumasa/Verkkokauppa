@@ -48,9 +48,7 @@ const modifyUser = async (newUserInfo: UserType) => {
     }
     userToModify.email = newUserInfo.email;
 
-    void userToModify.save().then((saved) => {
-      console.log(saved);
-    });
+    await userToModify.save();
     console.log('jep');
     return userToModify;
   } catch (e) {

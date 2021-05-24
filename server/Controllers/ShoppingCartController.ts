@@ -2,7 +2,8 @@ import { v4 as uuid } from 'uuid';
 import Product from '../models/product';
 import ShoppingCart, { ShoppingCartInterface } from "../models/shoppingCart";
 import User from '../models/user';
-import { CartProduct, ShoppingCartProduct } from '../types.d';
+import { CartProduct, ShoppingCartProduct, ShoppingCartProductDB } from '../types.d';
+import Mailer from '../utils/Mailer';
 
 const getAllCarts = async (): Promise<ShoppingCartInterface[]> => {
   return await ShoppingCart.find({});
@@ -187,11 +188,35 @@ const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null
   try {
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true, active: false, completionDate: new Date }, { new: true });
     if (!cart) return null;
-    console.log('(Shopping cart controller) setCompleted cart', cart);
+    console.log('(Shopping cart controller) setCompleted cart', cart, cart.user);
+    
+    if (cart.user) {
+      const user = await User.findById(cart.user);
+      if (user) {
+        sendMailToUser(user.email, cart.products);
+      }
+    }
+    
     return cart;
   } catch (e) {
     return null;
   }
+};
+
+const sendMailToUser = (to: string, products: ShoppingCartProductDB[]) => {
+  console.log('hep');
+  let shoppingList = '';
+  products.map(p => {
+    shoppingList += p.name + '\n';
+  });
+
+  const message = {
+    from: 'verkkisposti@gmail.com',
+    to,
+    subject: 'Confirmation message',
+    text: 'You have ordered these products from verkkokauppa: \n ' + shoppingList
+  };
+  Mailer(message);
 };
 
 export default {
