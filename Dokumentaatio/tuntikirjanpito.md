@@ -35,5 +35,7 @@
 | 18.5  |  6.5 | Hakupalkki, Accountpage, User model muutoksia |
 | 19.5  |  6.5 | Account page + user recent activity + user modaus |
 | 20.5  |  4.5 | Account pagelle viimeisimmät loggaukset + platform info & bugi fiksailuja |
-| 21.5  |   8  | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
-| yht   | 142.5 | | 
+| 21.5  |  8   | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
+| 24.5  |  5   | Refaktorointia ja sähköposti lähetetään käyttäjälle kun ostokset viedään loppuun |
+| 25.5  |  6   | Productinfo.tsx |
+| yht   | 153.5 | | 

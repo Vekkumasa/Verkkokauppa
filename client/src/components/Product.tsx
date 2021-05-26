@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -14,6 +15,7 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import productService from '../services/productService';
 import { removeProduct } from '../store/Product/actionCreators';
 import { setNotification } from '../store/Notification/actionCreators';
+import { setActiveProduct } from '../store/ActiveProduct/actionCreators';
 import { increaseQuantity, addNewProductToShoppingCart, createNewShoppingCart } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -111,22 +113,24 @@ const Product  = ({ product }: Props): JSX.Element => {
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-      <CardMedia
-          className={classes.media}
-          image={product.image}
-        />
-        <CardContent>
-          <Typography className={`${classes.overflow} ${classes.centerText}`} style={{ fontSize: 16 }} gutterBottom variant="h6" component="h2">
-            {product.name} <br/> {product.price}€ 
-          </Typography>
-          <Typography className={`${classes.overflow} ${classes.centerText}`} variant="body2" color="textSecondary" component="p">
-            {product.description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <Link to='/product' style={{ textDecoration: 'none', color: 'black' }}>
+        <CardActionArea onClick={() => dispatch(setActiveProduct(product))}>
+          <CardMedia
+              className={classes.media}
+              image={product.image}
+            />
+          <CardContent>
+            <Typography className={`${classes.overflow} ${classes.centerText}`} style={{ fontSize: 16 }} gutterBottom variant="h6" component="h2">
+              {product.name} <br/> {product.price}€ 
+            </Typography>
+            <Typography className={`${classes.overflow} ${classes.centerText}`} variant="body2" color="textSecondary" component="p">
+              {product.description}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Link>
       <CardActions>
-        <Button size="small" color="primary" onClick={() => handleShoppingCart()}>
+        <Button disabled={product.stock <= 0} size="small" color="primary" onClick={() => handleShoppingCart()}>
           Lisää ostoskoriin
         </Button>
         {user?.userType === 'Admin' && (

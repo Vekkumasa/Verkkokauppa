@@ -204,7 +204,7 @@ const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null
 };
 
 const sendMailToUser = (to: string, products: ShoppingCartProductDB[]) => {
-  console.log('hep');
+
   let shoppingList = '';
   products.map(p => {
     shoppingList += p.name + '\n';

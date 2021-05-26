@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Navibar } from './components/Navibar';
 import { ProductListPage } from './components/ProductListPage';
+import ProductInfo  from './components/ProductInfo';
 import Account from './components/Account';
 import PastOrders from './components/PastOrders';
 import ShoppingCart from './components/ShoppingCart';
@@ -32,7 +33,6 @@ const App = (): JSX.Element => {
     state => state.shoppingCartReducer
   );
 
-  console.log('shoppingCart', shoppingCart);
   useEffect(() => {
     void dispatch(initializeProducts());
   }, []);
@@ -92,6 +92,10 @@ const App = (): JSX.Element => {
 
         <Switch>
           <Route path="/shoppingCart" render={() => <ShoppingCart />} />
+        </Switch>
+
+        <Switch>
+          <Route path="/product" render={() => <ProductInfo />} />
         </Switch>
 
         <Switch>

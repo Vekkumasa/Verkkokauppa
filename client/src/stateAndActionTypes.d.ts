@@ -6,10 +6,15 @@ interface AppState {
   cart: ShoppingCartState,
   modal: ModalState,
   filter: FilterState,
-}
+  activeProduct: ActiveProductState,
+};
 
 type FilterState = {
   productFilter: string
+};
+
+type ActiveProductState = {
+  product?: Product
 };
 
 type ModalState = {
@@ -17,6 +22,7 @@ type ModalState = {
   logInModal: boolean,
   createUserModal: boolean,
   modifyUserInfoModal: boolean,
+  modifyProductModal: boolean,
 };
 
 type ProductState = {
@@ -101,6 +107,11 @@ type ModalAction = {
 type SetFilterAction = {
   type: string,
   data: string,
+};
+
+type SetActiveProductAction = {
+  type: string,
+  data: Product
 };
 
 type DispatchType = (args: Actions) => Actions;

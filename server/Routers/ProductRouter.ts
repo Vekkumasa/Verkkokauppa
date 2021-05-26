@@ -18,6 +18,17 @@ router.post('/', (req: CustomRequest<Product>, res: Response) => {
   });
 });
 
+router.put('/', (req: CustomRequest<Product>, res: Response) => {
+  const modified: Promise<ProductInterface | null> = productController.ModifyProduct(req.body);
+  void modified.then((response) => {
+    if (!response) {
+      res.status(400).json({ error: 'Something unexpected happened' });
+    } else {
+      res.status(201).json(response);
+    }
+  });
+});
+
 router.delete('/:id', (req: CustomRequest<Product>, res: Response) => {
   const deleted: Promise<ProductInterface | null> = productController.DeleteProduct(req.params.id);
   void deleted.then(() => {

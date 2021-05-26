@@ -12,6 +12,11 @@ const addProduct = async (product: NoIdProduct):Promise<Product> => {
   return request.data;
 };
 
+const modifyProduct = async (product: Product):Promise<Product> => {
+  const request = await axios.put<Product>(`${baseURL}`, product);
+  return request.data;
+};
+
 const deleteProduct = async (product: Product): Promise<Product> => {
   const request = await axios.delete<Product>(`${baseURL}/${product._id}`);
   return request.data;
@@ -20,5 +25,6 @@ const deleteProduct = async (product: Product): Promise<Product> => {
 export default {
   getAll,
   addProduct,
-  deleteProduct
+  deleteProduct,
+  modifyProduct,
 };

@@ -34,8 +34,25 @@ const DeleteProduct = async (id: string) => {
   return await product.remove();
 };
 
+const ModifyProduct = async (product: ProductType) => {
+  const productToModify = await Product.findById(product._id);
+
+  if (!productToModify) return null;
+
+  productToModify.name = product.name;
+  productToModify.description = product.description;
+  productToModify.price = product.price;
+  productToModify.stock = product.stock;
+  productToModify.image = product.image;
+
+  await productToModify.save();
+
+  return productToModify;
+};
+
 export default {
   GetProducts,
   NewProduct,
   DeleteProduct,
+  ModifyProduct,
 };
