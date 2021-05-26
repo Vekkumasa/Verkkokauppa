@@ -6,6 +6,7 @@ import LogInRouter from './server/Routers/LogInRouter';
 import ProductRouter from './server/Routers/ProductRouter';
 import UserRouter from './server/Routers/UserRouter';
 import ShoppingCartRouter from './server/Routers/ShoppingCartRouter';
+import ImageRouter from './server/Routers/ImageRouter';
 
 import { StringCheck } from './server/utils/StringCheck';
 import connect from './server/connect';
@@ -33,6 +34,7 @@ app.use('/api/login', LogInRouter);
 app.use('/api/products', ProductRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/shoppingCart', ShoppingCartRouter);
+app.use('/api/images', ImageRouter);
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');

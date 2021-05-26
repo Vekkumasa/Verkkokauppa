@@ -18,6 +18,8 @@ import Notification from './UI/Notification';
 import { safeJsonParse, isCredentialsWithTimestamp } from './typeGuards';
 import { validTimeStamp } from './utils/ValidTimeStamp';
 
+import ImageForm from './forms/image/AddImageForm';
+
 const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
 
@@ -102,7 +104,11 @@ const App = (): JSX.Element => {
           <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
       </Router>
+      <div>
+      <ImageForm />
     </div>
+    </div>
+    
   );
 };
 

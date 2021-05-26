@@ -1,5 +1,5 @@
 import User from "../models/user";
- import { Credentials } from '../types.d';
+import { Credentials } from '../types.d';
 import bcrypt from 'bcrypt';
 import * as jwt from "jsonwebtoken";
 import { StringCheck } from '../utils/StringCheck';

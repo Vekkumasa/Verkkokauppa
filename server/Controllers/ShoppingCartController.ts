@@ -219,7 +219,7 @@ const sendMailToUser = (to: string, products: ShoppingCartProductDB[]) => {
 
   let shoppingList = '';
   products.map(p => {
-    shoppingList += p.name + '\n';
+    shoppingList += p.name + ' x' + p.quantity + '\n';
   });
 
   const message = {
