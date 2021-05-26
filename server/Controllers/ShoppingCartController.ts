@@ -188,7 +188,6 @@ const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null
   try {
     const cart = await ShoppingCart.findByIdAndUpdate(cartId, { completed: true, active: false, completionDate: new Date }, { new: true });
     if (!cart) return null;
-    console.log('(Shopping cart controller) setCompleted cart', cart, cart.user);
     
     if (cart.user) {
       const user = await User.findById(cart.user);
@@ -197,10 +196,23 @@ const setCompleted = async (cartId: string):Promise<ShoppingCartInterface | null
       }
     }
     
+    await updateShoppingCartProductStock(cart.products);
+
     return cart;
   } catch (e) {
     return null;
   }
+};
+
+const updateShoppingCartProductStock = async (products: ShoppingCartProductDB[]) => {
+  await Promise.all(products.map(async (item): Promise<unknown> => {
+    const product = await Product.findById(item.productId);
+    if (product) {
+      product.stock -= item.quantity;
+      await product.save();
+    }
+    return;
+  }));
 };
 
 const sendMailToUser = (to: string, products: ShoppingCartProductDB[]) => {
