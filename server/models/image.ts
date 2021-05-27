@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 
 export interface ImageInterface extends mongoose.Document {
-  image: string;
+  img: string;
   _id?: string;
 }
 
 const ImageSchema: mongoose.Schema = new mongoose.Schema(
 {
-  image: {
+  img: {
     data: Buffer,
     contentType: String
   }

@@ -1,4 +1,9 @@
-import React, { useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Navibar } from './components/Navibar';
@@ -19,9 +24,21 @@ import { safeJsonParse, isCredentialsWithTimestamp } from './typeGuards';
 import { validTimeStamp } from './utils/ValidTimeStamp';
 
 import ImageForm from './forms/image/AddImageForm';
+import axios from 'axios';
 
 const App = (): JSX.Element => {
+  const [ data, setData ] = useState('');
   const dispatch: AppDispatch = useAppDispatch();
+
+  useEffect(() => {
+    const testi = axios.get('http://localhost:3001/api/images');
+    void testi.then((res) => {
+      console.log('testi',res);
+      console.log('data', res.data.data.data.toString());
+    });
+  }, []);
+  
+  
 
   const user: Credentials | undefined = useAppSelector(
     state => state.userReducer.user
@@ -103,8 +120,12 @@ const App = (): JSX.Element => {
         <Switch>
           <Route exact path="/" render={() => <ProductListPage />} />
         </Switch>
-      </Router>
+      </Router> 
       <div>
+      {data && 
+        <img src={`${data}`} />
+      }
+      
       <ImageForm />
     </div>
     </div>

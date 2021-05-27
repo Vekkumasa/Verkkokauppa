@@ -14,12 +14,16 @@ router.get('/', (_req: Request, res: Response) => {
     if (err) {
       console.log('Error imageissa: ', err);
     } else {
-      res.status(201).send(items);
+      items.map(item => {
+        console.log('item', item);
+      });
+      res.status(201).send(items[0].img);
     }
   });
 });
 
-router.post('/', upload.single('image'), (req, res) => {
+
+router.post('/', upload.single('image'), (req: Request, res: Response) => {
  
   console.log('request', req.body);
   
