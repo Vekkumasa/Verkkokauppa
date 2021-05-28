@@ -23,13 +23,14 @@ router.post('/', (req: CustomRequest<Product>, res: Response) => {
   });
 });
 
-router.put('/:id', upload.single('uusiImage'), (req: CustomRequest<File>, res: Response) => {
+router.put('/:id', upload.single('image'), (req: CustomRequest<File>, res: Response) => {
   const obj = {
-      uusiImage: {
+      image: {
           data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
           contentType: 'image/png'
       }
   };
+
   const modified: Promise<ProductInterface | null> = productController.ModifyProductImage(obj, req.params.id);
   void modified.then((response) => {
     if (response === null) {

@@ -1,20 +1,28 @@
 import { Request } from 'express';
 
+type ProductImage = {
+  image: Image
+};
+
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
 type Product = {
   _id: string,
   name: string,
   price: number,
   stock: number,
   description?: string,
-  image?: string,
-  uusiImage?: File,
+  image?: Image, // TODO: uusi image tyyppi vastaamaan fronttia
 };
 
 type ShoppingCartProduct = {
   _id: string,
   name: string,
   quantity: number,
-  image: string,
+  image: Image, // TODO
   price: number
 };
 
@@ -22,7 +30,7 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
-  image: string,
+  image: Image, // TODO
   price: number
 };
 
@@ -90,12 +98,3 @@ type Email = {
 interface CustomRequest<T> extends Request {
   body: T
 }
-
-type ProductImage = {
-  uusiImage: Image
-};
-
-type Image = {
-  data: Buffer,
-  contentType: string
-};

@@ -40,19 +40,20 @@ interface Props {
     description: string;
     price: number;
     stock: number;
-    image: string;
 }>
   touched: FormikTouched<{
     name: string;
     description: string;
     price: number;
     stock: number;
-    image: string;
 }>
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
+  setImage: React.Dispatch<React.SetStateAction<File | undefined>>
+  image: File | undefined
+  submitForm: (() => Promise<void>) & (() => Promise<any>)
 }
 
-const ProductForm = ({ errors, touched, setFieldValue }: Props): JSX.Element => {
+const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitForm }: Props): JSX.Element => {
   const classes = useStyles();
 
   return (
@@ -132,42 +133,45 @@ const ProductForm = ({ errors, touched, setFieldValue }: Props): JSX.Element => 
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Image: </label>
-          </Grid>
-          <Grid item xs={9}>
-            <Field
-              className={classes.field}
-              placeholder="www.image.com (optional)"
-              type="text"
-              name="image"
-            />
-          </Grid>
-          <Grid item xs={1}>
-            {(errors.image && touched.image) && (
-              <div>{errors.image}</div>
-            )}
-          </Grid>
-        </Grid>
-        <Grid container item xs={12} spacing={3}>
-          <Grid item xs={2}>
-            <label>Uusi image: </label>
+            <label> Image: </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
               type="File"
-              name="uusiImage"
+              name="image"
               value={undefined}
-              onChange={(event:React.ChangeEvent<HTMLInputElement>) => 
-                setFieldValue('uusiImage', event.currentTarget.files? event.currentTarget.files[0] : undefined
-              )}
+              onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
+                setFieldValue('image', event.currentTarget.files? event.currentTarget.files[0] : undefined);
+                setImage(event.currentTarget.files? event.currentTarget.files[0] : undefined);
+              }}
             />
           </Grid>
           <Grid item xs={1}>
+            {image && 
+              <button type="button" onClick={() => {
+                setFieldValue('image', undefined);
+                setImage(undefined);
+              }}> 
+                Cancel
+              </button>
+            }
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <Grid item xs={2}>
+            <label> Image preview: </label>
+          </Grid>
+          <Grid item xs={9}>
+            {image ? 
+              <img height={100} width={100} src={ URL.createObjectURL(image) } alt="Preview to upload" />
+            :
+              <img height={100} width={100} src={'https://live.staticflickr.com/5217/5471047557_4dc13f5376_n.jpg'} alt="Preview to upload" />
+            }
           </Grid>
         </Grid>
       </Grid>
-      <button className={classes.button} type="submit">Submit</button>
+      <button className={classes.button} onClick={submitForm} type="submit">Submit</button>
     </Form>
   );
 };

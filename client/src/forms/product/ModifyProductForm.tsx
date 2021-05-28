@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -20,11 +20,11 @@ import ProductForm from './ProductForm';
     .required("Required"),
   stock: Yup
     .number(),
-  image: Yup
-    .string()
  });
  
  const ModifyProductForm = ():JSX.Element => {
+  const [ image, setImage ] = useState<File>();
+
   const dispatch: AppDispatch = useAppDispatch();
   const item = useAppSelector(state => state.activeProductReducer.product);
   if (!item) return <div></div>;
@@ -37,12 +37,11 @@ import ProductForm from './ProductForm';
             description: item.description,
             price: item.price,
             stock: item.stock,
-            image: item.image,
           }}
           validationSchema={SignupSchema}
           onSubmit={values => {
-            const { name, description, price, stock, image } = values;
-            const product: Product = { name, description, price, stock, image, _id: item._id };
+            const { name, description, price, stock } = values;
+            const product: Product = { name, description, price, stock, _id: item._id };
             const promise = productService.modifyProduct(product);
             void promise.then((res) => {
               if (!res) {
@@ -55,9 +54,17 @@ import ProductForm from './ProductForm';
             });
           }}
         >
-          {({ errors, touched }) => (
-          //  <ProductForm errors={errors} touched={touched} />
-          <div></div>
+          {({ errors, touched, setFieldValue }) => (
+            /*
+            <ProductForm
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+              image={image}
+              setImage={setImage}
+            />
+            */
+           <div></div>
           )}
         </Formik>
       </div>

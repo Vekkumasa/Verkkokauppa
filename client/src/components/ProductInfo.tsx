@@ -17,6 +17,7 @@ import Rating from '@material-ui/lab/Rating';
 import { StarBorder, FiberManualRecord as CircleIcon, Edit } from '@material-ui/icons/';
 
 import ModifyProductModal from '../modals/ModifyProductModal';
+import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 
 const useStyles = makeStyles({
   root: {
@@ -59,15 +60,22 @@ const useStyles = makeStyles({
     width: '80%'
   }
 });
+
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
 type Product = {
   _id: string,
   name: string,
   price: number,
   stock: number,
-  image: string,
+  image?: Image,
   description?: string,
   rating?: number,
 };
+
 const ProductInfo = (): JSX.Element => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
@@ -156,11 +164,18 @@ const ProductInfo = (): JSX.Element => {
     );
   };
 
+  let image;
+  if (product.image) {
+    const buffer = Buffer.from(product.image.data);
+    image = arrayBufferToBase64(buffer);
+  }
+
+  
   console.log(product);
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
-        <CardMedia image={product.image} className={classes.image} />
+        <CardMedia image={image} className={classes.image} />
       </Card>
       <Box border={1} className={classes.box} style={{ color: 'blue' }}>
         <Grid container item xs={12} spacing={3} style={{ color: 'black', padding: 15 }} >

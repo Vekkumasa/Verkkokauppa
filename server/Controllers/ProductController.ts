@@ -13,7 +13,6 @@ const NewProduct = async (product: ProductType) => {
       name: product.name,
       price: product.price,
       stock: product.stock,
-      image: product.image,
       description: product.description
     });
     const response = await newProduct.save();
@@ -43,7 +42,6 @@ const ModifyProduct = async (product: ProductType) => {
   productToModify.description = product.description;
   productToModify.price = product.price;
   productToModify.stock = product.stock;
-  productToModify.image = product.image;
 
   await productToModify.save();
 
@@ -53,7 +51,7 @@ const ModifyProduct = async (product: ProductType) => {
 const ModifyProductImage = async (image: ProductImage, productId: string) => {
   const product = await Product.findById(productId);
   if (product) {
-    product.uusiImage = image.uusiImage;
+    product.image = image.image;
     await product.save();
     console.log(product);
     return product;

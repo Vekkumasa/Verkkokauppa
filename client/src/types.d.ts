@@ -8,8 +8,7 @@ type Product = {
   name: string,
   price: number,
   stock: number,
-  image: string,
-  uusiImage?: Image,
+  image?: Image,
   description?: string,
   rating?: number,
 };

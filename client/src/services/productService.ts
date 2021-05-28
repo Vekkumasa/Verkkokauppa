@@ -7,13 +7,12 @@ const getAll = ():Promise<Product[]> => {
   return request.then((response: AxiosResponse<Product[]>) => response.data);
 };
 
-const addProduct = async (product: NoIdProduct, uusiImage: File | undefined):Promise<Product> => {
+const addProduct = async (product: NoIdProduct, image: File | undefined):Promise<Product> => {
 
   const request = await axios.post<Product>(`${baseURL}`, product);
 
-  if (uusiImage && request.data !== null) {
-    console.log('image', uusiImage);
-    const req = modifyProductImage(request.data._id, uusiImage);
+  if (image && request.data !== null) {
+    const req = modifyProductImage(request.data._id, image);
     console.log('Image request', req);
     return req;
   }
@@ -22,7 +21,7 @@ const addProduct = async (product: NoIdProduct, uusiImage: File | undefined):Pro
 
 const modifyProductImage = async (productId: string, image: File) => {
   const fd = new FormData();
-  fd.append('uusiImage', image, image.name);
+  fd.append('image', image, image.name);
   const config = {
     headers: {
       'Content-Type': 'multipart/form-data'

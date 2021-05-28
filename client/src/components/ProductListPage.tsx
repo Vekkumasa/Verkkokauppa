@@ -1,5 +1,5 @@
 import React from "react";
-import { Product } from './Product';
+import { Product as Temp } from './Product';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector } from '../store/rootReducer';
 import { Typography } from '@material-ui/core/';
@@ -40,7 +40,7 @@ const ProductListPage = (): JSX.Element | null => {
   return (
     <div className={classes.root}>
       {filteredProducts.map((product: Product) => (
-        <Product key={product._id} product={product} />
+        <Temp key={product._id} product={product} />
       ))}
     </div>
   );

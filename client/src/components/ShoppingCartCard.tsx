@@ -7,6 +7,7 @@ import { grey, red } from '@material-ui/core/colors';
 
 import { decreaseQuantity, removeProduct, increaseQuantity } from '../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
+import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 
 const useStyles = makeStyles({
   container: {
@@ -102,6 +103,12 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
       });
     }
   };
+
+  let image;
+  if (product.image) {
+    const buffer = Buffer.from(product.image.data);
+    image = arrayBufferToBase64(buffer);
+  }
   
   return (
     <div className={classes.container}>
@@ -122,7 +129,7 @@ const ShoppingCartCard: React.FC<props> = ({ product }): JSX.Element => {
           </div>
           <CardMedia
             className={classes.image}
-            image={product.image}
+            image={image}
           />
         </div>
         <div>

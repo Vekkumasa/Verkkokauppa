@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -20,31 +20,30 @@ import ProductForm from './ProductForm';
   stock: Yup
     .number(),
   image: Yup
-    .string(),
-  uusiImage: Yup
     .mixed()
  });
  
  const AddProductForm = ():JSX.Element => {
+  const [ image, setImage ] = useState<File>();
+
   const dispatch: AppDispatch = useAppDispatch();
     return (
       <div>
         <Formik
           initialValues={{
-            name: 'asd',
+            name: '',
             description: '',
             price: 0,
             stock: 0,
-            image: '',
-            uusiImage: '' as unknown as File
+            image: '' as unknown as File
           }}
           
           validationSchema={SignupSchema}
           onSubmit={values => {
-            const { name, description, price, stock, image, uusiImage } = values;
+            const { name, description, price, stock, image } = values;
 
-            const product: NoIdProduct = { name, description, price, stock, image };
-            const promise = productService.addProduct(product, uusiImage);
+            const product: NoIdProduct = { name, description, price, stock };
+            const promise = productService.addProduct(product, image);
             void promise.then((res) => {
               if (res !== null) {
                 const addedProduct: Product = {
@@ -53,7 +52,6 @@ import ProductForm from './ProductForm';
                   price: res.price,
                   stock: res.stock,
                   image: res.image,
-                  uusiImage: res.uusiImage,
                   _id: res._id
                 };
                 console.log('added product', addedProduct);
@@ -65,8 +63,15 @@ import ProductForm from './ProductForm';
             });
           }}
         >
-          {({ errors, touched, setFieldValue }) => (
-            <ProductForm errors={errors} touched={touched} setFieldValue={setFieldValue}  />
+          {({ errors, touched, setFieldValue, submitForm }) => (
+            <ProductForm
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+              image={image}
+              setImage={setImage}
+              submitForm={submitForm}
+            />
           )}
         </Formik>
       </div>
