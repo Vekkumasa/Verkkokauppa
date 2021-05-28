@@ -49,9 +49,10 @@ interface Props {
     stock: number;
     image: string;
 }>
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
 }
 
-const ProductForm = ({ errors, touched }: Props): JSX.Element => {
+const ProductForm = ({ errors, touched, setFieldValue }: Props): JSX.Element => {
   const classes = useStyles();
 
   return (
@@ -145,6 +146,24 @@ const ProductForm = ({ errors, touched }: Props): JSX.Element => {
             {(errors.image && touched.image) && (
               <div>{errors.image}</div>
             )}
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <Grid item xs={2}>
+            <label>Uusi image: </label>
+          </Grid>
+          <Grid item xs={9}>
+            <Field
+              className={classes.field}
+              type="File"
+              name="uusiImage"
+              value={undefined}
+              onChange={(event:React.ChangeEvent<HTMLInputElement>) => 
+                setFieldValue('uusiImage', event.currentTarget.files? event.currentTarget.files[0] : undefined
+              )}
+            />
+          </Grid>
+          <Grid item xs={1}>
           </Grid>
         </Grid>
       </Grid>

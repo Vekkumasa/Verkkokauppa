@@ -8,7 +8,29 @@ const getAll = ():Promise<Product[]> => {
 };
 
 const addProduct = async (product: NoIdProduct):Promise<Product> => {
-  const request = await axios.post<Product>(`${baseURL}`, product);
+  console.log('service', product);
+  const { uusiImage, ...item } = product;
+
+  const request = await axios.post<Product>(`${baseURL}`, item);
+
+  if (uusiImage && request.data !== null) {
+    console.log(uusiImage);
+    const req = modifyProductImage(request.data._id, uusiImage);
+    console.log('Image request', req);
+  }
+  return request.data;
+};
+
+const modifyProductImage = async (productId: string, image: File) => {
+  const fd = new FormData();
+    fd.append('uusiImage', image, image.name);
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+  };
+  const request = await axios.put<Product>(`${baseURL}/${productId}`, image);
+  console.log("modifyProductImage", request.data);
   return request.data;
 };
 

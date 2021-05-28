@@ -7,7 +7,7 @@ import productService from '../../services/productService';
 import { initializeProducts } from '../../store/Product/actionCreators';
 import { setActiveProduct } from '../../store/ActiveProduct/actionCreators';
 import { setNotification } from '../../store/Notification/actionCreators';
-import ProductForm from './Form';
+import ProductForm from './ProductForm';
 
  const SignupSchema = Yup.object().shape({
   name: Yup
@@ -56,7 +56,8 @@ import ProductForm from './Form';
           }}
         >
           {({ errors, touched }) => (
-            <ProductForm errors={errors} touched={touched} />
+          //  <ProductForm errors={errors} touched={touched} />
+          <div></div>
           )}
         </Formik>
       </div>

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import express, { Response, Request } from 'express';
 import Image from '../models/image';
-import upload from '../utils/Testi';
+import upload from '../utils/Multer';
 import fs from 'fs';
 import path from 'path';
+
+import { CustomRequest } from '../types';
 
 const router = express.Router();
 
@@ -14,19 +13,17 @@ router.get('/', (_req: Request, res: Response) => {
     if (err) {
       console.log('Error imageissa: ', err);
     } else {
-      console.log(items[0]);
+      console.log('router get:', items[0]);
       res.status(201).send(items[0]);
     }
   });
 });
 
-router.post('/', upload.single('image'), (req, res) => {
+router.post('/', upload.single('image'), (req: CustomRequest<File>, res) => {
  
   console.log('request', req.body);
-  
+  console.log('request file', req.file);
   const obj = {
-      name: req.body.name,
-      desc: req.body.desc,
       img: {
           data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
           contentType: 'image/png'

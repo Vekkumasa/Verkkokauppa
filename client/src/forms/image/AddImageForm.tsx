@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { uploadAction } from './Upload';
 
 const ImageForm = () => {
-  const [ image, setImage ] = useState<Blob>();
+  const [ image, setImage ] = useState<File>();
   const [ preview, setPreview ] = useState(false); 
 
   const handleImageUpload = (event:React.ChangeEvent<HTMLInputElement>) => { 

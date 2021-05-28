@@ -6,7 +6,7 @@ import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import productService from '../../services/productService';
 import { addProduct } from '../../store/Product/actionCreators';
 import { setNotification } from '../../store/Notification/actionCreators';
-import ProductForm from './Form';
+import ProductForm from './ProductForm';
 
  const SignupSchema = Yup.object().shape({
   name: Yup
@@ -20,7 +20,9 @@ import ProductForm from './Form';
   stock: Yup
     .number(),
   image: Yup
-    .string()
+    .string(),
+  uusiImage: Yup
+    .mixed()
  });
  
  const AddProductForm = ():JSX.Element => {
@@ -29,35 +31,42 @@ import ProductForm from './Form';
       <div>
         <Formik
           initialValues={{
-            name: '',
+            name: 'asd',
             description: '',
             price: 0,
             stock: 0,
             image: '',
+            uusiImage: '' as unknown as File
           }}
+          
           validationSchema={SignupSchema}
           onSubmit={values => {
-            const { name, description, price, stock, image } = values;
-            const product: NoIdProduct = { name, description, price, stock, image};
+            const { name, description, price, stock, image, uusiImage } = values;
+
+            const product: NoIdProduct = { name, description, price, stock, image, uusiImage };
             const promise = productService.addProduct(product);
             void promise.then((res) => {
-              const addedProduct: Product = {
-                name: res.name,
-                description: res.description,
-                price: res.price,
-                stock: res.stock,
-                image: res.image,
-                _id: res._id
-              };
-              dispatch(addProduct(addedProduct));
-              const text = "Product " + product.name + " added";
-              const type: NotificationType = 'success';
-              dispatch(setNotification(text, type));
+              if (res !== null) {
+                const addedProduct: Product = {
+                  name: res.name,
+                  description: res.description,
+                  price: res.price,
+                  stock: res.stock,
+                  image: res.image,
+                  uusiImage: res.uusiImage,
+                  _id: res._id
+                };
+                console.log('added product', addedProduct);
+                dispatch(addProduct(addedProduct));
+                dispatch(setNotification("Product " + product.name + " added", 'success'));
+              } else {
+                dispatch(setNotification("Erroria pukkaa", 'error'));
+              }
             });
           }}
         >
-          {({ errors, touched }) => (
-            <ProductForm errors={errors} touched={touched} />
+          {({ errors, touched, setFieldValue }) => (
+            <ProductForm errors={errors} touched={touched} setFieldValue={setFieldValue}  />
           )}
         </Formik>
       </div>

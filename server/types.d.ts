@@ -6,7 +6,8 @@ type Product = {
   price: number,
   stock: number,
   description?: string,
-  image?: string
+  image?: string,
+  uusiImage?: File,
 };
 
 type ShoppingCartProduct = {

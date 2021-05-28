@@ -4,6 +4,7 @@ type Product = {
   price: number,
   stock: number,
   image: string,
+  uusiImage?: File,
   description?: string,
   rating?: number,
 };
@@ -70,7 +71,3 @@ type UserType = 'Admin' | 'User';
 type NotificationType = 'success' | 'error' | 'info';
 
 type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser' | 'ModifyProduct';
-declare module "*.jpg" {
-  const content: string;
-  export = content;
-}
