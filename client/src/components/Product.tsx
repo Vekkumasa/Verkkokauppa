@@ -20,6 +20,24 @@ import { increaseQuantity, addNewProductToShoppingCart, createNewShoppingCart } 
 import shoppingCartService from '../services/shoppingCartService';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
+
+
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
+type Product = {
+  _id: string,
+  name: string,
+  price: number,
+  stock: number,
+  image: string,
+  uusiImage?: Image,
+  description?: string,
+  rating?: number,
+};
 const useStyles = makeStyles({
   root: {
     width: 170,
@@ -44,6 +62,7 @@ type Props = {
 };
 
 const Product  = ({ product }: Props): JSX.Element => {
+
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
@@ -110,6 +129,11 @@ const Product  = ({ product }: Props): JSX.Element => {
         });
     }
   };
+  let image;
+  if (product.uusiImage) {
+    const buffer = Buffer.from(product.uusiImage.data);
+    image = 'data:image/jpeg;base64,' + arrayBufferToBase64(buffer);
+  }
 
   return (
     <Card className={classes.root}>
@@ -117,7 +141,7 @@ const Product  = ({ product }: Props): JSX.Element => {
         <CardActionArea onClick={() => dispatch(setActiveProduct(product))}>
           <CardMedia
               className={classes.media}
-              image={product.image}
+              image={image ? image : product.image}
             />
           <CardContent>
             <Typography className={`${classes.overflow} ${classes.centerText}`} style={{ fontSize: 16 }} gutterBottom variant="h6" component="h2">

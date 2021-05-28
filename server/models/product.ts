@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Image } from "../types";
 
 export interface ProductInterface extends mongoose.Document {
   name: string;
@@ -6,7 +7,7 @@ export interface ProductInterface extends mongoose.Document {
   price: number;
   description?: string;
   image?: string;
-  uusiImage?: File,
+  uusiImage?: Image,
   _id?: string;
 }
 

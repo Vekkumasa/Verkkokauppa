@@ -23,16 +23,21 @@ router.post('/', (req: CustomRequest<Product>, res: Response) => {
   });
 });
 
-router.put('/:id', upload.single('uusiImage'), (req: CustomRequest<File>, _res: Response) => {
-  console.log('image router');
-  console.log('request file', req.file);
+router.put('/:id', upload.single('uusiImage'), (req: CustomRequest<File>, res: Response) => {
   const obj = {
-      img: {
+      uusiImage: {
           data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
           contentType: 'image/png'
       }
   };
-  console.log('object', obj);
+  const modified: Promise<ProductInterface | null> = productController.ModifyProductImage(obj, req.params.id);
+  void modified.then((response) => {
+    if (response === null) {
+      console.log('Error imagessa');
+    } else {
+      res.status(201).json(response);
+    }
+  });
 });
 
 router.put('/', (req: CustomRequest<Product>, res: Response) => {

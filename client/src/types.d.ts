@@ -1,10 +1,15 @@
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
 type Product = {
   _id: string,
   name: string,
   price: number,
   stock: number,
   image: string,
-  uusiImage?: File,
+  uusiImage?: Image,
   description?: string,
   rating?: number,
 };

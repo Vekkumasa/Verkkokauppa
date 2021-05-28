@@ -90,3 +90,12 @@ type Email = {
 interface CustomRequest<T> extends Request {
   body: T
 }
+
+type ProductImage = {
+  uusiImage: Image
+};
+
+type Image = {
+  data: Buffer,
+  contentType: string
+};

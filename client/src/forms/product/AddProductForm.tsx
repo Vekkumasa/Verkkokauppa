@@ -43,8 +43,8 @@ import ProductForm from './ProductForm';
           onSubmit={values => {
             const { name, description, price, stock, image, uusiImage } = values;
 
-            const product: NoIdProduct = { name, description, price, stock, image, uusiImage };
-            const promise = productService.addProduct(product);
+            const product: NoIdProduct = { name, description, price, stock, image };
+            const promise = productService.addProduct(product, uusiImage);
             void promise.then((res) => {
               if (res !== null) {
                 const addedProduct: Product = {

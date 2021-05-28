@@ -7,29 +7,29 @@ const getAll = ():Promise<Product[]> => {
   return request.then((response: AxiosResponse<Product[]>) => response.data);
 };
 
-const addProduct = async (product: NoIdProduct):Promise<Product> => {
-  console.log('service', product);
-  const { uusiImage, ...item } = product;
+const addProduct = async (product: NoIdProduct, uusiImage: File | undefined):Promise<Product> => {
 
-  const request = await axios.post<Product>(`${baseURL}`, item);
+  const request = await axios.post<Product>(`${baseURL}`, product);
 
   if (uusiImage && request.data !== null) {
-    console.log(uusiImage);
+    console.log('image', uusiImage);
     const req = modifyProductImage(request.data._id, uusiImage);
     console.log('Image request', req);
+    return req;
   }
   return request.data;
 };
 
 const modifyProductImage = async (productId: string, image: File) => {
   const fd = new FormData();
-    fd.append('uusiImage', image, image.name);
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+  fd.append('uusiImage', image, image.name);
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   };
-  const request = await axios.put<Product>(`${baseURL}/${productId}`, image);
+
+  const request = await axios.put<Product>(`${baseURL}/${productId}`, fd, config);
   console.log("modifyProductImage", request.data);
   return request.data;
 };

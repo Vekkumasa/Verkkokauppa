@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import Product, { ProductInterface } from "../models/product";
-import { Product as ProductType } from '../types.d';
+import { Product as ProductType, ProductImage } from '../types.d';
 
 const GetProducts = async (): Promise<ProductInterface[]> => {
   return await Product.find({});
@@ -50,9 +50,22 @@ const ModifyProduct = async (product: ProductType) => {
   return productToModify;
 };
 
+const ModifyProductImage = async (image: ProductImage, productId: string) => {
+  const product = await Product.findById(productId);
+  if (product) {
+    product.uusiImage = image.uusiImage;
+    await product.save();
+    console.log(product);
+    return product;
+  } else {
+    return null;
+  }
+};
+
 export default {
   GetProducts,
   NewProduct,
   DeleteProduct,
   ModifyProduct,
+  ModifyProductImage,
 };
