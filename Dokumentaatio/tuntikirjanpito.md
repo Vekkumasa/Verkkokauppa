@@ -38,4 +38,7 @@
 | 21.5  |  8   | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
 | 24.5  |  5   | Refaktorointia ja sähköposti lähetetään käyttäjälle kun ostokset viedään loppuun |
 | 25.5  |  6   | Productinfo.tsx |
-| yht   | 153.5 | | 
+| 26.5  |  4   | Väliaikainen Image model, Multer, ja väliaikainen Addimage form ym |
+| 27.5  |  8.5 | Jokunen yritys imagen refaktorointiin |
+| 28.5  |  8   | Image refaktoroitu producteista ja product formia paranneltu |
+| yht   | 174  | | 

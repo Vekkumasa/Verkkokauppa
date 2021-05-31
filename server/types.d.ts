@@ -15,14 +15,14 @@ type Product = {
   price: number,
   stock: number,
   description?: string,
-  image?: Image, // TODO: uusi image tyyppi vastaamaan fronttia
+  image?: Image,
 };
 
 type ShoppingCartProduct = {
   _id: string,
   name: string,
   quantity: number,
-  image: Image, // TODO
+  image: Image,
   price: number
 };
 
@@ -30,7 +30,7 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
-  image: Image, // TODO
+  image: Image,
   price: number
 };
 
