@@ -67,9 +67,6 @@ import { logIn } from '../../store/User/actionCreators';
       .string()
       .email('Invalid email')
       .required('Required'),
-
-    avatar: Yup
-      .string(),
  });
  
  const ModifyUserForm = ():JSX.Element => {
@@ -86,7 +83,6 @@ import { logIn } from '../../store/User/actionCreators';
           lastName: loggedUser.lastName,
           password: '',
           email: loggedUser.email,
-          avatar: loggedUser.avatar,
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
@@ -97,7 +93,6 @@ import { logIn } from '../../store/User/actionCreators';
             lastName: values.lastName,
             password: values.password,
             email: values.email,
-            avatar: values.avatar,
           };
           console.log(modifiedUser);
           const promise = userService.modifyUser(modifiedUser);
@@ -212,24 +207,6 @@ import { logIn } from '../../store/User/actionCreators';
                 <Grid item xs={1}>
                   {(errors.email && touched.email) && (
                     <div>{errors.email}</div>
-                  )}
-                </Grid>
-              </Grid>
-              <Grid container item xs={12} spacing={3}>
-                <Grid item xs={2}>
-                  <label>Avatar: </label>
-                </Grid>
-                <Grid item xs={9}>
-                  <Field
-                    className={classes.field}
-                    placeholder="www.avatar/org/avatar.png (optional)"
-                    type="text"
-                    name="avatar"
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  {(errors.avatar && touched.avatar) && (
-                    <div>{errors.avatar}</div>
                   )}
                 </Grid>
               </Grid>

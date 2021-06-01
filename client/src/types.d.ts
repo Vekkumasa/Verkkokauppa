@@ -38,7 +38,7 @@ type User = {
   password: string,
   email: string,
   userType?: UserType,
-  avatar?: string,
+  avatar?: Image,
 };
 
 type ShippingInfo = {
@@ -63,7 +63,7 @@ type Credentials = {
   lastName: string,
   email: string,
   userType: UserType,
-  avatar?: string,
+  avatar?: Image,
   ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
@@ -75,4 +75,4 @@ type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
-type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser' | 'ModifyProduct';
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser' | 'ModifyProduct' | 'ModifyUserAvatar';

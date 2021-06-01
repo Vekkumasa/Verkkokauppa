@@ -2,7 +2,10 @@ import express, { Request, Response } from 'express';
 import userController from '../Controllers/UserController';
 import { ShoppingCartInterface } from '../models/shoppingCart';
 import { UserInterface } from '../models/user';
-import { User, CustomRequest } from '../types.d';
+import { User, CustomRequest, Image } from '../types.d';
+import upload from '../utils/Multer';
+import fs from 'fs';
+import path from 'path';
 
 const router = express.Router();
 
@@ -59,6 +62,22 @@ router.put('/:id/', (req: CustomRequest<{ productId: string, value: number}>, re
   } else {
     res.status(400).json({ error: "Rating failed" });
   }
+});
+
+router.put('/:id/image', upload.single('image'), (req: CustomRequest<File>, res: Response) => {
+  const obj: Image = {
+        data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
+        contentType: 'image/png' 
+  };
+  console.log('router', obj);
+  const modified: Promise<UserInterface | null> = userController.modifyUserAvatar(obj, req.params.id);
+  void modified.then((response) => {
+    if (response === null) {
+      console.log('Error imagessa');
+    } else {
+      res.status(201).json(response);
+    }
+  });
 });
 
 export default router;

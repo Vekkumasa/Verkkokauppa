@@ -1,5 +1,5 @@
 import User from "../models/user";
-import { User as UserType, Product as ProductType } from '../types.d';
+import { User as UserType, Product as ProductType, Image } from '../types.d';
 import { uuid } from "uuidv4";
 import bcrypt from 'bcrypt';
 import { ShoppingCartInterface } from "../models/shoppingCart";
@@ -19,7 +19,6 @@ const addUser = async (user: UserType) => {
       userName: user.userName,
       password: password,
       email: user.email,
-      avatar: user.avatar,
       userType: user.userType,
       recentActivity: [],
     });
@@ -40,7 +39,6 @@ const modifyUser = async (newUserInfo: UserType) => {
     console.log('usercontroller', userToModify);
     if (!userToModify) return null;
 
-    userToModify.avatar = newUserInfo.avatar;
     userToModify.userName = newUserInfo.userName;
     userToModify.firstName = newUserInfo.firstName;
     userToModify.lastName = newUserInfo.lastName;
@@ -50,9 +48,20 @@ const modifyUser = async (newUserInfo: UserType) => {
     userToModify.email = newUserInfo.email;
 
     await userToModify.save();
-    console.log('jep');
     return userToModify;
   } catch (e) {
+    return null;
+  }
+};
+
+const modifyUserAvatar = async (image: Image, userId: string) => {
+  const user = await User.findById(userId);
+  if (user) {
+    user.avatar = image;
+    await user.save();
+    console.log('modify user avatar contorller', user);
+    return user;
+  } else {
     return null;
   }
 };
@@ -110,4 +119,5 @@ export default {
   modifyUser,
   getCompletedShoppingCarts,
   rateProduct,
+  modifyUserAvatar,
 }; 

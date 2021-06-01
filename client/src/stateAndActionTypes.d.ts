@@ -23,6 +23,7 @@ type ModalState = {
   createUserModal: boolean,
   modifyUserInfoModal: boolean,
   modifyProductModal: boolean,
+  modifyUserAvatarModal: boolean;
 };
 
 type ProductState = {

@@ -3,7 +3,7 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
-import ModifyUserForm from "../forms/User/ModifyUserForm";
+import ModifyUserAvatar from "../forms/User/ModifyAvatar";
 
 const getModalStyle = () => {
   const top = 50;
@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   paper: {
     position: 'absolute',
     width: 650,
-    height: 370,
+    height: 300,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -48,34 +48,34 @@ const useStyles = makeStyles(theme => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Modify user info </h2>
+    <h2 className={classes.header}> Change Avatar </h2>
   );
 };
 
-const ModifyUserInfoModal: React.FC = () => {
+const ModifyUserAvatarModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
-  const modalOpen = useAppSelector(state => state.modalReducer.modifyUserInfoModal);
+  const modalOpen = useAppSelector(state => state.modalReducer);
   const dispatch: AppDispatch = useAppDispatch();
   
   const handleClose = () => {
-    dispatch(handleModal(!modalOpen, 'ModifyUser'));
+    dispatch(handleModal(!modalOpen.modifyUserAvatarModal, 'ModifyUserAvatar'));
   };
 
   return (
     <Modal
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
-      open={modalOpen}
+      open={modalOpen.modifyUserAvatarModal}
       onClose={handleClose}
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <ModifyUserForm />
+        <ModifyUserAvatar />
       </div>
     </Modal>
   );
 };
 
-export default ModifyUserInfoModal;
+export default ModifyUserAvatarModal;

@@ -41,4 +41,6 @@
 | 26.5  |  4   | Väliaikainen Image model, Multer, ja väliaikainen Addimage form ym |
 | 27.5  |  8.5 | Jokunen yritys imagen refaktorointiin |
 | 28.5  |  8   | Image refaktoroitu producteista ja product formia paranneltu |
-| yht   | 177  | | 
+| 31.5  |  6.5 | Kayttajien arviot tuotteille + refaktorointia |
+| 1.6   |  6.5 | User avatarit imageina eika urlina |
+| yht   | 190  | | 

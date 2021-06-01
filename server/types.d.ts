@@ -49,7 +49,7 @@ type User = {
   userName: string,
   password: string,
   userType: string,
-  avatar?: string,
+  avatar?: Image,
 };
 
 type Credentials = {
@@ -60,7 +60,7 @@ type Credentials = {
   lastName: string,
   email: string,
   userType: UserType,
-  avatar?: string,
+  avatar?: Image,
   ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
