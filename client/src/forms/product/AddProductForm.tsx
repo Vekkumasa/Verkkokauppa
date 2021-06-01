@@ -57,9 +57,7 @@ import ProductForm from './ProductForm';
                 };
                 dispatch(addProduct(addedProduct));
                 dispatch(setNotification("Product " + product.name + " added", 'success'));
-              } else {
-                dispatch(setNotification("Erroria pukkaa", 'error'));
-              }
+              } 
             });
           }}
         >

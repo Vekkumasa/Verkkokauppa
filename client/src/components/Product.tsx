@@ -112,7 +112,7 @@ const Product  = ({ product }: Props): JSX.Element => {
 
   const handleSetActiveProduct = () => {
     dispatch(setActiveProduct(product));
-    
+    window.localStorage.setItem('activeProduct', product.name);
   };
   
   let image;

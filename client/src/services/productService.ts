@@ -33,8 +33,16 @@ const modifyProductImage = async (productId: string, image: File) => {
   return request.data;
 };
 
-const modifyProduct = async (product: Product):Promise<Product> => {
+const modifyProduct = async (product: Product, image: File | undefined):Promise<Product> => {
+
+  console.log('modify product', product);
   const request = await axios.put<Product>(`${baseURL}`, product);
+  if (request.data !== null && image) {
+    const req = modifyProductImage(product._id, image);
+    console.log('req', req);
+    return req;
+  }
+  console.log('data',request.data);
   return request.data;
 };
 

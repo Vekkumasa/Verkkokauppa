@@ -7,7 +7,7 @@ interface AppState {
   modal: ModalState,
   filter: FilterState,
   activeProduct: ActiveProductState,
-};
+}
 
 type FilterState = {
   productFilter: string

@@ -20,6 +20,8 @@ import ProductForm from './ProductForm';
     .required("Required"),
   stock: Yup
     .number(),
+  image: Yup
+    .mixed()
  });
  
  const ModifyProductForm = ():JSX.Element => {
@@ -37,12 +39,15 @@ import ProductForm from './ProductForm';
             description: item.description,
             price: item.price,
             stock: item.stock,
+            image: '' as unknown as File
           }}
           validationSchema={SignupSchema}
           onSubmit={values => {
-            const { name, description, price, stock } = values;
-            const product: Product = { name, description, price, stock, _id: item._id, ratings: item.ratings };
-            const promise = productService.modifyProduct(product);
+            const { name, description, price, stock, image } = values;
+            console.log('image', image);
+            const product: Product = { name, description, price, stock, _id: item._id, ratings: item.ratings, image: item.image };
+            const promise = productService.modifyProduct(product, image);
+            
             void promise.then((res) => {
               if (!res) {
                 dispatch(setNotification("Unexpected error", 'error'));
@@ -52,19 +57,19 @@ import ProductForm from './ProductForm';
               void dispatch(initializeProducts());
               dispatch(setNotification("Product " + product.name + " modified", 'success'));
             });
+            
           }}
         >
-          {({ errors, touched, setFieldValue }) => (
-            /*
+          {({ errors, touched, setFieldValue, submitForm }) => (  
             <ProductForm
               errors={errors}
               touched={touched}
               setFieldValue={setFieldValue}
               image={image}
               setImage={setImage}
+              submitForm={submitForm}
             />
-            */
-           <div></div>
+            
           )}
         </Formik>
       </div>

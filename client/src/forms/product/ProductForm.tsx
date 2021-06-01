@@ -143,6 +143,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
               type="File"
               name="image"
               value={undefined}
+              style={{ color: 'rgba(0,0,0,0)'}}
               onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
                 setFieldValue('image', event.currentTarget.files? event.currentTarget.files[0] : undefined);
                 setImage(event.currentTarget.files? event.currentTarget.files[0] : undefined);

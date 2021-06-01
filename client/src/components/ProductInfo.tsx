@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { 
   CardMedia,
@@ -15,11 +15,14 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import { handleModal } from '../store/modal/actionCreators';
 import Rating from '@material-ui/lab/Rating';
 import { StarBorder, FiberManualRecord as CircleIcon, Edit } from '@material-ui/icons/';
+
+import shoppingCartService from '../services/shoppingCartService';
 import userService from '../services/userService';
 
 import ModifyProductModal from '../modals/ModifyProductModal';
 import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 import { roundToHalf } from '../utils/RoundToHalf';
+import { addNewProductToShoppingCart, increaseQuantity } from '../store/ShoppingCart/actionCreators';
 import { setActiveProduct } from '../store/ActiveProduct/actionCreators';
 import { logIn } from '../store/User/actionCreators';
 
@@ -76,6 +79,7 @@ const useStyles = makeStyles({
 });
 
 const ProductInfo = (): JSX.Element => {
+
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
 
@@ -83,18 +87,32 @@ const ProductInfo = (): JSX.Element => {
     state => state.activeProductReducer.product
   );
 
-  const shoppingCart = useAppSelector(state => state.shoppingCartReducer.cart);
-  
+  const allProducts: Product[] = useAppSelector(
+    state => state.productReducer.products
+  );
+
   const user = useAppSelector(state => state.userReducer.user);
   const userId = user? user._id : '';
+
+  useEffect(() => {
+    if (!product) {
+      const item = window.localStorage.getItem('activeProduct');
+      const storedProduct = allProducts.find(p => {
+        return p.name === item;
+      });
+      if (storedProduct) {
+        void dispatch(setActiveProduct(storedProduct));
+      }
+    }
+  }, [allProducts]);
+
+  const shoppingCart = useAppSelector(state => state.shoppingCartReducer);
+  
   if (!product) return <div></div>;
 
-  console.log(user, user?.ratings);
-  console.log('product', product);
-
-  const hasUserRatedTheProduct = user?.ratings?.some(p => p._id.toString() === product._id);
-
-  const isProductInCart = shoppingCart.some(p => p._id === product._id);
+  const hasUserRatedTheProduct = user?.ratings?.some(p => {
+    return p._id.toString() === product._id.toString();
+  });
 
   const productStock = () => {
     if (product.stock <= 0) {
@@ -106,12 +124,44 @@ const ProductInfo = (): JSX.Element => {
     }
   };
 
+  
+
   const handleShoppingCart = () => {
+    const isProductInCart = shoppingCart.cart.some(p => p._id === product._id);
+    let shoppingCartProduct = shoppingCart.cart.find(p => p._id === product._id);
+
+    if (!shoppingCartProduct) {
+      shoppingCartProduct = {...product, quantity: 1};
+    }
+
     if (isProductInCart) {
-      console.log('tuote on kärryssä');
-      
+      console.log('tuote on kärryssä');    
+      increaseProductQuantity(shoppingCartProduct);
     } else {
       console.log('tuote ei ole kärryssä');
+      addProductToShoppingCart(shoppingCartProduct);
+    }
+  };
+
+  const increaseProductQuantity = (shoppingCartProduct: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(increaseQuantity(shoppingCartProduct, shoppingCart.cartId));
+    } else {
+      void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId, cartId: shoppingCart.cartId })
+        .then(() => {
+          dispatch(increaseQuantity(shoppingCartProduct, shoppingCart.cartId));
+        });
+    }
+  };
+
+  const addProductToShoppingCart = (shoppingCartProduct: ShoppingCartProduct) => {
+    if (!user) {
+      dispatch(addNewProductToShoppingCart(shoppingCartProduct, shoppingCart.cartId));
+    } else {
+      void shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId, cartId: shoppingCart.cartId })
+        .then(() => {
+          dispatch(addNewProductToShoppingCart(shoppingCartProduct, shoppingCart.cartId));
+        });
     }
   };
 
@@ -221,7 +271,7 @@ const ProductInfo = (): JSX.Element => {
                 emptyIcon={<StarBorder fontSize="inherit" />}
                 onChange={(_event, value) => handleRating(value)}
               />
-              {hasUserRatedTheProduct === true && ratedTag()}
+              {hasUserRatedTheProduct && ratedTag()}
             </div>
             <Typography>
               <br/>
