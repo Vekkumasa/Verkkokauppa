@@ -1,8 +1,9 @@
 import User from "../models/user";
-import { User as UserType } from '../types.d';
+import { User as UserType, Product as ProductType } from '../types.d';
 import { uuid } from "uuidv4";
 import bcrypt from 'bcrypt';
 import { ShoppingCartInterface } from "../models/shoppingCart";
+import Product from "../models/product";
 
 const allUsers = async () => {
   return await User.find({});
@@ -67,9 +68,46 @@ const getCompletedShoppingCarts = async (userId: string):Promise<ShoppingCartInt
   }
 };
 
+const rateProduct = async (userId: string, productId: string, value: number) => {
+  const user = await User.findById(userId).populate('ratings');
+  const productInterface = await Product.findById(productId);
+
+  console.log('user', user);
+  if (!user || !productInterface) return null;
+  
+  const rated = user.ratings.some(product => {
+    return product._id?.toString() === productId;
+  });
+
+  const array = productInterface.ratings.concat(value);
+  const product: ProductType = {
+    _id: productId,
+    name: productInterface.name,
+    price: productInterface.price,
+    stock: productInterface.stock,
+    description: productInterface.description,
+    image: productInterface.image,
+    ratings: array 
+  };
+
+  console.log(productInterface, value, rated);
+  if (!rated) {
+    user.ratings.push(product);
+    productInterface.ratings.push(value);
+  } else {
+    return null;
+  }
+
+  await user.save();
+  await productInterface.save();
+
+  return user;
+};
+
 export default {
   addUser,
   allUsers,
   modifyUser,
-  getCompletedShoppingCarts
+  getCompletedShoppingCarts,
+  rateProduct,
 }; 

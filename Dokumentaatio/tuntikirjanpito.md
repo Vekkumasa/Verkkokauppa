@@ -41,4 +41,4 @@
 | 26.5  |  4   | Väliaikainen Image model, Multer, ja väliaikainen Addimage form ym |
 | 27.5  |  8.5 | Jokunen yritys imagen refaktorointiin |
 | 28.5  |  8   | Image refaktoroitu producteista ja product formia paranneltu |
-| yht   | 174  | | 
+| yht   | 177  | | 

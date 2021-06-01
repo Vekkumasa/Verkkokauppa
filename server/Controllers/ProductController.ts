@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import Product, { ProductInterface } from "../models/product";
-import { Product as ProductType, ProductImage } from '../types.d';
+import { Product as ProductType, Image } from '../types.d';
 
 const GetProducts = async (): Promise<ProductInterface[]> => {
   return await Product.find({});
@@ -13,7 +13,8 @@ const NewProduct = async (product: ProductType) => {
       name: product.name,
       price: product.price,
       stock: product.stock,
-      description: product.description
+      description: product.description,
+      ratings: []
     });
     const response = await newProduct.save();
     return response;
@@ -48,10 +49,10 @@ const ModifyProduct = async (product: ProductType) => {
   return productToModify;
 };
 
-const ModifyProductImage = async (image: ProductImage, productId: string) => {
+const ModifyProductImage = async (image: Image, productId: string) => {
   const product = await Product.findById(productId);
   if (product) {
-    product.image = image.image;
+    product.image = image;
     await product.save();
     console.log(product);
     return product;

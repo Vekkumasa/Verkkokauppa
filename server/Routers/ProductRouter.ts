@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import productController from '../Controllers/ProductController';
 import { ProductInterface } from '../models/product';
-import { Product, CustomRequest } from '../types';
+import { Product, CustomRequest, Image } from '../types';
 
 import path from 'path';
 import fs from 'fs';
@@ -24,11 +24,9 @@ router.post('/', (req: CustomRequest<Product>, res: Response) => {
 });
 
 router.put('/:id', upload.single('image'), (req: CustomRequest<File>, res: Response) => {
-  const obj = {
-      image: {
-          data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
-          contentType: 'image/png'
-      }
+  const obj: Image = {
+        data: fs.readFileSync(path.join(__dirname+'../../../Uploads/' + req.file.filename)),
+        contentType: 'image/png' 
   };
 
   const modified: Promise<ProductInterface | null> = productController.ModifyProductImage(obj, req.params.id);

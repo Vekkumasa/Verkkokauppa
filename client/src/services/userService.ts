@@ -22,9 +22,15 @@ const getUsersCompletedShoppingcarts = async (userId: string):Promise<ShoppingCa
   return request.data;
 };
 
+const addRatingForProduct = async (userId: string, productId: string, value: number):Promise<Credentials | null> => {
+  const request = await axios.put<Credentials | null>(`${baseURL}/users/${userId}`, { productId , value });
+  return request.data;
+};
+
 export default {
   signIn,
   createUser,
   modifyUser,
   getUsersCompletedShoppingcarts,
+  addRatingForProduct,
 };

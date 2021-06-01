@@ -65,14 +65,12 @@ const Product  = ({ product }: Props): JSX.Element => {
 
   const handleShoppingCart = () => {
     const isProductAlreadyInCart = shoppingCart.some(p => p._id === product._id);
-    console.log('shopping cart: ', shoppingCart);
     
     let shoppingCartProduct: ShoppingCartProduct | undefined = shoppingCart.find(p => p._id === product._id);
 
     if (!shoppingCartProduct) {   
       shoppingCartProduct = {...product, quantity: 1};
     }
-    console.log('cart id (Product.tsx)', cartId);
     if (isProductAlreadyInCart) {
       updateShoppingCartProductQuantity(shoppingCartProduct);
     } else {  
@@ -85,7 +83,6 @@ const Product  = ({ product }: Props): JSX.Element => {
       dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
     } else {
       if (!cartId) {
-        console.log('cart id unknown');
         dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
         const newProduct = [ shoppingCartProduct ];
         void shoppingCartService.createNewShoppingCart({ products: newProduct, user: user._id, id: ''})
@@ -107,11 +104,15 @@ const Product  = ({ product }: Props): JSX.Element => {
       dispatch(increaseQuantity(shoppingCartProduct, cartId));
     } else {
       void shoppingCartService.increaseProductQuantity({ product: shoppingCartProduct, userId: user._id, cartId: cartId })
-        .then((response) => {
-          console.log(response);
+        .then(() => {
           dispatch(increaseQuantity(shoppingCartProduct, cartId));
         });
     }
+  };
+
+  const handleSetActiveProduct = () => {
+    dispatch(setActiveProduct(product));
+    
   };
   
   let image;
@@ -123,7 +124,7 @@ const Product  = ({ product }: Props): JSX.Element => {
   return (
     <Card className={classes.root}>
       <Link to='/product' style={{ textDecoration: 'none', color: 'black' }}>
-        <CardActionArea onClick={() => dispatch(setActiveProduct(product))}>
+        <CardActionArea onClick={() => handleSetActiveProduct()}>
           <CardMedia
               className={classes.media}
               image={image}

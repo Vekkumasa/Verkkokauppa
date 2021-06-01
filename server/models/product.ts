@@ -5,6 +5,7 @@ export interface ProductInterface extends mongoose.Document {
   name: string;
   stock: number;
   price: number;
+  ratings: number[];
   description?: string;
   image?: Image,
   _id?: string;
@@ -16,6 +17,7 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema(
   stock: { type: Number, required: true },
   price: { type: Number, required: true },
   description: { type: String },
+  ratings: [{ type: Number }],
   image: {
     data: Buffer,
     contentType: String

@@ -10,7 +10,7 @@ type Product = {
   stock: number,
   image?: Image,
   description?: string,
-  rating?: number,
+  ratings: number[],
 };
 
 type NoIdProduct = Omit<Product, '_id'>;
@@ -64,6 +64,7 @@ type Credentials = {
   email: string,
   userType: UserType,
   avatar?: string,
+  ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
 };

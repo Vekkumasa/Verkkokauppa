@@ -8,6 +8,7 @@ export const setActiveProduct = (data: Product): SetActiveProduct => {
     data
   };
 
+  console.log('setactiveproduct', action.data);
   return (dispatch: DispatchType) => {
     dispatch(action);
   };

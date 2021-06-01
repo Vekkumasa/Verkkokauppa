@@ -47,9 +47,11 @@ interface Props {
     price: number;
     stock: number;
 }>
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any 
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void
   setImage: React.Dispatch<React.SetStateAction<File | undefined>>
   image: File | undefined
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any 
   submitForm: (() => Promise<void>) & (() => Promise<any>)
 }
 

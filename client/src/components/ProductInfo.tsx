@@ -15,9 +15,13 @@ import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReduce
 import { handleModal } from '../store/modal/actionCreators';
 import Rating from '@material-ui/lab/Rating';
 import { StarBorder, FiberManualRecord as CircleIcon, Edit } from '@material-ui/icons/';
+import userService from '../services/userService';
 
 import ModifyProductModal from '../modals/ModifyProductModal';
 import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
+import { roundToHalf } from '../utils/RoundToHalf';
+import { setActiveProduct } from '../store/ActiveProduct/actionCreators';
+import { logIn } from '../store/User/actionCreators';
 
 const useStyles = makeStyles({
   root: {
@@ -58,23 +62,18 @@ const useStyles = makeStyles({
     marginLeft: 15,
     marginBottom: 15,
     width: '80%'
+  },
+  ratedTag: {
+    borderRadius: 10,
+    color: 'darkgreen',
+    height: 20,
+    width: 60,
+    textAlign: 'center',
+    marginLeft: 10,
+    padding: 3,
+    transform: `rotate(-30deg)`,
   }
 });
-
-type Image = {
-  data: Buffer,
-  contentType: string
-};
-
-type Product = {
-  _id: string,
-  name: string,
-  price: number,
-  stock: number,
-  image?: Image,
-  description?: string,
-  rating?: number,
-};
 
 const ProductInfo = (): JSX.Element => {
   const classes = useStyles();
@@ -83,18 +82,19 @@ const ProductInfo = (): JSX.Element => {
   const product: Product | undefined = useAppSelector(
     state => state.activeProductReducer.product
   );
+
   const shoppingCart = useAppSelector(state => state.shoppingCartReducer.cart);
   
   const user = useAppSelector(state => state.userReducer.user);
-
+  const userId = user? user._id : '';
   if (!product) return <div></div>;
 
-  const isProductInCart = shoppingCart.some(p => p._id === product._id);
+  console.log(user, user?.ratings);
+  console.log('product', product);
 
-  const productRating = () => {
-    if (!product.rating) return 0;
-    return product.rating;
-  };
+  const hasUserRatedTheProduct = user?.ratings?.some(p => p._id.toString() === product._id);
+
+  const isProductInCart = shoppingCart.some(p => p._id === product._id);
 
   const productStock = () => {
     if (product.stock <= 0) {
@@ -113,6 +113,28 @@ const ProductInfo = (): JSX.Element => {
     } else {
       console.log('tuote ei ole kärryssä');
     }
+  };
+
+  const productRating = () => {
+    if (!product.ratings || product.ratings.length === 0) return 0;
+    
+    const sum = product.ratings.reduce((prev, cur) => prev + cur, 0);
+    console.log('sum / length:', sum / product.ratings.length, 'rounded: ', roundToHalf(sum / product.ratings.length));
+    return roundToHalf(sum / product.ratings.length);
+  };
+
+  const handleRating = (number: number | null) => {
+    const value = number? number : 0;
+    const response = userService.addRatingForProduct(userId, product._id, value);
+    void response.then((res) => {
+      if (res !== null) {
+        const productWithNewRatings = res.ratings?.find(r => r._id.toString() === product._id);
+        if (productWithNewRatings) {
+          void dispatch(setActiveProduct(productWithNewRatings));
+          void dispatch(logIn(res));
+        }
+      }
+    });
   };
 
   const loremIpsum = () => {
@@ -146,6 +168,14 @@ const ProductInfo = (): JSX.Element => {
     );
   };
 
+  const ratedTag = ():JSX.Element => {
+    return (
+      <Box border={2} className={classes.ratedTag}>
+          <Typography>Rated</Typography>
+      </Box>
+    );
+  };
+
   const addToShoppingcart = () => {   
     return (
       <Box border={1} justifyContent="center" style={{ backgroundColor: 'lightgrey', maxWidth: 300, borderRadius: 10 }}>
@@ -170,8 +200,6 @@ const ProductInfo = (): JSX.Element => {
     image = arrayBufferToBase64(buffer);
   }
 
-  
-  console.log(product);
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
@@ -184,12 +212,17 @@ const ProductInfo = (): JSX.Element => {
               <Typography variant='h3' style={{ marginRight: 15 }}> {product.name}  </Typography>
               {user?.userType === 'Admin' && modifyProductButton()}
             </div>
-            <Rating
-              readOnly={true}
-              value={productRating()}
-              precision={0.5}
-              emptyIcon={<StarBorder fontSize="inherit" />}
-            />
+            <div style={{ display: 'flex', flexDirection: 'row'}}>
+              <Rating
+                readOnly={!user || hasUserRatedTheProduct}
+                value={productRating()}
+                name={product.name}
+                precision={0.5}
+                emptyIcon={<StarBorder fontSize="inherit" />}
+                onChange={(_event, value) => handleRating(value)}
+              />
+              {hasUserRatedTheProduct === true && ratedTag()}
+            </div>
             <Typography>
               <br/>
               {product.description}

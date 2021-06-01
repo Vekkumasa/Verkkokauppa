@@ -47,4 +47,18 @@ router.put('/', (req: CustomRequest<User>, res: Response) => {
   }
 });
 
+router.put('/:id/', (req: CustomRequest<{ productId: string, value: number}>, res: Response) => {
+  console.log('params', req.params.id);
+  const { productId, value } = req.body;
+  console.log('body', productId, ' ', value);
+  const rated = userController.rateProduct(req.params.id, productId, value);
+  if (rated != null) {
+    void rated.then((response) => {
+      res.status(201).json(response);
+    });
+  } else {
+    res.status(400).json({ error: "Rating failed" });
+  }
+});
+
 export default router;

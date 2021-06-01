@@ -16,6 +16,7 @@ type Product = {
   stock: number,
   description?: string,
   image?: Image,
+  ratings: number[],
 };
 
 type ShoppingCartProduct = {
@@ -39,10 +40,6 @@ type NewShoppingCart = {
   user: string,
 };
 
-type CustomBoolean = {
-  data: boolean
-};
-
 type User = {
   _id: string,
   token?: string,
@@ -64,6 +61,7 @@ type Credentials = {
   email: string,
   userType: UserType,
   avatar?: string,
+  ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
 };
@@ -94,6 +92,10 @@ type Email = {
   to: string,
   subject: string,
   text: string,
+};
+
+type CustomBoolean = {
+  data: boolean
 };
 interface CustomRequest<T> extends Request {
   body: T

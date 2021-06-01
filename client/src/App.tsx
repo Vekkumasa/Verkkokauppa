@@ -45,7 +45,6 @@ const App = (): JSX.Element => {
         console.log('error at parsed user');
       } else {
         if (validTimeStamp(parsedUser.parsed.timestamp)) {
-          console.log('valid timestamp');
           dispatch(logIn(parsedUser.parsed));
           const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed._id);
           void usersShoppingCart.then((res) => {
@@ -62,7 +61,6 @@ const App = (): JSX.Element => {
             }
           });
         } else {
-          console.log('invalid timestamp');
           void shoppingCartService.setShoppingCartActivity(shoppingCart.cartId, false);
           dispatch(logIn());
           dispatch(clearShoppingCart());

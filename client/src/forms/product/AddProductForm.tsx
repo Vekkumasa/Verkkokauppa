@@ -22,7 +22,7 @@ import ProductForm from './ProductForm';
   image: Yup
     .mixed()
  });
- 
+
  const AddProductForm = ():JSX.Element => {
   const [ image, setImage ] = useState<File>();
 
@@ -42,7 +42,7 @@ import ProductForm from './ProductForm';
           onSubmit={values => {
             const { name, description, price, stock, image } = values;
 
-            const product: NoIdProduct = { name, description, price, stock };
+            const product: NoIdProduct = { name, description, price, stock, ratings: [] };
             const promise = productService.addProduct(product, image);
             void promise.then((res) => {
               if (res !== null) {
@@ -52,9 +52,9 @@ import ProductForm from './ProductForm';
                   price: res.price,
                   stock: res.stock,
                   image: res.image,
+                  ratings: res.ratings,
                   _id: res._id
                 };
-                console.log('added product', addedProduct);
                 dispatch(addProduct(addedProduct));
                 dispatch(setNotification("Product " + product.name + " added", 'success'));
               } else {

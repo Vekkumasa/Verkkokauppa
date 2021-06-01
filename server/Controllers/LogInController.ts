@@ -6,13 +6,12 @@ import { StringCheck } from '../utils/StringCheck';
 import { UserTypeCheck } from '../utils/UserTypeCheck';
 
 const logIn = async (userName: string, passWord: string, platformInfo: string): Promise<Credentials | null> => {
-  const user = await User.findOne({ userName: userName });
+  const user = await User.findOne({ userName: userName }).populate('ratings');
 
   if (!user?.password) {
     return null;
   }
 
-  console.log('controller', user);
   const passwordCorrect = !user
     ? false
     : await bcrypt.compare(passWord, user.password);
@@ -55,11 +54,11 @@ const logIn = async (userName: string, passWord: string, platformInfo: string): 
         userType: user.userType,
         recentActivity: user.recentActivity,
         platformInfo: user.platformInfo,
+        ratings: user.ratings,
       };
       return credentials;
     }
   }
-
   return null;
 };
 

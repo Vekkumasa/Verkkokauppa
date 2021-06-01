@@ -41,7 +41,7 @@ import ProductForm from './ProductForm';
           validationSchema={SignupSchema}
           onSubmit={values => {
             const { name, description, price, stock } = values;
-            const product: Product = { name, description, price, stock, _id: item._id };
+            const product: Product = { name, description, price, stock, _id: item._id, ratings: item.ratings };
             const promise = productService.modifyProduct(product);
             void promise.then((res) => {
               if (!res) {

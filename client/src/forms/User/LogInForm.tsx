@@ -83,9 +83,9 @@ const LogInForm = ():JSX.Element => {
         void promise.then((response) => {            
           const removed = shoppingCartService.removeShoppingCart(res.user);
           void removed.then((removedResponse) => {
-            console.log('loginform', removedResponse);
+            console.log('loginform removed shopping cart', removedResponse);
           });
-          console.log('LOG IN response', response);
+          console.log('Log in: new shoppingcart response', response);
           dispatch(createNewShoppingCart(response.id));
         });
       }
@@ -116,7 +116,8 @@ const LogInForm = ():JSX.Element => {
                 avatar: res.avatar,
                 token: res.token,
                 recentActivity: res.recentActivity,
-                platformInfo: res.platformInfo
+                platformInfo: res.platformInfo,
+                ratings: res.ratings,
               };
               const storeInfo: CredentialsWithTimeStamp = { ...credentials, timestamp: new Date };
               window.localStorage.setItem(
