@@ -9,37 +9,7 @@ import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootRed
 import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 import { logIn } from '../../store/User/actionCreators';
-
- const useStyles = makeStyles({
-
-  field: {
-      padding: 5,
-      borderColor: '#124eb0',
-      position: 'relative',
-      marginBottom: 10,
-      width: '90%',
-      maxWidth: 700
-  },
-  button: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      position: 'relative',
-      padding: 20,
-      paddingRight: 75,
-      marginTop: 10,
-      left: '42%',
-      transform: `translate(-50%, -$50%)`,
-      borderWidth: 3,
-      borderRadius: 35,      
-      width: 92,
-      height: 20,
-      opacity: 0.95,
-      backgroundColor: '#124eb0',
-      fontSize: 16,
-      fontStyle: 'bold',
-      color: 'white'  
-  },
-});
+import useStyles from '../formStyles';
 
  const SignupSchema = Yup.object().shape({
     userName: Yup
@@ -67,9 +37,6 @@ import { logIn } from '../../store/User/actionCreators';
       .string()
       .email('Invalid email')
       .required('Required'),
-
-    avatar: Yup
-      .string(),
  });
  
  const ModifyUserForm = ():JSX.Element => {
@@ -86,7 +53,6 @@ import { logIn } from '../../store/User/actionCreators';
           lastName: loggedUser.lastName,
           password: '',
           email: loggedUser.email,
-          avatar: loggedUser.avatar,
         }}
         validationSchema={SignupSchema}
         onSubmit={values => {
@@ -97,7 +63,6 @@ import { logIn } from '../../store/User/actionCreators';
             lastName: values.lastName,
             password: values.password,
             email: values.email,
-            avatar: values.avatar,
           };
           console.log(modifiedUser);
           const promise = userService.modifyUser(modifiedUser);
@@ -212,24 +177,6 @@ import { logIn } from '../../store/User/actionCreators';
                 <Grid item xs={1}>
                   {(errors.email && touched.email) && (
                     <div>{errors.email}</div>
-                  )}
-                </Grid>
-              </Grid>
-              <Grid container item xs={12} spacing={3}>
-                <Grid item xs={2}>
-                  <label>Avatar: </label>
-                </Grid>
-                <Grid item xs={9}>
-                  <Field
-                    className={classes.field}
-                    placeholder="www.avatar/org/avatar.png (optional)"
-                    type="text"
-                    name="avatar"
-                  />
-                </Grid>
-                <Grid item xs={1}>
-                  {(errors.avatar && touched.avatar) && (
-                    <div>{errors.avatar}</div>
                   )}
                 </Grid>
               </Grid>

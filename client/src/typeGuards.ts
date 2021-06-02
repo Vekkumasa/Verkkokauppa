@@ -6,6 +6,10 @@ export const stringCheck = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
+export const setTagActionCheck = (object: FilterActions): object is SetTagAction => (
+  object.type === 'SET_TAG'
+);
+
 export const stringParser = (text: unknown): string => {
   if (!text || !stringCheck(text)) {
       throw new Error(`Incorrect or missing string `);

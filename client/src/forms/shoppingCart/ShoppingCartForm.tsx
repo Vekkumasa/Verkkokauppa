@@ -1,6 +1,5 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { makeStyles } from '@material-ui/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
@@ -10,43 +9,7 @@ import { setNotification } from '../../store/Notification/actionCreators';
 import { userCheck } from '../../typeGuards';
 import shoppingCartService from '../../services/shoppingCartService';
 import { clearShoppingCart } from '../../store/ShoppingCart/actionCreators';
-
-const useStyles = makeStyles({
-  field: {
-    padding: 5,
-    borderColor: '#124eb0',
-    position: 'relative',
-    marginBottom: 10,
-    width: '90%',
-    maxWidth: 700
-  },
-  
-  button: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    position: 'relative',
-    padding: 20,
-    paddingRight: 75,
-    marginTop: 10,
-    paddingBottom: 20,
-    transform: `translate(-50%, -$50%)`,
-    borderWidth: 3,
-    borderRadius: 10,      
-    width: 92,
-    height: 20,
-    opacity: 0.95,
-    backgroundColor: '#124eb0',
-    fontSize: 16,
-    fontStyle: 'bold',
-    color: 'white'  
-  },
-
-  logInText: {
-    position: 'relative',
-    marginLeft: 20,
-    marginTop: 20,
-  }
-});
+import useStyles from '../formStyles';
 
 const ShippingSchema = Yup.object().shape({
   firstName: Yup
@@ -155,7 +118,7 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button disabled={!user} className={classes.button} type="submit"> Submit </button>
+              <button disabled={!user} className={classes.button} style={{ left: '0%' }} type="submit"> Submit </button>
                 {!user &&
                   <Typography variant="subtitle1" className={classes.logInText}> Please sign in first </Typography>
                 }

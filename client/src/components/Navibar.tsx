@@ -15,7 +15,6 @@ import CreateUserModal from '../modals/CreateUserModal';
 import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
 import { handleModal } from '../store/modal/actionCreators';
 import shoppingCartService from '../services/shoppingCartService';
-
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -151,6 +150,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
         <AddProductModal />
         <CreateUserModal />
       </AppBar>
+      
     </div>
   );
 };

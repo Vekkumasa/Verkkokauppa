@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Navibar } from './components/Navibar';
 import { ProductListPage } from './components/ProductListPage';
+import ProductInfo  from './components/ProductInfo';
 import Account from './components/Account';
 import PastOrders from './components/PastOrders';
 import ShoppingCart from './components/ShoppingCart';
@@ -16,6 +17,8 @@ import { useAppSelector, useAppDispatch, AppDispatch } from './store/rootReducer
 import Notification from './UI/Notification';
 import { safeJsonParse, isCredentialsWithTimestamp } from './typeGuards';
 import { validTimeStamp } from './utils/ValidTimeStamp';
+
+import Sidebar from './components/Sidebar';
 
 const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
@@ -32,7 +35,6 @@ const App = (): JSX.Element => {
     state => state.shoppingCartReducer
   );
 
-  console.log('shoppingCart', shoppingCart);
   useEffect(() => {
     void dispatch(initializeProducts());
   }, []);
@@ -45,7 +47,6 @@ const App = (): JSX.Element => {
         console.log('error at parsed user');
       } else {
         if (validTimeStamp(parsedUser.parsed.timestamp)) {
-          console.log('valid timestamp');
           dispatch(logIn(parsedUser.parsed));
           const usersShoppingCart = shoppingCartService.getUsersShoppingCart(parsedUser.parsed._id);
           void usersShoppingCart.then((res) => {
@@ -62,7 +63,6 @@ const App = (): JSX.Element => {
             }
           });
         } else {
-          console.log('invalid timestamp');
           void shoppingCartService.setShoppingCartActivity(shoppingCart.cartId, false);
           dispatch(logIn());
           dispatch(clearShoppingCart());
@@ -82,23 +82,32 @@ const App = (): JSX.Element => {
             <Notification type={notification.type} message={notification.message} />
           </div>
         )}
-        <Switch>
-          <Route path="/account" render={() => <Account user={user}/>} />
-        </Switch>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Sidebar />
+          <Switch>
+            <Route path="/account" render={() => <Account user={user}/>} />
+          </Switch>
 
-        <Switch>
-          <Route path='/pastOrders' render={() => <PastOrders />} />
-        </Switch>
+          <Switch>
+            <Route path='/pastOrders' render={() => <PastOrders />} />
+          </Switch>
 
-        <Switch>
-          <Route path="/shoppingCart" render={() => <ShoppingCart />} />
-        </Switch>
+          <Switch>
+            <Route path="/shoppingCart" render={() => <ShoppingCart />} />
+          </Switch>
 
-        <Switch>
-          <Route exact path="/" render={() => <ProductListPage />} />
-        </Switch>
-      </Router>
+          <Switch>
+            <Route path="/product" render={() => <ProductInfo />} />
+          </Switch>
+
+          <Switch>
+            <Route exact path="/" render={() => <ProductListPage />} />
+          </Switch>
+        </div>
+      </Router> 
+
     </div>
+    
   );
 };
 

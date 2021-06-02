@@ -17,8 +17,26 @@ const modifyUser = async (user: User):Promise<User> => {
   return request.data;
 };
 
+const modifyAvatar = async (image: File, userId: string):Promise<User> => {
+  const fd = new FormData();
+  fd.append('image', image, image.name);
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  };
+  console.log('modify avatar service', fd);
+  const request = await axios.put<User>(`${baseURL}/users/${userId}/image`, fd, config);
+  return request.data;
+};
+
 const getUsersCompletedShoppingcarts = async (userId: string):Promise<ShoppingCart[]> => {
   const request = await axios.get<ShoppingCart[]>(`${baseURL}/users/${userId}`);
+  return request.data;
+};
+
+const addRatingForProduct = async (userId: string, productId: string, value: number):Promise<Credentials | null> => {
+  const request = await axios.put<Credentials | null>(`${baseURL}/users/${userId}`, { productId , value });
   return request.data;
 };
 
@@ -27,4 +45,6 @@ export default {
   createUser,
   modifyUser,
   getUsersCompletedShoppingcarts,
+  addRatingForProduct,
+  modifyAvatar,
 };

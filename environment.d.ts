@@ -6,6 +6,8 @@ declare global {
       MONGODB_URI: string;
       PORT?: string;
       PWD: string;
+      EMAIL: string;
+      EMAILPW: string;
     }
   }
 }

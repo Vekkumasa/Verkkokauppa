@@ -1,7 +1,7 @@
 import express, { Response } from 'express';
 import { ShoppingCartInterface } from '../models/shoppingCart';
 import shoppingCartController from '../Controllers/ShoppingCartController';
-import { CustomBoolean, CartProduct, CustomRequest, NewShoppingCart } from '../types.d';
+import { CartProduct, CustomRequest, NewShoppingCart, CustomBoolean } from '../types.d';
 
 const router = express.Router();
 
@@ -67,6 +67,7 @@ router.put('/:id/decrease', (req: CustomRequest<CartProduct>, res: Response) => 
 
 router.put('/:id/activity', (req: CustomRequest<CustomBoolean>, res: Response) => {
   const { data } = req.body;
+  console.log('router', data);
   const shoppingCart: Promise<ShoppingCartInterface | null> = shoppingCartController.setActivity(req.params.id, data);
   void shoppingCart.then((response) => {
     if (!response) {
@@ -77,7 +78,7 @@ router.put('/:id/activity', (req: CustomRequest<CustomBoolean>, res: Response) =
   });
 });
 
-router.put('/:id/completed', (req: CustomRequest<CustomBoolean>, res: Response) => {
+router.put('/:id/completed', (req: CustomRequest<boolean>, res: Response) => {
   const shoppingCart: Promise<ShoppingCartInterface | null> = shoppingCartController.setCompleted(req.params.id);
   void shoppingCart.then((response) => {
     if (!response) {

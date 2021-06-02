@@ -6,13 +6,24 @@ import { AccountCircle, Edit } from '@material-ui/icons/';
 import { AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
 import ModifyUserInfoModal from '../modals/ModifyUserInfoModal';
+import ModifyUserAvatarModal from '../modals/ModifyUserAvatarModal';
 import { parseDate } from '../utils/DateParser';
+import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 
 const useStyles = makeStyles({
   nameAndIcon: {
     width: '50%',
     margin: '0 auto',
-    flexGrow: 1
+    flexGrow: 1,
+  },
+  avatar: {
+    backgroundColor: 'white',
+    marginLeft: 15,
+    width: 120,
+    height: 120,
+    '&:hover': {
+      backgroundColor: 'lightgrey',
+    },
   },
   column: {
     display: 'flex',
@@ -61,6 +72,14 @@ const Account = ({user}: AccountProps): JSX.Element => {
     if (counter === 4) break;
   }
 
+  let image;
+  if (user?.avatar?.data) {
+    const buffer = Buffer.from(user.avatar.data);
+    image = arrayBufferToBase64(buffer);
+  }
+
+  
+
   return (
     <div>
       {user &&
@@ -68,12 +87,19 @@ const Account = ({user}: AccountProps): JSX.Element => {
           <Grid item xs={3}>
             <Box borderRight={1} borderColor="primary.main" style={{ height: 270 }} {...defaultProps}>
               <div className={classes.nameAndIcon}>
-                {user.avatar ?
-                <Avatar style={{ backgroundColor: 'white', marginLeft: 15, width: 120, height: 120 }} src={user.avatar} />
+                {image ?
+                  <Avatar 
+                    onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
+                    src={image}
+                    className={classes.avatar}
+                  />
                 :
-                <Avatar style={{ backgroundColor: 'white', marginLeft: 15, width: 120, height: 120 }}>
-                  <AccountCircle style={{ color: '#094ebd', width: 120, height: 120 }}/>
-                </Avatar>
+                  <Avatar
+                    onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
+                    className={classes.avatar}
+                  >
+                    <AccountCircle style={{ color: '#094ebd', width: 120, height: 120 }}/>
+                  </Avatar>
                 }
                 <Typography style={{ marginLeft: 5 }} variant='h6'>
                   {user.firstName} &nbsp; {user.lastName}
@@ -110,6 +136,7 @@ const Account = ({user}: AccountProps): JSX.Element => {
         </Grid>
       }
       <ModifyUserInfoModal />
+      <ModifyUserAvatarModal />
     </div>
   );
 };

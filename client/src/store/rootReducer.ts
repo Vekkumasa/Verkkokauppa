@@ -8,6 +8,7 @@ import notificationReducer from './Notification/reducer';
 import shoppingCartReducer from './ShoppingCart/reducer';
 import modalReducer from './modal/reducer';
 import filterReducer from './Filter/reducer';
+import activeProductReducer from './ActiveProduct/reducer';
 
 const rootReducer = combineReducers({
   productReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   shoppingCartReducer,
   modalReducer,
   filterReducer,
+  activeProductReducer,
 });
 
 const store = configureStore({

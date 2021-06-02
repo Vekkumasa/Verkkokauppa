@@ -1,8 +1,9 @@
 import User from "../models/user";
-import { User as UserType } from '../types.d';
+import { User as UserType, Product as ProductType, Image } from '../types.d';
 import { uuid } from "uuidv4";
 import bcrypt from 'bcrypt';
 import { ShoppingCartInterface } from "../models/shoppingCart";
+import Product from "../models/product";
 
 const allUsers = async () => {
   return await User.find({});
@@ -18,7 +19,6 @@ const addUser = async (user: UserType) => {
       userName: user.userName,
       password: password,
       email: user.email,
-      avatar: user.avatar,
       userType: user.userType,
       recentActivity: [],
     });
@@ -39,7 +39,6 @@ const modifyUser = async (newUserInfo: UserType) => {
     console.log('usercontroller', userToModify);
     if (!userToModify) return null;
 
-    userToModify.avatar = newUserInfo.avatar;
     userToModify.userName = newUserInfo.userName;
     userToModify.firstName = newUserInfo.firstName;
     userToModify.lastName = newUserInfo.lastName;
@@ -48,12 +47,21 @@ const modifyUser = async (newUserInfo: UserType) => {
     }
     userToModify.email = newUserInfo.email;
 
-    void userToModify.save().then((saved) => {
-      console.log(saved);
-    });
-    console.log('jep');
+    await userToModify.save();
     return userToModify;
   } catch (e) {
+    return null;
+  }
+};
+
+const modifyUserAvatar = async (image: Image, userId: string) => {
+  const user = await User.findById(userId);
+  if (user) {
+    user.avatar = image;
+    await user.save();
+    console.log('modify user avatar contorller', user);
+    return user;
+  } else {
     return null;
   }
 };
@@ -69,9 +77,47 @@ const getCompletedShoppingCarts = async (userId: string):Promise<ShoppingCartInt
   }
 };
 
+const rateProduct = async (userId: string, productId: string, value: number) => {
+  const user = await User.findById(userId).populate('ratings');
+  const productInterface = await Product.findById(productId);
+
+  if (!user || !productInterface) return null;
+  
+  const rated = user.ratings.some(product => {
+    return product._id?.toString() === productId;
+  });
+
+  const array = productInterface.ratings.concat(value);
+  const product: ProductType = {
+    _id: productId,
+    name: productInterface.name,
+    price: productInterface.price,
+    stock: productInterface.stock,
+    description: productInterface.description,
+    image: productInterface.image,
+    ratings: array,
+    tags: productInterface.tags
+  };
+
+  console.log(productInterface, value, rated);
+  if (!rated) {
+    user.ratings.push(product);
+    productInterface.ratings.push(value);
+  } else {
+    return null;
+  }
+
+  await user.save();
+  await productInterface.save();
+
+  return user;
+};
+
 export default {
   addUser,
   allUsers,
   modifyUser,
-  getCompletedShoppingCarts
+  getCompletedShoppingCarts,
+  rateProduct,
+  modifyUserAvatar,
 }; 

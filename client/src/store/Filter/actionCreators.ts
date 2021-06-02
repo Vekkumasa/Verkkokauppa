@@ -12,3 +12,14 @@ export const setFilter = (data: string): SetFilter => {
     dispatch(action);
   };
 };
+
+export const setTag = (data?: Tag): SetFilter => {
+  const action: SetTagAction = {
+    type: actionTypes.SET_TAG,
+    data
+  };
+
+  return (dispatch: DispatchType) => {
+    dispatch(action);
+  };
+};

@@ -1,6 +1,7 @@
 import uniqueValidator from 'mongoose-unique-validator';
 import mongoose from "mongoose";
 import { ShoppingCartInterface } from '../models/shoppingCart';
+import { Product, Image } from '../types';
 
 export interface UserInterface extends mongoose.Document {
   email: string;
@@ -10,8 +11,9 @@ export interface UserInterface extends mongoose.Document {
   password?: string;
   userType: string;
   shoppingCart: ShoppingCartInterface[];
+  ratings: Product[];
   _id?: string;
-  avatar?: string;
+  avatar?: Image;
   recentActivity: Date[];
   platformInfo: string[];
 }
@@ -23,11 +25,21 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
     userName: { type: String, required: true, unique: true},
     password: { type: String, required: true },
     userType: { type: String, required: true },
-    avatar: { type: String },
+    avatar: {
+      data: Buffer,
+      contentType: String
+    },
     shoppingCart: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ShoppingCart'
+      }
+    ],
+    ratings: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        rated: Boolean
       }
     ],
     recentActivity: [

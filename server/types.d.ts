@@ -1,19 +1,32 @@
 import { Request } from 'express';
 
+type ProductImage = {
+  image: Image
+};
+
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
+export type Tag = 'Kirves' | 'Mokki Essential' | 'Ruoka/Juoma' | 'muut';
+
 type Product = {
   _id: string,
   name: string,
   price: number,
   stock: number,
   description?: string,
-  image?: string
+  image?: Image,
+  ratings: number[],
+  tags: Tag[],
 };
 
 type ShoppingCartProduct = {
   _id: string,
   name: string,
   quantity: number,
-  image: string,
+  image: Image,
   price: number
 };
 
@@ -21,17 +34,13 @@ type ShoppingCartProductDB = {
   productId: string,
   name: string,
   quantity: number,
-  image: string,
+  image: Image,
   price: number
 };
 
 type NewShoppingCart = {
   products: ShoppingCartProduct[],
   user: string,
-};
-
-type CustomBoolean = {
-  data: boolean
 };
 
 type User = {
@@ -43,7 +52,7 @@ type User = {
   userName: string,
   password: string,
   userType: string,
-  avatar?: string,
+  avatar?: Image,
 };
 
 type Credentials = {
@@ -54,7 +63,8 @@ type Credentials = {
   lastName: string,
   email: string,
   userType: UserType,
-  avatar?: string,
+  avatar?: Image,
+  ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
 };
@@ -80,6 +90,16 @@ type ShoppingCart = {
 
 type UserType = 'Admin' | 'User';
 
+type Email = {
+  from: string,
+  to: string,
+  subject: string,
+  text: string,
+};
+
+type CustomBoolean = {
+  data: boolean
+};
 interface CustomRequest<T> extends Request {
   body: T
 }

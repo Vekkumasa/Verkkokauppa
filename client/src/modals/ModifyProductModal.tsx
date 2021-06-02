@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Modal from '@material-ui/core/Modal';
 import { makeStyles } from '@material-ui/core/styles';
+import ModifyProductForm from '../forms/product/ModifyProductForm';
+
 import { useAppSelector, AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { handleModal } from '../store/modal/actionCreators';
-import ModifyUserForm from "../forms/User/ModifyUserForm";
 
 const getModalStyle = () => {
   const top = 50;
@@ -17,18 +18,18 @@ const getModalStyle = () => {
 
 const useStyles = makeStyles(theme => ({
   modal: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
   },
 
   paper: {
-    position: 'absolute',
-    width: 650,
-    height: 370,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+      position: 'absolute',
+      width: 650,
+      height: 550,
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
   },
 
   header: {
@@ -40,27 +41,26 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center',
     height: 30,
     marginTop: 5,
-    padding: 10,
-    marginBottom: 30
+    padding: '0 30px',
   },
 }));
 
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Modify user info </h2>
+    <h2 className={classes.header}> Modify Product </h2>
   );
 };
 
-const ModifyUserInfoModal: React.FC = () => {
+const ModifyProductModal: React.FC = () => {
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
-  const modalOpen = useAppSelector(state => state.modalReducer.modifyUserInfoModal);
+  const modalOpen = useAppSelector(state => state.modalReducer.modifyProductModal);
   const dispatch: AppDispatch = useAppDispatch();
   
   const handleClose = () => {
-    dispatch(handleModal(!modalOpen, 'ModifyUser'));
+    dispatch(handleModal(!modalOpen, 'ModifyProduct'));
   };
 
   return (
@@ -72,10 +72,10 @@ const ModifyUserInfoModal: React.FC = () => {
     >
       <div style={modalStyle} className={classes.paper}>
         <Header />
-        <ModifyUserForm />
+        <ModifyProductForm />
       </div>
     </Modal>
   );
 };
 
-export default ModifyUserInfoModal;
+export default ModifyProductModal;

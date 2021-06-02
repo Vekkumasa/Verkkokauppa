@@ -1,11 +1,23 @@
+type Image = {
+  data: Buffer,
+  contentType: string
+};
+
+type Tag = 'Kirves' | 'Mokki Essential' | 'Ruoka/Juoma' | 'muut';
+
 type Product = {
   _id: string,
   name: string,
   price: number,
   stock: number,
-  image: string,
-  description?: string
+  image?: Image,
+  description?: string,
+  ratings: number[],
+  tags: Tag[],
 };
+
+type NoIdProduct = Omit<Product, '_id'>;
+type ShoppingCartProduct = Product & { quantity: number };
 
 type CartProduct = {
   userId: string,
@@ -20,9 +32,6 @@ type ShoppingCart = {
   completionDate?: Date,
 };
 
-type NoIdProduct = Omit<Product, '_id'>;
-type ShoppingCartProduct = Product & { quantity: number };
-
 type User = {
   _id: string,
   token?: string,
@@ -32,7 +41,7 @@ type User = {
   password: string,
   email: string,
   userType?: UserType,
-  avatar?: string,
+  avatar?: Image,
 };
 
 type ShippingInfo = {
@@ -57,7 +66,8 @@ type Credentials = {
   lastName: string,
   email: string,
   userType: UserType,
-  avatar?: string,
+  avatar?: Image,
+  ratings?: Product[],
   recentActivity: Date[],
   platformInfo: string[],
 };
@@ -68,8 +78,4 @@ type UserType = 'Admin' | 'User';
 
 type NotificationType = 'success' | 'error' | 'info';
 
-type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser';
-declare module "*.jpg" {
-  const content: string;
-  export = content;
-}
+type Modal = 'LogIn' | 'CreateUser' | 'AddProduct' | 'ModifyUser' | 'ModifyProduct' | 'ModifyUserAvatar';

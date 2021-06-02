@@ -35,5 +35,12 @@
 | 18.5  |  6.5 | Hakupalkki, Accountpage, User model muutoksia |
 | 19.5  |  6.5 | Account page + user recent activity + user modaus |
 | 20.5  |  4.5 | Account pagelle viimeisimmät loggaukset + platform info & bugi fiksailuja |
-| 21.5  |   8  | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
-| yht   | 142.5 | | 
+| 21.5  |  8   | Pastorders.tsx, bugi fiksailuja / refaktoroimista |
+| 24.5  |  5   | Refaktorointia ja sähköposti lähetetään käyttäjälle kun ostokset viedään loppuun |
+| 25.5  |  6   | Productinfo.tsx |
+| 26.5  |  4   | Väliaikainen Image model, Multer, ja väliaikainen Addimage form ym |
+| 27.5  |  8.5 | Jokunen yritys imagen refaktorointiin |
+| 28.5  |  8   | Image refaktoroitu producteista ja product formia paranneltu |
+| 31.5  |  6.5 | Kayttajien arviot tuotteille + refaktorointia (Committi meni seuraavalle paivalle) |
+| 1.6   |  6.5 | User avatarit imageina eika urlina |
+| yht   | 190  | | 
