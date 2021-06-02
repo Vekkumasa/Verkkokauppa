@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-const baseURL = 'http://localhost:3001/api/products';
+const baseURL = 'https://verkkis.herokuapp.com/api/products';
 
 const getAll = ():Promise<Product[]> => {
   const request = axios.get<Product[]>(`${baseURL}`);
