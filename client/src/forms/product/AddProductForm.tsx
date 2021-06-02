@@ -25,6 +25,7 @@ import ProductForm from './ProductForm';
 
  const AddProductForm = ():JSX.Element => {
   const [ image, setImage ] = useState<File>();
+  const [ tags, setTags ] = useState<Tag[]>([]);
 
   const dispatch: AppDispatch = useAppDispatch();
     return (
@@ -41,8 +42,7 @@ import ProductForm from './ProductForm';
           validationSchema={SignupSchema}
           onSubmit={values => {
             const { name, description, price, stock, image } = values;
-
-            const product: NoIdProduct = { name, description, price, stock, ratings: [] };
+            const product: NoIdProduct = { name, description, price, stock, ratings: [], tags: tags };
             const promise = productService.addProduct(product, image);
             void promise.then((res) => {
               if (res !== null) {
@@ -53,10 +53,11 @@ import ProductForm from './ProductForm';
                   stock: res.stock,
                   image: res.image,
                   ratings: res.ratings,
+                  tags: [],
                   _id: res._id
                 };
                 dispatch(addProduct(addedProduct));
-                dispatch(setNotification("Product " + product.name + " added", 'success'));
+                dispatch(setNotification(`Product ${product.name} added`, 'success'));
               } 
             });
           }}
@@ -69,6 +70,8 @@ import ProductForm from './ProductForm';
               image={image}
               setImage={setImage}
               submitForm={submitForm}
+              tags={tags}
+              setTags={setTags}
             />
           )}
         </Formik>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
 import productService from '../../services/productService';
 import { initializeProducts } from '../../store/Product/actionCreators';
@@ -24,8 +23,11 @@ import ProductForm from './ProductForm';
     .mixed()
  });
  
+
+
  const ModifyProductForm = ():JSX.Element => {
   const [ image, setImage ] = useState<File>();
+  const [ tags, setTags ] = useState<Tag[]>([]);
 
   const dispatch: AppDispatch = useAppDispatch();
   const item = useAppSelector(state => state.activeProductReducer.product);
@@ -39,13 +41,13 @@ import ProductForm from './ProductForm';
             description: item.description,
             price: item.price,
             stock: item.stock,
-            image: '' as unknown as File
+            image: '' as unknown as File,
+            tags: item.tags
           }}
           validationSchema={SignupSchema}
           onSubmit={values => {
             const { name, description, price, stock, image } = values;
-            console.log('image', image);
-            const product: Product = { name, description, price, stock, _id: item._id, ratings: item.ratings, image: item.image };
+            const product: Product = { name, description, price, stock, _id: item._id, ratings: item.ratings, image: item.image, tags: item.tags };
             const promise = productService.modifyProduct(product, image);
             
             void promise.then((res) => {
@@ -55,7 +57,7 @@ import ProductForm from './ProductForm';
               console.log('modify product response:', res);
               void dispatch(setActiveProduct(res));
               void dispatch(initializeProducts());
-              dispatch(setNotification("Product " + product.name + " modified", 'success'));
+              dispatch(setNotification(`Product ${product.name} modified`, 'success'));
             });
             
           }}
@@ -68,8 +70,9 @@ import ProductForm from './ProductForm';
               image={image}
               setImage={setImage}
               submitForm={submitForm}
+              tags={item.tags}
+              setTags={setTags}
             />
-            
           )}
         </Formik>
       </div>

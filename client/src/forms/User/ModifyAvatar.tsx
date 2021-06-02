@@ -2,41 +2,11 @@ import React, { useState } from 'react';
 import userService from '../../services/userService';
 import { logIn } from '../../store/User/actionCreators';
 import { Form, Field, Formik} from 'formik';
-import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootReducer';
-
-const useStyles = makeStyles({
-  field: {
-    padding: 5,
-    borderColor: '#124eb0',
-    position: 'relative',
-    marginBottom: 10,
-    width: '90%',
-    maxWidth: 700
-  },
-  
-  button: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    position: 'relative',
-    padding: 20,
-    paddingRight: 75,
-    marginTop: 10,
-    left: '38%',
-    transform: `translate(-50%, -$50%)`,
-    borderWidth: 3,
-    borderRadius: 35,      
-    width: 92,
-    height: 20,
-    opacity: 0.95,
-    backgroundColor: '#124eb0',
-    fontSize: 16,
-    fontStyle: 'bold',
-    color: 'white'  
-  },
-});
+import { handleModal } from '../../store/modal/actionCreators';
+import useStyles from '../formStyles';
 
  const ModifyImageSchema = Yup.object().shape({
   image: Yup
@@ -64,6 +34,7 @@ const useStyles = makeStyles({
                 console.log('modify avatar response', res);
                 if (res.avatar && user) {
                   void dispatch(logIn({ ...user, avatar: res.avatar }));
+                  void dispatch(handleModal(false, 'ModifyUserAvatar'));     
                 }
             });
           }}

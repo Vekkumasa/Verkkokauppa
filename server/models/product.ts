@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Image } from "../types";
+import { Image, Tag } from "../types";
 
 export interface ProductInterface extends mongoose.Document {
   name: string;
@@ -7,8 +7,9 @@ export interface ProductInterface extends mongoose.Document {
   price: number;
   ratings: number[];
   description?: string;
-  image?: Image,
+  image?: Image;
   _id?: string;
+  tags: Tag[];
 }
 
 const ProductSchema: mongoose.Schema = new mongoose.Schema(
@@ -18,6 +19,7 @@ const ProductSchema: mongoose.Schema = new mongoose.Schema(
   price: { type: Number, required: true },
   description: { type: String },
   ratings: [{ type: Number }],
+  tags: [{ type: String }],
   image: {
     data: Buffer,
     contentType: String

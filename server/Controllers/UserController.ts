@@ -81,7 +81,6 @@ const rateProduct = async (userId: string, productId: string, value: number) => 
   const user = await User.findById(userId).populate('ratings');
   const productInterface = await Product.findById(productId);
 
-  console.log('user', user);
   if (!user || !productInterface) return null;
   
   const rated = user.ratings.some(product => {
@@ -96,7 +95,8 @@ const rateProduct = async (userId: string, productId: string, value: number) => 
     stock: productInterface.stock,
     description: productInterface.description,
     image: productInterface.image,
-    ratings: array 
+    ratings: array,
+    tags: productInterface.tags
   };
 
   console.log(productInterface, value, rated);

@@ -1,80 +1,48 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
-
 import userService from '../../services/userService';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
+import useStyles from '../formStyles';
 
- const useStyles = makeStyles({
+const SignupSchema = Yup.object().shape({
+  userName: Yup
+    .string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
 
-  field: {
-      padding: 5,
-      borderColor: '#124eb0',
-      position: 'relative',
-      marginBottom: 10,
-      width: '90%',
-      maxWidth: 700
-  },
-  button: {
-      display: 'inline-flex',
-      alignItems: 'center',
-      position: 'relative',
-      padding: 20,
-      paddingRight: 75,
-      marginTop: 10,
-      left: '42%',
-      transform: `translate(-50%, -$50%)`,
-      borderWidth: 3,
-      borderRadius: 35,      
-      width: 92,
-      height: 20,
-      opacity: 0.95,
-      backgroundColor: '#124eb0',
-      fontSize: 16,
-      fontStyle: 'bold',
-      color: 'white'  
-  },
+  firstName: Yup
+    .string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+
+  lastName: Yup
+    .string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+
+  password: Yup
+    .string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+
+  email: Yup
+    .string()
+    .email('Invalid email')
+    .required('Required'),
 });
 
- const SignupSchema = Yup.object().shape({
-    userName: Yup
-      .string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-
-    firstName: Yup
-      .string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-
-    lastName: Yup
-      .string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-
-    password: Yup
-      .string()
-      .min(2, 'Too Short!')
-      .max(50, 'Too Long!')
-      .required('Required'),
-
-    email: Yup
-      .string()
-      .email('Invalid email')
-      .required('Required'),
- });
- 
- const CreateUserForm = ():JSX.Element => {
-   const classes = useStyles();
-   const dispatch: AppDispatch = useAppDispatch();
-   return (
+const CreateUserForm = ():JSX.Element => {
+  const classes = useStyles();
+  const dispatch: AppDispatch = useAppDispatch();
+  return (
     <div>
       <Formik
         initialValues={{
@@ -205,7 +173,7 @@ import { handleModal } from '../../store/modal/actionCreators';
         )}
       </Formik>
     </div>
- );
+  );
 };
 
- export default CreateUserForm;
+export default CreateUserForm;

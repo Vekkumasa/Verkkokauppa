@@ -9,6 +9,7 @@ const getAll = ():Promise<Product[]> => {
 
 const addProduct = async (product: NoIdProduct, image: File | undefined):Promise<Product> => {
 
+  console.log('addproduct');
   const request = await axios.post<Product>(`${baseURL}`, product);
 
   if (image && request.data !== null) {

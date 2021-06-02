@@ -1,39 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormikErrors, FormikTouched, Form, Field } from 'formik';
-import { makeStyles } from '@material-ui/styles';
-import Grid from '@material-ui/core/Grid';
-
-const useStyles = makeStyles({
-  field: {
-    padding: 5,
-    borderColor: '#124eb0',
-    position: 'relative',
-    marginBottom: 10,
-    width: '90%',
-    maxWidth: 700
-  },
-  
-  button: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    position: 'relative',
-    padding: 20,
-    paddingRight: 75,
-    marginTop: 10,
-    left: '38%',
-    transform: `translate(-50%, -$50%)`,
-    borderWidth: 3,
-    borderRadius: 35,      
-    width: 92,
-    height: 20,
-    opacity: 0.95,
-    backgroundColor: '#124eb0',
-    fontSize: 16,
-    fontStyle: 'bold',
-    color: 'white'  
-  },
-});
-
+import { Grid, Select, Chip, Box, MenuItem } from '@material-ui/core/';
+import useStyles from '../formStyles';
 interface Props {
   errors: FormikErrors<{
     name: string;
@@ -53,10 +21,17 @@ interface Props {
   image: File | undefined
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any 
   submitForm: (() => Promise<void>) & (() => Promise<any>)
+  setTags: React.Dispatch<React.SetStateAction<Tag[]>>
+  tags: Tag[]
 }
 
-const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitForm }: Props): JSX.Element => {
+const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitForm, setTags, tags }: Props): JSX.Element => {
   const classes = useStyles();
+  const availableTags: Tag[] = ['Kirves', 'Mokki Essential', 'Ruoka/Juoma', 'muut'];
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setTags(event.target.value as Tag[]);
+  };
 
   return (
     <Form>
@@ -135,6 +110,43 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
+            <label>Tags: </label>
+          </Grid>
+          <Grid item xs={9}>
+            <Box border={2} className={classes.field}>
+              <Select
+                className={classes.field}
+                multiple
+                style={{ backgroundColor: 'rgb(255,255,255)' }}
+                disableUnderline
+                value={tags}
+                onChange={handleChange}
+                renderValue={(selected) => (
+                  <div style={{ display: 'flex', flexWrap: 'wrap'}}>
+                    {(selected as Tag[]).map((value) => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        style={{ display: 'flex', flexWrap: 'wrap', backgroundColor: '#5aafe0', marginLeft: 2 }}
+                      />
+                    ))}
+                  </div>
+                )}
+              >
+                {availableTags.map((tag) => (
+                  <MenuItem style={{ backgroundColor: 'rgb(255,255,255)' }} key={tag} value={tag}>
+                    {tag}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+          </Grid>
+          <Grid item xs={1}>
+            
+          </Grid>
+        </Grid>
+        <Grid container item xs={12} spacing={3}>
+          <Grid item xs={2}>
             <label> Image: </label>
           </Grid>
           <Grid item xs={9}>
@@ -174,7 +186,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
           </Grid>
         </Grid>
       </Grid>
-      <button className={classes.button} onClick={submitForm} type="submit">Submit</button>
+      <button className={classes.button} type="submit">Submit</button>
     </Form>
   );
 };

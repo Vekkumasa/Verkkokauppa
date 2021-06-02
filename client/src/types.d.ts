@@ -3,6 +3,8 @@ type Image = {
   contentType: string
 };
 
+type Tag = 'Kirves' | 'Mokki Essential' | 'Ruoka/Juoma' | 'muut';
+
 type Product = {
   _id: string,
   name: string,
@@ -11,6 +13,7 @@ type Product = {
   image?: Image,
   description?: string,
   ratings: number[],
+  tags: Tag[],
 };
 
 type NoIdProduct = Omit<Product, '_id'>;

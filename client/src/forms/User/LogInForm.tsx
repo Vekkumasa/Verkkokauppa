@@ -15,36 +15,7 @@ import { handleModal } from '../../store/modal/actionCreators';
 import { createNewShoppingCart } from '../../store/ShoppingCart/actionCreators';
 import shoppingCartService from '../../services/shoppingCartService';
 import { retrieveOldShoppingCart } from '../../store/ShoppingCart/actionCreators'; 
-
-const useStyles = makeStyles({
-  field: {
-    padding: 5,
-    left: 10,
-    borderColor: '#124eb0',
-    position: 'relative',
-    marginBottom: 10,
-    width: '90%',
-  },
-
-  button: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    position: 'relative',
-    padding: 20,
-    paddingRight: 5,
-    left: '38%',
-    transform: `translate(-50%, -$50%)`,
-    borderWidth: 3,
-    borderRadius: 35,      
-    width: 92,
-    height: 20,
-    opacity: 0.95,
-    backgroundColor: '#124eb0',
-    fontSize: 16,
-    fontStyle: 'bold',
-    color: 'white'  
-  },
-});
+import useStyles from '../formStyles';
 
 const SignupSchema = Yup.object().shape({
   userName: Yup

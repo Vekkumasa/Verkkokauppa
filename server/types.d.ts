@@ -9,6 +9,8 @@ type Image = {
   contentType: string
 };
 
+export type Tag = 'Kirves' | 'Mokki Essential' | 'Ruoka/Juoma' | 'muut';
+
 type Product = {
   _id: string,
   name: string,
@@ -17,6 +19,7 @@ type Product = {
   description?: string,
   image?: Image,
   ratings: number[],
+  tags: Tag[],
 };
 
 type ShoppingCartProduct = {

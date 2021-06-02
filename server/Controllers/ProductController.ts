@@ -14,7 +14,8 @@ const NewProduct = async (product: ProductType) => {
       price: product.price,
       stock: product.stock,
       description: product.description,
-      ratings: []
+      ratings: [],
+      tags: product.tags,
     });
     const response = await newProduct.save();
     return response;
