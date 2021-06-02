@@ -18,6 +18,8 @@ import Notification from './UI/Notification';
 import { safeJsonParse, isCredentialsWithTimestamp } from './typeGuards';
 import { validTimeStamp } from './utils/ValidTimeStamp';
 
+import Sidebar from './components/Sidebar';
+
 const App = (): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
 
@@ -80,25 +82,28 @@ const App = (): JSX.Element => {
             <Notification type={notification.type} message={notification.message} />
           </div>
         )}
-        <Switch>
-          <Route path="/account" render={() => <Account user={user}/>} />
-        </Switch>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Sidebar />
+          <Switch>
+            <Route path="/account" render={() => <Account user={user}/>} />
+          </Switch>
 
-        <Switch>
-          <Route path='/pastOrders' render={() => <PastOrders />} />
-        </Switch>
+          <Switch>
+            <Route path='/pastOrders' render={() => <PastOrders />} />
+          </Switch>
 
-        <Switch>
-          <Route path="/shoppingCart" render={() => <ShoppingCart />} />
-        </Switch>
+          <Switch>
+            <Route path="/shoppingCart" render={() => <ShoppingCart />} />
+          </Switch>
 
-        <Switch>
-          <Route path="/product" render={() => <ProductInfo />} />
-        </Switch>
+          <Switch>
+            <Route path="/product" render={() => <ProductInfo />} />
+          </Switch>
 
-        <Switch>
-          <Route exact path="/" render={() => <ProductListPage />} />
-        </Switch>
+          <Switch>
+            <Route exact path="/" render={() => <ProductListPage />} />
+          </Switch>
+        </div>
       </Router> 
 
     </div>

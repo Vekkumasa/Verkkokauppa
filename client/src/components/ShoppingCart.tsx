@@ -15,11 +15,13 @@ const useStyles = makeStyles({
   },
   shoppingCartAndFormBox: {
     margin: 25,
+    marginLeft: -10,
+    height: 300,
     borderRadius: 15,
   },
   cart: {
     margin: 25,
-    borderRadius: 5,
+    borderRadius: 15,
     height: 300
   },
   container: {
@@ -75,7 +77,7 @@ const ShoppingCart: React.FC = (): JSX.Element => {
   return (
     <Box className={classes.box} border={1}>
       <Grid container item xs={12} spacing={3}>
-        <Grid item xs={5}>
+        <Grid item xs={6}>
           <Box border={1} className={classes.cart}> 
             {products.length === 0 ?
               <Typography variant='h5' className={classes.empty}> Your Shopping Cart Is Empty </Typography>
@@ -100,7 +102,7 @@ const ShoppingCart: React.FC = (): JSX.Element => {
             }
           </Box>
         </Grid>  
-        <Grid item xs={7}>
+        <Grid item xs={6}>
           <Box border={1} className={classes.shoppingCartAndFormBox}>
             <div className={classes.form}> 
               <ShoppingCartForm />

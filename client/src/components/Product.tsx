@@ -25,6 +25,7 @@ import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 const useStyles = makeStyles({
   root: {
     width: 170,
+    maxHeight: 340,
     marginRight: 20
   },
   centerText: {

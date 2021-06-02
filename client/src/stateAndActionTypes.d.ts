@@ -11,6 +11,7 @@ interface AppState {
 
 type FilterState = {
   productFilter: string
+  tagFilter?: Tag
 };
 
 type ActiveProductState = {
@@ -47,7 +48,7 @@ type ShoppingCartState = {
 
 // ACTIONS
 
-type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction | ModalAction;
+type Actions = ProductActions | UserActions | NotificationActions | ShoppingCartAction | ModalAction | FilterActions;
 
 type ProductActions = AddProductAction | GetProductsAction;
 
@@ -105,9 +106,16 @@ type ModalAction = {
   data: boolean,
 };
 
+type FilterActions = SetFilterAction | SetTagAction;
+
 type SetFilterAction = {
   type: string,
   data: string,
+};
+
+type SetTagAction = {
+  type: string,
+  data?: Tag
 };
 
 type SetActiveProductAction = {
