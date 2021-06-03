@@ -85,7 +85,6 @@ var logIn = function (userName, passWord, platformInfo) { return __awaiter(void 
                 if (!(user && passwordCorrect)) {
                     return [2 /*return*/, null];
                 }
-                console.log(StringCheck_1.StringCheck(user.id));
                 if (!StringCheck_1.StringCheck(user.id)) return [3 /*break*/, 6];
                 userForToken = {
                     username: user.userName,
