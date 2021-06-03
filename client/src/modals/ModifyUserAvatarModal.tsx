@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Change Avatar </h2>
+    <h2 className={classes.header}> Vaihda kuvake </h2>
   );
 };
 

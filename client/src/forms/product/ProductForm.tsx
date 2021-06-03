@@ -38,12 +38,12 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
       <Grid container spacing={1}>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Name: <b style={{color: 'red'}}>*</b> </label>
+            <label>Nimi: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="My New Product"
+              placeholder="Uusi tuote"
               type="text"
               name="name"
             />
@@ -56,12 +56,12 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Description: </label>
+            <label>Kuvaus: </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="So useless product that Wish.com should sell these (optional)"
+              placeholder="Wish.com tason tuote (ei pakollinen)"
               type="text"
               name="description"
             />
@@ -74,12 +74,12 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Price: <b style={{color: 'red'}}>*</b> </label>
+            <label>Hinta: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Price"
+              placeholder="Hinta"
               type="number"
               name="price"
             />
@@ -92,12 +92,12 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Stock: </label>
+            <label>Varastossa: </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Stock (optional)"
+              placeholder="Varastossa (optional)"
               type="number"
               name="stock"
             />
@@ -110,7 +110,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Tags: </label>
+            <label>Tagit: </label>
           </Grid>
           <Grid item xs={9}>
             <Box border={2} className={classes.field}>
@@ -147,7 +147,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label> Image: </label>
+            <label> Kuva: </label>
           </Grid>
           <Grid item xs={9}>
             <Field
@@ -168,14 +168,14 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
                 setFieldValue('image', undefined);
                 setImage(undefined);
               }}> 
-                Cancel
+                Peruuta
               </button>
             }
           </Grid>
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label> Image preview: </label>
+            <label> Kuvan esikatselu: </label>
           </Grid>
           <Grid item xs={9}>
             {image ? 
@@ -186,7 +186,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitFo
           </Grid>
         </Grid>
       </Grid>
-      <button className={classes.button} type="submit">Submit</button>
+      <button className={classes.button} type="submit"> Lähetä </button>
     </Form>
   );
 };

@@ -39,28 +39,31 @@ const LogInForm = ():JSX.Element => {
   const platformInfo = platformParser(platform.name, platform.os?.family, platform.os?.version); 
 
   const usePreviousShoppingCart = (res: ShoppingCart) => { 
-    void swal({
-      title: 'Use unfinished shopping cart?',
-      text: 'Previous unfinished shopping cart found, do you want to use that one or create new one? Old will be removed permanently if new is created',
-      icon: 'info',
-      buttons: ['Create new!', 'Use previous!'],
-    })
-    .then((findPrevious) => {
-      if (findPrevious) {
-        dispatch(retrieveOldShoppingCart(res.id, res.products));
-        void shoppingCartService.setShoppingCartActivity(res.id, true);
-      } else {
-        const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
-        void promise.then((response) => {            
-          const removed = shoppingCartService.removeShoppingCart(res.user);
-          void removed.then((removedResponse) => {
-            console.log('loginform removed shopping cart', removedResponse);
+    if (res.products.length !== 0) {
+      void swal({
+        title: 'Keskeneräinen ostoskori havaittu',
+        text: 'Keskeneräinen ostoskori löydetty, haluatko jatkaa siitä mihin jäit viime kerralla vai luodaanko uusi? Vanha ostoskori poistetaan kokonaan mikäli halutaan luoda uusi',
+        icon: 'info',
+        buttons: ['Luo uusi!', 'Jatketaan edellistä!'],
+      })
+      .then((findPrevious) => {
+        if (findPrevious) {
+          dispatch(retrieveOldShoppingCart(res.id, res.products));
+          void shoppingCartService.setShoppingCartActivity(res.id, true);
+        } else {
+          const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: res.user, id: '' });
+          void promise.then((response) => {            
+            const removed = shoppingCartService.removeShoppingCart(res.user);
+            void removed.then(() => {
+              console.log('removed shopping cart');
+            });
+            dispatch(createNewShoppingCart(response.id));
           });
-          console.log('Log in: new shoppingcart response', response);
-          dispatch(createNewShoppingCart(response.id));
-        });
-      }
-    });
+        }
+      });
+    } else {
+      dispatch(retrieveOldShoppingCart(res.id, res.products));
+    }
   };
 
   return (
@@ -75,7 +78,7 @@ const LogInForm = ():JSX.Element => {
           const user = userService.signIn(values.userName, values.password, platformInfo);
           void user.then((res) => {
             if (!res.token) {
-              dispatch(setNotification("Invalid username / password", 'error'));
+              dispatch(setNotification("Virheellinen käyttäjänimi / salasana", 'error'));
             } else {
               const credentials: Credentials = {
                 _id: res._id,
@@ -96,18 +99,15 @@ const LogInForm = ():JSX.Element => {
               );
               dispatch(logIn(credentials));
               dispatch(handleModal(false, 'LogIn'));
-              dispatch(setNotification("Logged in as: " + credentials.userName, 'success'));
+              dispatch(setNotification("Kirjauduttu sisään: " + credentials.userName, 'success'));
               
               const usersShoppingCart = shoppingCartService.getUsersShoppingCart(credentials._id);
               void usersShoppingCart.then((res) => {
                 if (res) {
-                  console.log('login form', res);
                   usePreviousShoppingCart(res);      
                 } else {
-                  console.log('luodaan uusi karry');
                   const promise = shoppingCartService.createNewShoppingCart({ products: cartState.cart, user: credentials._id, id: '' });
                   void promise.then((res) => {
-                    console.log('login form new shopping cart', res);
                     dispatch(createNewShoppingCart(res.id));
                   });
                 }
@@ -120,13 +120,13 @@ const LogInForm = ():JSX.Element => {
           <Form>
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
-                <Grid item xs={2}>
-                  <label>Username: </label>
+                <Grid item xs={3}>
+                  <label>Käyttäjänimi: </label>
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={8}>
                   <Field
                     className={classes.field}
-                    placeholder="Username"
+                    placeholder="Käyttäjänimi"
                     type="text"
                     name="userName"
                   />
@@ -139,13 +139,13 @@ const LogInForm = ():JSX.Element => {
               </Grid>
               
               <Grid container item xs={12} spacing={3}>
-                <Grid item xs={2}>
-                  <label>Password: </label>
+                <Grid item xs={3}>
+                  <label>Salasana: </label>
                 </Grid>
-                <Grid item xs={9}>
+                <Grid item xs={8}>
                   <Field
                     className={classes.field}
-                    placeholder="Password"
+                    placeholder="Salasana"
                     type="password"
                     name="password"
                   />

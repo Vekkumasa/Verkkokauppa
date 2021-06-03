@@ -43,4 +43,5 @@
 | 28.5  |  8   | Image refaktoroitu producteista ja product formia paranneltu |
 | 31.5  |  6.5 | Kayttajien arviot tuotteille + refaktorointia (Committi meni seuraavalle paivalle) |
 | 1.6   |  6.5 | User avatarit imageina eika urlina |
-| yht   | 190  | | 
+| 2.6   |  7   | Producteille tagi attribuutit + etsiminen niiden mukaan + heroku |
+| yht   | 197  | | 

@@ -47,13 +47,11 @@ const ShoppingCartForm = ():JSX.Element => {
             void shoppingCartService.setShoppingCartCompleted(cartState.cartId)
               .then((response) => {
                 if (!response) {
-                  console.log(response);
                   dispatch(setNotification('Unexpected error', 'error'));
                   // TODO: ??
                 } else {
-                  console.log(response);
                   dispatch(clearShoppingCart());
-                  dispatch(setNotification('Delivering products to ' + shippingInfo.address, 'success'));
+                  dispatch(setNotification('Lähetetään tilaus osoitteeseen: ' + shippingInfo.address, 'success'));
                 }
             });
           }    
@@ -64,12 +62,12 @@ const ShoppingCartForm = ():JSX.Element => {
             <Grid container spacing={1}>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>First name: <b style={{color: 'red'}}>*</b> </label>
+                  <label style={{fontSize: 15}}>Etunimi <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
                     className={classes.field}
-                    placeholder="First name"
+                    placeholder="Etunimi"
                     type="text"
                     name="firstName"
                   />
@@ -82,12 +80,12 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Last name: <b style={{color: 'red'}}>*</b> </label>
+                  <label style={{fontSize: 15}}>Sukunimi <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
                     className={classes.field}
-                    placeholder="Last name"
+                    placeholder="Sukunimi"
                     type="text"
                     name="lastName"
                   />
@@ -100,12 +98,12 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label>Address: <b style={{color: 'red'}}>*</b> </label>
+                  <label style={{fontSize: 15}}>Osoite <b style={{color: 'red'}}>*</b> </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
                     className={classes.field}
-                    placeholder="Address"
+                    placeholder="Osoite"
                     type="text"
                     name="address"
                   />
@@ -118,9 +116,9 @@ const ShoppingCartForm = ():JSX.Element => {
               </Grid>
             </Grid>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <button disabled={!user} className={classes.button} style={{ left: '0%' }} type="submit"> Submit </button>
+              <button disabled={!user} className={classes.button} style={{ left: '0%' }} type="submit"> Lähetä </button>
                 {!user &&
-                  <Typography variant="subtitle1" className={classes.logInText}> Please sign in first </Typography>
+                  <Typography variant="subtitle1" className={classes.logInText}> Kirjaudu sisään ensiksi </Typography>
                 }
             </div>
           </Form>

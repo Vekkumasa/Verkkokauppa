@@ -70,7 +70,7 @@ const useStyles = makeStyles({
     borderRadius: 10,
     color: 'darkgreen',
     height: 20,
-    width: 60,
+    width: 80,
     textAlign: 'center',
     marginLeft: 10,
     padding: 3,
@@ -134,11 +134,9 @@ const ProductInfo = (): JSX.Element => {
       shoppingCartProduct = {...product, quantity: 1};
     }
 
-    if (isProductInCart) {
-      console.log('tuote on kärryssä');    
+    if (isProductInCart) {   
       increaseProductQuantity(shoppingCartProduct);
     } else {
-      console.log('tuote ei ole kärryssä');
       addProductToShoppingCart(shoppingCartProduct);
     }
   };
@@ -169,7 +167,6 @@ const ProductInfo = (): JSX.Element => {
     if (!product.ratings || product.ratings.length === 0) return 0;
     
     const sum = product.ratings.reduce((prev, cur) => prev + cur, 0);
-    console.log('sum / length:', sum / product.ratings.length, 'rounded: ', roundToHalf(sum / product.ratings.length));
     return roundToHalf(sum / product.ratings.length);
   };
 
@@ -221,7 +218,7 @@ const ProductInfo = (): JSX.Element => {
   const ratedTag = ():JSX.Element => {
     return (
       <Box border={2} className={classes.ratedTag}>
-          <Typography>Rated</Typography>
+          <Typography>Arvosteltu</Typography>
       </Box>
     );
   };

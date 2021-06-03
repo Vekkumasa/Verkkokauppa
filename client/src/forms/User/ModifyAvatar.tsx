@@ -28,10 +28,8 @@ import useStyles from '../formStyles';
           validationSchema={ModifyImageSchema}
           onSubmit={values => {
             const { image } = values;
-            console.log(image);
             void userService.modifyAvatar(image, userId)
               .then((res) => {
-                console.log('modify avatar response', res);
                 if (res.avatar && user) {
                   void dispatch(logIn({ ...user, avatar: res.avatar }));
                   void dispatch(handleModal(false, 'ModifyUserAvatar'));     
@@ -45,7 +43,7 @@ import useStyles from '../formStyles';
               
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label> Avatar: </label>
+                  <label> Kuvake: </label>
                 </Grid>
                 <Grid item xs={9}>
                   <Field
@@ -73,7 +71,7 @@ import useStyles from '../formStyles';
               </Grid>
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={2}>
-                  <label> Avatar preview: </label>
+                  <label> Kuvakkeen esikatselu: </label>
                 </Grid>
                 <Grid item xs={9}>
                   {image ? 
@@ -84,7 +82,7 @@ import useStyles from '../formStyles';
                 </Grid>
               </Grid>
             </Grid>
-            <button className={classes.button} onClick={submitForm} type="submit">Submit</button>
+            <button className={classes.button} onClick={submitForm} type="submit">Lähetä</button>
           </Form>
           )}
         </Formik>

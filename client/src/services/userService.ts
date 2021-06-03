@@ -25,7 +25,6 @@ const modifyAvatar = async (image: File, userId: string):Promise<User> => {
       'Content-Type': 'multipart/form-data'
     }
   };
-  console.log('modify avatar service', fd);
   const request = await axios.put<User>(`${baseURL}/users/${userId}/image`, fd, config);
   return request.data;
 };

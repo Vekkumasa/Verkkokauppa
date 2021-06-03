@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Typography, IconButton, Tooltip, Avatar } from '@material-ui/core';
+import { Box, Typography, IconButton, Tooltip, Avatar, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AccountCircle, Edit } from '@material-ui/icons/';
 
@@ -12,13 +12,13 @@ import { arrayBufferToBase64 } from '../utils/ArrayBufferToBase64';
 
 const useStyles = makeStyles({
   nameAndIcon: {
-    width: '50%',
+    width: '75%',
     margin: '0 auto',
     flexGrow: 1,
   },
   avatar: {
     backgroundColor: 'white',
-    marginLeft: 15,
+    margin: '0 auto',
     width: 120,
     height: 120,
     '&:hover': {
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
   },
   header: {
     textAlign: 'center',
-    height: 20,
+    height: 25,
     color: 'white',
     borderRadius: '15%',
     backgroundColor: '#2525b8',
@@ -42,7 +42,8 @@ interface AccountProps {
 }
 
 interface HeaderProps {
-  text: string
+  text: string,
+  style?: React.CSSProperties | undefined
 }
 
 const defaultProps = {
@@ -55,9 +56,9 @@ const Account = ({user}: AccountProps): JSX.Element => {
   const dispatch: AppDispatch = useAppDispatch();
   if (!user) return <div></div>;
 
-  const Header = ({text}: HeaderProps): JSX.Element => {
+  const Header = ({text, style}: HeaderProps): JSX.Element => {
     return (
-      <Typography className={`${classes.header}`}>{text}</Typography>
+      <Typography style={style} className={`${classes.header}`}>{text}</Typography>
     );
   };
 
@@ -81,59 +82,56 @@ const Account = ({user}: AccountProps): JSX.Element => {
   
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'row'}}>
       {user &&
-        <Grid container item xs={12} spacing={1}>
-          <Grid item xs={3}>
-            <Box borderRight={1} borderColor="primary.main" style={{ height: 270 }} {...defaultProps}>
-              <div className={classes.nameAndIcon}>
-                {image ?
-                  <Avatar 
-                    onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
-                    src={image}
-                    className={classes.avatar}
-                  />
-                :
-                  <Avatar
-                    onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
-                    className={classes.avatar}
-                  >
-                    <AccountCircle style={{ color: '#094ebd', width: 120, height: 120 }}/>
-                  </Avatar>
-                }
-                <Typography style={{ marginLeft: 5 }} variant='h6'>
-                  {user.firstName} &nbsp; {user.lastName}
-                </Typography>
-              </div>
-            </Box>
-          </Grid>
-          <div className={classes.column}>
-            <Grid item xs={12}>
-              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
-                <Header text="User info" />
-                <Typography variant='subtitle1'>
-                  Email: {user.email} <br/>
-                  Firstname: {user.firstName} <br/>
-                  Lastname: {user.lastName} 
-                  <IconButton onClick={() => dispatch(handleModal(true, 'ModifyUser'))} style={{ position: 'relative',  left: 10, marginTop: -10 }}> 
-                    <Tooltip title="Modify user info">
-                      <Edit />
-                    </Tooltip>
-                  </IconButton><br/>
-                </Typography>
-               
+        <>
+          <div style={{ flexDirection: 'column'}}> 
+            <Container>
+              <Box borderRight={1} borderLeft={1} borderColor="primary.main" style={{ height: 270, width: 270 }} {...defaultProps}>
+                <div className={classes.nameAndIcon}>
+                  {image ?
+                    <Avatar 
+                      onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
+                      src={image}
+                      className={classes.avatar}
+                    />
+                  :
+                    <Avatar
+                      onClick={() => dispatch(handleModal(true, 'ModifyUserAvatar'))}
+                      className={classes.avatar}
+                    >
+                      <AccountCircle style={{ color: '#094ebd', width: 120, height: 120 }}/>
+                    </Avatar>
+                  }
+                  <Typography style={{ marginLeft: 5, textAlign: 'center' }} variant='h6'>
+                    {user.firstName} &nbsp; {user.lastName}
+                  </Typography>
+                </div>
               </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
-              <Header text="Recent activity" />
-              {dates.map((date, index) => (
-                <Typography key={index}>{date}: {platformInfo[index]}</Typography>
-              ))}
-              </Box>
-            </Grid>
+            </Container>
           </div>
-        </Grid>
+          <div style={{ flexDirection: 'column' }}> 
+            <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: 600 }} {...defaultProps}>
+              <Header text="Käyttäjätiedot" />
+              <Typography variant='subtitle1'>
+                Email: {user.email} <br/>
+                Etunimi: {user.firstName} <br/>
+                Sukunimi: {user.lastName} 
+                <IconButton onClick={() => dispatch(handleModal(true, 'ModifyUser'))} style={{ position: 'relative',  left: 10, marginTop: -10 }}> 
+                  <Tooltip title="Muokkaa käyttäjätietoja">
+                    <Edit />
+                  </Tooltip>
+                </IconButton><br/>
+              </Typography>
+            </Box>
+            <Box borderBottom={1} borderColor="primary.main" style={{ height: 120, width: '100%' }} {...defaultProps}>
+              <Header style={{ marginTop: 15 }} text="Viimeisimmät sisäänkirjautumiset" />
+                {dates.map((date, index) => (
+                  <Typography key={index}>{date}: {platformInfo[index]}</Typography>
+                ))}
+            </Box>
+          </div>
+        </>
       }
       <ModifyUserInfoModal />
       <ModifyUserAvatarModal />

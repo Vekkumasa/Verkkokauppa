@@ -73,16 +73,15 @@ const ShoppingCart: React.FC = (): JSX.Element => {
     return products.reduce((prev, cur) => prev + cur.price * cur.quantity, 0);
   };
   
-  console.log('shopping cart', products);
   return (
     <Box className={classes.box} border={1}>
       <Grid container item xs={12} spacing={3}>
         <Grid item xs={6}>
           <Box border={1} className={classes.cart}> 
             {products.length === 0 ?
-              <Typography variant='h5' className={classes.empty}> Your Shopping Cart Is Empty </Typography>
+              <Typography variant='h5' className={classes.empty}> Ostoskorisi on tyhjä </Typography>
               :
-              <div style={{ maxHeight: 300, overflow: 'auto' }}>
+              <div style={{ height: 300, overflow: 'auto' }}>
                 {products.map(product => {
                   if (product.quantity > 0) {
                     return (
@@ -95,7 +94,7 @@ const ShoppingCart: React.FC = (): JSX.Element => {
                   }
                 })}
                 <Typography variant='h5' style={{ marginLeft: 20 }}>
-                  Total price: {totalPrice()}
+                  Kokonaishinta: {totalPrice()}€
                 </Typography>  
               </div>
               

@@ -6,8 +6,6 @@ import { FreeBreakfast, Build, Home, AllInclusive, BarChart } from '@material-ui
 import { AppDispatch, useAppDispatch, useAppSelector } from '../store/rootReducer';
 import { setTag } from '../store/Filter/actionCreators';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles(
   createStyles({
     container: {
@@ -18,7 +16,7 @@ const useStyles = makeStyles(
     },
     menuItem: {
       height: 70,
-      width: drawerWidth,
+      width: 240,
     },
     menuIcon: {
       color: '#3f51b5',
@@ -31,7 +29,6 @@ const Sidebar: React.FC = () => {
   const dispatch: AppDispatch = useAppDispatch();
   const tagi: Tag | undefined = useAppSelector(state => state.filterReducer.tagFilter);
 
-  console.log('tagi', tagi);
   return (
     <div className={classes.container}>
       <Link to="/" style={{ textDecoration: 'none', color: 'rgb(0,0,0)' }}>
