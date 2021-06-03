@@ -28,12 +28,12 @@ const UserForm = ({ errors, touched }: Props) => {
       <Grid container spacing={1}>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-          <label>Username: <b style={{color: 'red'}}>*</b> </label>
+          <label>Käyttäjänimi: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Username"
+              placeholder="Käyttäjänimi"
               type="text"
               name="userName"
             />
@@ -46,12 +46,12 @@ const UserForm = ({ errors, touched }: Props) => {
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Firstname: <b style={{color: 'red'}}>*</b> </label>
+            <label>Etunimi: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Firstname"
+              placeholder="Etunimi"
               type="text"
               name="firstName"
             />
@@ -64,12 +64,12 @@ const UserForm = ({ errors, touched }: Props) => {
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Lastname: <b style={{color: 'red'}}>*</b> </label>
+            <label>Sukunimi: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Lastname"
+              placeholder="Sukunimi"
               type="text"
               name="lastName"
             />
@@ -82,12 +82,12 @@ const UserForm = ({ errors, touched }: Props) => {
         </Grid>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={2}>
-            <label>Password: <b style={{color: 'red'}}>*</b> </label>
+            <label>Salasana: <b style={{color: 'red'}}>*</b> </label>
           </Grid>
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Password"
+              placeholder="Salasana"
               type="password"
               name="password"
             />
@@ -117,7 +117,7 @@ const UserForm = ({ errors, touched }: Props) => {
           </Grid>
         </Grid>
       </Grid>
-      <button className={classes.button} type="submit">Submit</button>
+      <button className={classes.button} type="submit">Lähetä</button>
     </Form>
   );
 };

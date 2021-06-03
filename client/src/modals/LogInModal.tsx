@@ -48,7 +48,7 @@ const Header: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <h2 className={classes.header}> Log In</h2>
+    <h2 className={classes.header}> Kirjaudu sisään </h2>
   );
 };
 

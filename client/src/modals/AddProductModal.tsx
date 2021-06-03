@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Add Product </h2>
+    <h2 className={classes.header}> Lisää uusi tuote </h2>
   );
 };
 

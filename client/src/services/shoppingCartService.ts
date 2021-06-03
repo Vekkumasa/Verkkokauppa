@@ -35,7 +35,6 @@ const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCar
 };
 
 const setShoppingCartActivity = async (cartId: string, data: boolean):Promise<ShoppingCart> => {
-  console.log('set shopping cart activity cartid', cartId);
   const request = await axios.put<ShoppingCart>(`${baseURL}/${cartId}/activity`, { data: data });
   return request.data;
 };

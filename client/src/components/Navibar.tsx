@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
 import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace } from '@material-ui/icons/';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import AccountMenu from './AccountMenu';
 import { logIn } from '../store/User/actionCreators';
@@ -52,6 +52,13 @@ type Props = {
 
 const Navibar = ({ user }: Props): JSX.Element => {
   const [ searchText, setSearchText ] = useState('');
+  const [ redirect, setRedirect ] = useState('');
+  const loggedIn = !!user;
+
+  useEffect(() => {
+    loggedIn && setRedirect('');
+  }, [user]);
+
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
   const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
@@ -62,6 +69,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
     window.localStorage.removeItem('loggedUser');
+    setRedirect('/');
   };
 
   const handleSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,10 +86,10 @@ const Navibar = ({ user }: Props): JSX.Element => {
     dispatch(setFilter(''));
   };
 
-  const loggedIn = !!user;
-
+  
   return (
     <div>
+      {redirect && <Redirect to={redirect} /> }
       <AppBar position="static" color="primary">
         <Toolbar>
           <Link to="/">
@@ -93,7 +101,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
             Verkkokauppa
           </Typography>
           <TextField 
-            placeholder="Search products"
+            placeholder="Etsi tuotteita"
             onChange={handleSearchText}
             style={{ backgroundColor: '#dae1f0'}}
             size="small"
@@ -104,14 +112,14 @@ const Navibar = ({ user }: Props): JSX.Element => {
             <Search className={classes.searchIcon}/>
           </IconButton>
           <IconButton onClick={() => clearFilter()}>
-            <Tooltip title="Clear searchbar">
+            <Tooltip title="Tyhjennä hakukenttä">
               <Backspace className={classes.searchIcon} />
             </Tooltip>
           </IconButton>
           <div className={classes.buttons}>
             {user?.userType === 'Admin' && (
               <IconButton onClick={() => dispatch(handleModal(true, 'AddProduct'))} color="inherit">
-                <Tooltip title="Add product">
+                <Tooltip title="Lisää tuote">
                   <AddCircleOutline className={classes.addProductIcon} />
                 </Tooltip>
               </IconButton>
@@ -119,7 +127,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
             <div>
               <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
                 <Typography variant="h6" className={classes.login}>
-                  {loggedIn ? 'Log out' : 'Login'}
+                  {loggedIn ? 'Kirjaudu ulos' : 'Kirjaudu sisään'}
                 </Typography>
               </Button>
             </div>  
@@ -127,7 +135,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
               <div>
                 <Button onClick={() => dispatch(handleModal(true, 'CreateUser'))} color="inherit">
                   <Typography variant="h6" className={classes.login}>
-                    Create User
+                    Luo käyttäjätili
                   </Typography>
                 </Button>
               </div>  

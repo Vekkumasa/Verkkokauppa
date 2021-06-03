@@ -2,13 +2,14 @@ import React from "react";
 import { Product } from './Product';
 import { makeStyles } from '@material-ui/core/styles';
 import { useAppSelector } from '../store/rootReducer';
-import { Typography } from '@material-ui/core/';
+import { Typography, Grid } from '@material-ui/core/';
 
 const useStyles = makeStyles({
   root: {
     position: 'relative',
     display: 'flex',
-    paddingLeft: 15
+    paddingLeft: 15,
+    maxWidth: 1200
   },
 });
 
@@ -24,6 +25,12 @@ const ProductListPage = (): JSX.Element | null => {
     return null;
   }
 
+  const createNewRow = (index: number) => {
+    return (
+      <Grid key={index} style={{ marginTop: 10 }} item xs={12}></Grid>
+    );
+  };
+
   const filteredByName = filter.productFilter.length === 0 ?
     products :
     products.filter(p => p.name.toLowerCase().includes(filter.productFilter.toLowerCase()));
@@ -36,8 +43,6 @@ const ProductListPage = (): JSX.Element | null => {
     :
     filteredByName;
     
-
-  console.log('filtered', filteredProducts);
   if (filteredProducts.length === 0) {
     // TODO: Stylet filtteri ilmotukseen
     return (
@@ -48,11 +53,11 @@ const ProductListPage = (): JSX.Element | null => {
   }
 
   return (
-    <div className={classes.root}>
-      {filteredProducts.map((product: Product) => (
-        <Product key={product._id} product={product} />
+    <Grid container className={classes.root}>
+      {filteredProducts.map((product: Product, index) => (
+        index % 5 === 0? <> {createNewRow(index)} <Product key={product._id} product={product} /> </> : <Product key={product._id} product={product} />
       ))}
-    </div>
+    </Grid>
   );
 };
 

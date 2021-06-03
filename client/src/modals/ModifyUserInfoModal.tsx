@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
   paper: {
     position: 'absolute',
-    width: 650,
+    width: 745,
     height: 370,
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 const Header: React.FC = () => {
   const classes = useStyles();
   return (
-    <h2 className={classes.header}> Modify user info </h2>
+    <h2 className={classes.header}> Muokkaa käyttäjätietoja </h2>
   );
 };
 

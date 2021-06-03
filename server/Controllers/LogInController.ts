@@ -20,7 +20,6 @@ const logIn = async (userName: string, passWord: string, platformInfo: string): 
     return null;
   }
 
-  console.log(StringCheck(user.id));
   if (StringCheck(user.id)) {
     const userForToken = {
       username: user.userName,

@@ -60,20 +60,20 @@ const AccountMenu = (): JSX.Element => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <Link to="/account" style={{ textDecoration: 'none' }}>
+        <Link to="/account" style={{ textDecoration: 'none', color: 'black' }}>
           <StyledMenuItem>
               <ListItemIcon>
                 <Person fontSize="small" />
               </ListItemIcon>
-            <ListItemText primary="Personal info" />
+            <ListItemText primary="Käyttäjätiedot" />
           </StyledMenuItem>
         </Link>
-        <Link to="/pastOrders" style={{ textDecoration: 'none'}}>
+        <Link to="/pastOrders" style={{ textDecoration: 'none', color: 'black' }}>
           <StyledMenuItem>
             <ListItemIcon>
               <ShoppingBasket fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Past orders" />
+            <ListItemText primary="Aikaisemmat tilaukset" />
           </StyledMenuItem>
         </Link>
       </StyledMenu>

@@ -36,7 +36,7 @@ const useStyles = makeStyles({
     },
   },
   header: {
-    backgroundColor: blue[300],
+    backgroundColor: '#3f51b5',
   },
   mainRow: {
     backgroundColor: blue[200],
@@ -82,15 +82,15 @@ const Row = ({ order }: RowProps):JSX.Element => {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                Order total price: &nbsp; {totalPrice()}
+                Tilauksen kokonaishinta: &nbsp; {totalPrice()}
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow className={classes.body}>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price</TableCell>
+                    <TableCell>Nimi</TableCell>
+                    <TableCell>Hinta</TableCell>
+                    <TableCell align="right">Määrä</TableCell>
+                    <TableCell align="right">Hinta yhteensä</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody className={classes.body}>
@@ -142,7 +142,7 @@ const PastOrders = (): JSX.Element => {
         <TableHead>
           <TableRow className={classes.header}>
             <TableCell />
-            <TableCell>Date Of Order</TableCell>
+            <TableCell style={{ color: 'white' }}>Tilauksen päivämäärä</TableCell>
             <TableCell align="left" />
             <TableCell align="right"/>
             <TableCell align="right"/>

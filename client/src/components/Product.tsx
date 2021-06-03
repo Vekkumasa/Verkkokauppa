@@ -146,7 +146,7 @@ const Product  = ({ product }: Props): JSX.Element => {
         </Button>
         {user?.userType === 'Admin' && (
           <IconButton onClick={() => deleteProduct()}>
-            <Tooltip title="Remove product from database">
+            <Tooltip title="Poista tuote tietokannasta">
               <Delete />
             </Tooltip>
           </IconButton>

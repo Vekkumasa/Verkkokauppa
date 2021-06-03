@@ -67,7 +67,6 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
   }
 
   if (newShoppingCartCheck(action)) {
-    console.log('new shopping cart reducerissa', action);
     switch (action.type) {
       case actionTypes.CREATE_NEW_SHOPPING_CART:
         return {
@@ -79,7 +78,6 @@ const reducer = (state: ShoppingCartState = initialState, action: ShoppingCartAc
     
   }
   if (clearShoppingCartCheck(action)) {
-    console.log('clear cart reducerissa', action);
     return {
       ...state,
       cartId: '',
