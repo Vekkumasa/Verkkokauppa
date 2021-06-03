@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormikErrors, FormikTouched, Form, Field } from 'formik';
 import { Grid, Select, Chip, Box, MenuItem } from '@material-ui/core/';
 import useStyles from '../formStyles';
@@ -25,7 +25,7 @@ interface Props {
   tags: Tag[]
 }
 
-const ProductForm = ({ errors, touched, setFieldValue, setImage, image, submitForm, setTags, tags }: Props): JSX.Element => {
+const ProductForm = ({ errors, touched, setFieldValue, setImage, image, setTags, tags }: Props): JSX.Element => {
   const classes = useStyles();
   const availableTags: Tag[] = ['Kirves', 'Mokki Essential', 'Ruoka/Juoma', 'muut'];
 

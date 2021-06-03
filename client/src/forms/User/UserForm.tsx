@@ -20,7 +20,7 @@ interface Props {
   }>
 }
 
-const UserForm = ({ errors, touched }: Props) => {
+const UserForm = ({ errors, touched }: Props):JSX.Element => {
   const classes = useStyles();
 
   return (

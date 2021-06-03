@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // TODO: FIX RETURN TYPES
 
-const baseURL = 'https://verkkis.herokuapp.com/api/shoppingCart';
+const baseURL = 'http://localhost:3001/api/shoppingCart';
 
 const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCart> => {
   const request = await axios.post<ShoppingCart>(baseURL, products);

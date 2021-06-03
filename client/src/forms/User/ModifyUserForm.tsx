@@ -1,6 +1,5 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import Grid from '@material-ui/core/Grid';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import userService from '../../services/userService';
@@ -8,7 +7,6 @@ import { AppDispatch, useAppDispatch, useAppSelector } from '../../store/rootRed
 import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
 import { logIn } from '../../store/User/actionCreators';
-import useStyles from '../formStyles';
 import UserForm from './UserForm';
 
  const SignupSchema = Yup.object().shape({
@@ -40,7 +38,6 @@ import UserForm from './UserForm';
  });
  
  const ModifyUserForm = ():JSX.Element => {
-   const classes = useStyles();
    const dispatch: AppDispatch = useAppDispatch();
    const loggedUser: Credentials | undefined = useAppSelector(state => state.userReducer.user);
    if (!loggedUser) return <div></div>;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseURL = 'https://verkkis.herokuapp.com/api';
+const baseURL = 'http://localhost:3001/api';
 
 const signIn = async (username: string, password: string, platformInfo: string):Promise<Credentials> => {
   const request = await axios.post<Credentials>(`${baseURL}/login`, { username, password, platformInfo });

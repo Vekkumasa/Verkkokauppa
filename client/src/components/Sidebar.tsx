@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 import { FreeBreakfast, Build, Home, AllInclusive, BarChart } from '@material-ui/icons';
-import { AppDispatch, useAppDispatch, useAppSelector } from '../store/rootReducer';
+import { AppDispatch, useAppDispatch } from '../store/rootReducer';
 import { setTag } from '../store/Filter/actionCreators';
 
 const useStyles = makeStyles(
@@ -27,7 +27,6 @@ const useStyles = makeStyles(
 const Sidebar: React.FC = () => {
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
-  const tagi: Tag | undefined = useAppSelector(state => state.filterReducer.tagFilter);
 
   return (
     <div className={classes.container}>
