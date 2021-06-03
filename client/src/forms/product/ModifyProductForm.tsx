@@ -27,6 +27,7 @@ import ProductForm from './ProductForm';
 
  const ModifyProductForm = ():JSX.Element => {
   const [ image, setImage ] = useState<File>();
+  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
   const [ tags, setTags ] = useState<Tag[]>([]);
 
   const dispatch: AppDispatch = useAppDispatch();

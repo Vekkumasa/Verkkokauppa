@@ -1,12 +1,10 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import Grid from '@material-ui/core/Grid';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import userService from '../../services/userService';
 import { AppDispatch, useAppDispatch } from '../../store/rootReducer';
 import { setNotification } from '../../store/Notification/actionCreators';
 import { handleModal } from '../../store/modal/actionCreators';
-import useStyles from '../formStyles';
 import UserForm from './UserForm';
 
 const SignupSchema = Yup.object().shape({
@@ -41,7 +39,6 @@ const SignupSchema = Yup.object().shape({
 });
 
 const CreateUserForm = ():JSX.Element => {
-  const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
   return (
     <div>
