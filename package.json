@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "build-client": "cd client && npm run build",
     "copy-build": "cd client && cp -r build/ ../",
-    "build-all": "rm -rf dist/ build/ && npm run tsc && npm run build-client && npm run copy-build",
+    "build": "rm -rf dist/ build/ && npm run tsc && npm run build-client && npm run copy-build",
     "serve": "NODE_ENV=production node dist/index.js",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
