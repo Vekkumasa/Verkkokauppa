@@ -9,7 +9,7 @@
     "build-client": "cd client && npm install && npm run build",
     "copy-build": "cd client && cp -r build/ ../",
     "build": "echo build && rm -rf dist/ build/ && npm run tsc && npm run build-client && npm run copy-build",
-    "postinstall": "echo postinstall && cd client && npm run tsc",
+    "postinstall": "echo postinstall",
     "serve": "NODE_ENV=production node dist/index.js",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
