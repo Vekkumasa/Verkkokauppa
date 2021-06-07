@@ -44,4 +44,7 @@
 | 31.5  |  6.5 | Kayttajien arviot tuotteille + refaktorointia (Committi meni seuraavalle paivalle) |
 | 1.6   |  6.5 | User avatarit imageina eika urlina |
 | 2.6   |  7   | Producteille tagi attribuutit + etsiminen niiden mukaan + heroku |
-| yht   | 197  | | 
+| 3.6   |  4   | Refaktorointia, lintti virheitä, heroku, pipeline probleemaa |
+| 4.6   |  8   | deploy pipeline vihdoin kuntoon
+| 7.6   |  1   | pastorders.tsx tyylejä ym pikku juttuja |
+| yht   | 210  | | 

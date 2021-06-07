@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { withStyles } from '@material-ui/core/styles';
 import { IconButton, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 import Menu, { MenuProps } from '@material-ui/core/Menu';
-import { Person, ShoppingBasket, AccountCircle } from '@material-ui/icons';
+import { Person, ShoppingBasket, AccountCircle, ExitToApp } from '@material-ui/icons';
+import { AppDispatch, useAppDispatch } from '../store/rootReducer';
+import { logIn } from '../store/User/actionCreators';
 
 const StyledMenu = withStyles({
   paper: {
@@ -39,6 +41,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 const AccountMenu = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const dispatch: AppDispatch = useAppDispatch();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -76,6 +79,12 @@ const AccountMenu = (): JSX.Element => {
             <ListItemText primary="Aikaisemmat tilaukset" />
           </StyledMenuItem>
         </Link>
+        <StyledMenuItem onClick={() => dispatch(logIn())}>
+            <ListItemIcon>
+              <ExitToApp fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Kirjaudu ulos" />
+          </StyledMenuItem>
       </StyledMenu>
     </div>
   );

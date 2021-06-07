@@ -31,5 +31,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "verggis"
           heroku_email: "ylirasku@gmail.com"
-        #  healthcheck: "https://verggis.herokuapp.com/api/health"
-        #  rollbackonhealthcheckfailed: true
+          healthcheck: "https://verggis.herokuapp.com/api/health"
+          rollbackonhealthcheckfailed: true

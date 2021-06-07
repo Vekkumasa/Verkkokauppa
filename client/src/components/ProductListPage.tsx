@@ -32,8 +32,9 @@ const ProductListPage = (): JSX.Element | null => {
   };
 
   const filteredByName = filter.productFilter.length === 0 ?
-    products :
-    products.filter(p => p.name.toLowerCase().includes(filter.productFilter.toLowerCase()));
+      products 
+    :
+      products.filter(p => p.name.toLowerCase().includes(filter.productFilter.toLowerCase()));
   
 
   const filteredProducts = filter.tagFilter?
@@ -55,7 +56,10 @@ const ProductListPage = (): JSX.Element | null => {
   return (
     <Grid container className={classes.root}>
       {filteredProducts.map((product: Product, index) => (
-        index % 5 === 0? <> {createNewRow(index)} <Product key={product._id} product={product} /> </> : <Product key={product._id} product={product} />
+        index % 5 === 0? 
+          <> {createNewRow(index)} <Product key={product._id} product={product} /> </> 
+        : 
+          <Product key={product._id} product={product} />
       ))}
     </Grid>
   );

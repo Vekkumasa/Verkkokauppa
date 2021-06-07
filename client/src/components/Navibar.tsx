@@ -125,11 +125,13 @@ const Navibar = ({ user }: Props): JSX.Element => {
               </IconButton>
             )}
             <div>
-              <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
-                <Typography variant="h6" className={classes.login}>
-                  {loggedIn ? 'Kirjaudu ulos' : 'Kirjaudu sisään'}
-                </Typography>
-              </Button>
+              {!user && 
+                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
+                  <Typography variant="h6" className={classes.login}>
+                    Kirjaudu sisään
+                  </Typography>
+                </Button>
+              }
             </div>  
             {!user && 
               <div>
