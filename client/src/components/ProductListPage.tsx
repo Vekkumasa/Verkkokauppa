@@ -57,7 +57,7 @@ const ProductListPage = (): JSX.Element | null => {
     <Grid container className={classes.root}>
       {filteredProducts.map((product: Product, index) => (
         index % 5 === 0? 
-          <> {createNewRow(index)} <Product key={product._id} product={product} /> </> 
+          <React.Fragment key={index}> {createNewRow(index)} <Product key={product._id} product={product} /> </React.Fragment> 
         : 
           <Product key={product._id} product={product} />
       ))}

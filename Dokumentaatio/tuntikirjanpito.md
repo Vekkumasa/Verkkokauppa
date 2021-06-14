@@ -47,4 +47,5 @@
 | 3.6   |  4   | Refaktorointia, lintti virheitä, heroku, pipeline probleemaa |
 | 4.6   |  8   | deploy pipeline vihdoin kuntoon
 | 7.6   |  1   | pastorders.tsx tyylejä ym pikku juttuja |
-| yht   | 210  | | 
+| 14.6  |  1.5 | Refaktorointia |
+| yht   | 211.5 | | 
