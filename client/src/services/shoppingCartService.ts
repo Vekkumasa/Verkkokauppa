@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// TODO: FIX RETURN TYPES
-
 const baseURL = '/api/shoppingCart';
 
 const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCart> => {
