@@ -30,16 +30,13 @@ import {
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: grey[300],
+    backgroundColor: '#3F88B5',
     '& > *': {
       borderBottom: 'unset',
     },
   },
   header: {
     backgroundColor: '#3f51b5',
-  },
-  mainRow: {
-    backgroundColor: blue[200],
   },
   row: {  
     '&:hover': {
@@ -71,7 +68,7 @@ const Row = ({ order }: RowProps):JSX.Element => {
             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row"> {parseDate(order.completionDate)} </TableCell>
+        <TableCell component="th" scope="row" style={{ color: 'white'}}> {parseDate(order.completionDate)} </TableCell>
         <TableCell />
         <TableCell />
         <TableCell />

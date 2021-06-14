@@ -1,10 +1,15 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, Redirect } from "react-router-dom";
 
 import { withStyles } from '@material-ui/core/styles';
 import { IconButton, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core/';
 import Menu, { MenuProps } from '@material-ui/core/Menu';
-import { Person, ShoppingBasket, AccountCircle } from '@material-ui/icons';
+import { Person, ShoppingBasket, AccountCircle, ExitToApp } from '@material-ui/icons';
+import { AppDispatch, useAppDispatch, useAppSelector } from '../store/rootReducer';
+import { setNotification } from '../store/Notification/actionCreators';
+import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
+import { logIn } from '../store/User/actionCreators';
+import shoppingCartService from '../services/shoppingCartService';
 
 const StyledMenu = withStyles({
   paper: {
@@ -37,8 +42,17 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-const AccountMenu = (): JSX.Element => {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+interface Props {
+  redirect: string,
+  setRedirect: React.Dispatch<React.SetStateAction<string>>
+}
+
+const AccountMenu = ({ redirect, setRedirect }: Props): JSX.Element => {
+  const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
+
+  const dispatch: AppDispatch = useAppDispatch();
+
+  const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -48,8 +62,19 @@ const AccountMenu = (): JSX.Element => {
     setAnchorEl(null);
   };
 
+  const logOut = () => {
+    void shoppingCartService.setShoppingCartActivity(cartId, false);
+    dispatch(logIn());
+    dispatch(clearShoppingCart());
+    dispatch(setNotification("Have a nice day", 'success'));
+    window.localStorage.removeItem('loggedUser');
+    setRedirect('/');
+  };
+
+  // TODO: FIXAA REDIRECTI (Toimi navibarissa)
   return (
     <div>
+      {redirect && <Redirect to={redirect} /> }
       <IconButton style={{ color: 'white'}} onClick={handleClick}>
         <AccountCircle style={{ fontSize: 30, marginTop: 5}}/>
       </IconButton>
@@ -76,6 +101,12 @@ const AccountMenu = (): JSX.Element => {
             <ListItemText primary="Aikaisemmat tilaukset" />
           </StyledMenuItem>
         </Link>
+        <StyledMenuItem onClick={() => logOut()}>
+            <ListItemIcon>
+              <ExitToApp fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Kirjaudu ulos" />
+          </StyledMenuItem>
       </StyledMenu>
     </div>
   );

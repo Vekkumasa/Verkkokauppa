@@ -5,16 +5,13 @@ import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace } from '@materi
 import { Link, Redirect } from "react-router-dom";
 
 import AccountMenu from './AccountMenu';
-import { logIn } from '../store/User/actionCreators';
-import { useAppDispatch, AppDispatch, useAppSelector } from '../store/rootReducer';
-import { setNotification } from '../store/Notification/actionCreators';
+import { useAppDispatch, AppDispatch } from '../store/rootReducer';
 import { setFilter } from '../store/Filter/actionCreators';
 import LogInModal from '../modals/LogInModal';
 import AddProductModal from '../modals/AddProductModal';
 import CreateUserModal from '../modals/CreateUserModal';
-import { clearShoppingCart } from '../store/ShoppingCart/actionCreators';
 import { handleModal } from '../store/modal/actionCreators';
-import shoppingCartService from '../services/shoppingCartService';
+
 const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
@@ -61,16 +58,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
 
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
-  const cartId = useAppSelector(state => state.shoppingCartReducer.cartId);
   
-  const logOut = () => {
-    void shoppingCartService.setShoppingCartActivity(cartId, false);
-    dispatch(logIn());
-    dispatch(clearShoppingCart());
-    dispatch(setNotification("Have a nice day", 'success'));
-    window.localStorage.removeItem('loggedUser');
-    setRedirect('/');
-  };
 
   const handleSearchText = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -125,11 +113,13 @@ const Navibar = ({ user }: Props): JSX.Element => {
               </IconButton>
             )}
             <div>
-              <Button onClick={() => loggedIn ? logOut() : dispatch(handleModal(true, 'LogIn'))} color="inherit">
-                <Typography variant="h6" className={classes.login}>
-                  {loggedIn ? 'Kirjaudu ulos' : 'Kirjaudu sisään'}
-                </Typography>
-              </Button>
+              {!user && 
+                <Button onClick={() => dispatch(handleModal(true, 'LogIn'))} color="inherit">
+                  <Typography variant="h6" className={classes.login}>
+                    Kirjaudu sisään
+                  </Typography>
+                </Button>
+              }
             </div>  
             {!user && 
               <div>
@@ -149,7 +139,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
             </div>
             {user &&
               <div>
-                <AccountMenu />
+                <AccountMenu redirect={redirect} setRedirect={setRedirect} />
               </div>
             }
           </div>
