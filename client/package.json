@@ -23,7 +23,6 @@
     "react-use": "^17.2.1",
     "redux-thunk": "^2.3.0",
     "sweetalert": "^2.1.2",
-    "typescript": "^4.2.2",
     "web-vitals": "^1.1.0",
     "yup": "^0.32.9"
   },
@@ -32,6 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "tsc": "tsc",
     "lint": "eslint \"./src/**/*.{ts,tsx}\""
   },
   "eslintConfig": {
@@ -68,6 +68,7 @@
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
+    "typescript": "^4.2.2",
     "typesafe-actions": "^5.1.0"
   }
 }
