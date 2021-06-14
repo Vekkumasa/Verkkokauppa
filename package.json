@@ -6,13 +6,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node",
     "tsc": "tsc",
-    "build-client": "cd client && npm run build",
+    "build-client": "cd client && npm install && npm run build",
     "copy-build": "cd client && cp -r build/ ../",
     "build": "echo build && rm -rf dist/ build/ && npm run tsc && npm run build-client && npm run copy-build",
     "serve": "NODE_ENV=production node dist/index.js",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts . && cd client && npm run lint"
+    "heroku": "git add . && git commit -m \"Heroku\" && git push heroku master"
   },
   "repository": {
     "type": "git",
