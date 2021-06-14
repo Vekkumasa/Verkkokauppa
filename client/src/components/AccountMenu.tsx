@@ -71,7 +71,6 @@ const AccountMenu = ({ redirect, setRedirect }: Props): JSX.Element => {
     setRedirect('/');
   };
 
-  // TODO: FIXAA REDIRECTI (Toimi navibarissa)
   return (
     <div>
       {redirect && <Redirect to={redirect} /> }

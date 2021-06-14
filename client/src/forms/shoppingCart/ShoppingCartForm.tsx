@@ -30,6 +30,7 @@ const ShoppingCartForm = ():JSX.Element => {
   const user: Credentials | undefined = useAppSelector(state => state.userReducer.user);
   const cartState: ShoppingCartState = useAppSelector(state => state.shoppingCartReducer);
 
+  console.log('cartstate', cartState.cart);
   return (
     <div>
       <Formik
@@ -42,8 +43,7 @@ const ShoppingCartForm = ():JSX.Element => {
         onSubmit={values => {
           const { firstName, lastName, address } = values;      
           const shippingInfo: ShippingInfo = { firstName, lastName, address };
-          // TODO: Checkaa ettei kärry ole tyhjä
-          if (userCheck(user)) {
+          if (userCheck(user) && cartState.cart.length > 0) {
             void shoppingCartService.setShoppingCartCompleted(cartState.cartId)
               .then((response) => {
                 if (!response) {
@@ -54,7 +54,9 @@ const ShoppingCartForm = ():JSX.Element => {
                   dispatch(setNotification('Lähetetään tilaus osoitteeseen: ' + shippingInfo.address, 'success'));
                 }
             });
-          }    
+          } else {
+            dispatch(setNotification('Ostoskorisi on tyhjä', 'error'));
+          } 
         }}
       >
         {({ errors, touched }) => (
