@@ -45,7 +45,7 @@ const StyledMenuItem = withStyles((theme) => ({
 interface Props {
   redirect: string,
   setRedirect: React.Dispatch<React.SetStateAction<string>>
-};
+}
 
 const AccountMenu = ({ redirect, setRedirect }: Props): JSX.Element => {
   const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
