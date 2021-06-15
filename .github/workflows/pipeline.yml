@@ -24,14 +24,6 @@ jobs:
       - name: build
         run: npm run build
 
-      - name: e2e tests
-        uses: cypress-io/github-action@v2
-        with:
-          command: npm run test
-          build: npm run build
-          start: NODE_ENV=production node dist/index.js
-          wait-on: http://localhost:3001
-
       - name: deploy
         if: ${{ github.event_name == 'push' }}    
         uses: akhileshns/heroku-deploy@v3.12.12
