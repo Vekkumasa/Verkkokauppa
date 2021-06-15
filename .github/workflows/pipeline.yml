@@ -21,15 +21,15 @@ jobs:
       - name: lint
         run: npm run lint && cd client && npm run lint
 
+      - name: build
+        run: npm run build
+
       - name: e2e tests
         uses: cypress-io/github-action@v2
         with:
           command: npm run test
-          start: npm run dev
+          start: NODE_ENV=production node dist/index.js
           wait-on: http://localhost:3000 
-
-      - name: build
-        run: npm run build
 
       - name: deploy
         if: ${{ github.event_name == 'push' }}    
