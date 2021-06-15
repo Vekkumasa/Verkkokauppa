@@ -13,3 +13,11 @@ npm start
 ```
 käynnistää frontendin
 
+### Heroku
+
+```
+https://verggis.herokuapp.com/
+```
+
+#### Tuntikirjanpito
+[Tuntikirjanpito](https://github.com/Vekkumasa/Verkkokauppa/blob/master/Dokumentaatio/tuntikirjanpito.md)
