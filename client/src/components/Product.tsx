@@ -91,12 +91,11 @@ const Product  = ({ product }: Props): JSX.Element => {
             dispatch(createNewShoppingCart(response.id));
           }).catch(e => console.log(e));
       } else {
-        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user._id, cartId});
+        const response = shoppingCartService.addProductToShoppingCart({ product: shoppingCartProduct, userId: user._id, cartId});     
         response.then(() => {
           dispatch(addNewProductToShoppingCart(shoppingCartProduct, cartId));
             }).catch(e => console.log(e));
       }
-      
     }
   };
 

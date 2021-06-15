@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// TODO: FIX RETURN TYPES
-
 const baseURL = '/api/shoppingCart';
 
 const createNewShoppingCart = async (products: ShoppingCart): Promise<ShoppingCart> => {
@@ -14,23 +12,23 @@ const getUsersShoppingCart = async (userId: string):Promise<ShoppingCart | null>
   return request.data;
 };
 
-const addProductToShoppingCart = async (productToAdd: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.post<ShoppingCartProduct>(`${baseURL}/${productToAdd.cartId}/addProduct`, productToAdd);
+const addProductToShoppingCart = async (productToAdd: CartProduct):Promise<ShoppingCart> => {
+  const request = await axios.post<ShoppingCart>(`${baseURL}/${productToAdd.cartId}/addProduct`, productToAdd);
   return request.data;
 };
   
-const removeProductFromShoppingCart = async (productToRemove: CartProduct): Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${productToRemove.cartId}/remove`, productToRemove);
+const removeProductFromShoppingCart = async (productToRemove: CartProduct): Promise<ShoppingCart> => {
+  const request = await axios.put<ShoppingCart>(`${baseURL}/${productToRemove.cartId}/remove`, productToRemove);
   return request.data;
 };
 
-const increaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${product.cartId}/increase`, product);
+const increaseProductQuantity = async (product: CartProduct):Promise<ShoppingCart> => {
+  const request = await axios.put<ShoppingCart>(`${baseURL}/${product.cartId}/increase`, product);
   return request.data;
 };
 
-const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCartProduct> => {
-  const request = await axios.put<ShoppingCartProduct>(`${baseURL}/${product.cartId}/decrease`, product);
+const decreaseProductQuantity = async (product: CartProduct):Promise<ShoppingCart> => {
+  const request = await axios.put<ShoppingCart>(`${baseURL}/${product.cartId}/decrease`, product);
   return request.data;
 };
 
