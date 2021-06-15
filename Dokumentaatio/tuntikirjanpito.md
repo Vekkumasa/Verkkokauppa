@@ -48,4 +48,5 @@
 | 4.6   |  8   | deploy pipeline vihdoin kuntoon
 | 7.6   |  1   | pastorders.tsx tyylejä ym pikku juttuja |
 | 14.6  |  1.5 | Refaktorointia |
-| yht   | 211.5 | | 
+| 15.6  |  2   | Cypress + github action test |
+| yht   | 213.5 | | 

@@ -29,7 +29,7 @@ jobs:
         with:
           command: npm run test
           start: NODE_ENV=production node dist/index.js
-          wait-on: http://localhost:3000 
+          wait-on: http://localhost:3001
 
       - name: deploy
         if: ${{ github.event_name == 'push' }}    
