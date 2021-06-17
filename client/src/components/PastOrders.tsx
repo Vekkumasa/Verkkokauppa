@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { Redirect } from 'react-router-dom';
 import userService from '../services/userService';
 import { useAppSelector } from '../store/rootReducer';
 import { makeStyles } from '@material-ui/styles';
@@ -118,41 +119,48 @@ const sortOrders = (orders: ShoppingCart[]): ShoppingCartWithCompletionDate[] =>
   return newList.sort((o1, o2) => new Date(o2.completionDate).getTime() - new Date(o1.completionDate).getTime());
 };
 
-const PastOrders = (): JSX.Element => {
+type Props = {
+  redirect: string,
+};
+
+const PastOrders = ({ redirect }: Props): JSX.Element => {
   const [ orders, setOrders ] = useState<ShoppingCart[]>([]);
   const sortedOrders = sortOrders(orders);
   const classes = useStyles();
   const user = useAppSelector(state => state.userReducer.user);
 
-  if (!user) return <div></div>;
-
   useEffect(() => {
-    void userService.getUsersCompletedShoppingcarts(user._id)
+    if (user) {
+      void userService.getUsersCompletedShoppingcarts(user._id)
       .then((res) => {
         setOrders(res);
       });
+    }
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow className={classes.header}>
-            <TableCell />
-            <TableCell style={{ color: 'white' }}>Tilauksen päivämäärä</TableCell>
-            <TableCell align="left" />
-            <TableCell align="right"/>
-            <TableCell align="right"/>
-            <TableCell align="right"/>
-          </TableRow>
-        </TableHead>
-        <TableBody className={classes.body}>
-          {sortedOrders.map((order) => (
-            <Row key={order.id} order={order}/>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+      {redirect && <Redirect to={redirect} /> }
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow className={classes.header}>
+              <TableCell />
+              <TableCell style={{ color: 'white' }}>Tilauksen päivämäärä</TableCell>
+              <TableCell align="left" />
+              <TableCell align="right"/>
+              <TableCell align="right"/>
+              <TableCell align="right"/>
+            </TableRow>
+          </TableHead>
+          <TableBody className={classes.body}>
+            {sortedOrders.map((order) => (
+              <Row key={order.id} order={order}/>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };
 

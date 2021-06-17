@@ -49,4 +49,5 @@
 | 7.6   |  1   | pastorders.tsx tyylejä ym pikku juttuja |
 | 14.6  |  1.5 | Refaktorointia |
 | 15.6  |  2   | Cypress + github action test |
-| yht   | 213.5 | | 
+| 17.6  |  0.5 | Bugi fixi pastorders komponentissa |
+| yht   | 214  | | 

@@ -44,10 +44,9 @@ const StyledMenuItem = withStyles((theme) => ({
 
 interface Props {
   redirect: string,
-  setRedirect: React.Dispatch<React.SetStateAction<string>>
 }
 
-const AccountMenu = ({ redirect, setRedirect }: Props): JSX.Element => {
+const AccountMenu = ({ redirect }: Props): JSX.Element => {
   const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
 
   const dispatch: AppDispatch = useAppDispatch();
@@ -68,7 +67,6 @@ const AccountMenu = ({ redirect, setRedirect }: Props): JSX.Element => {
     dispatch(clearShoppingCart());
     dispatch(setNotification("Have a nice day", 'success'));
     window.localStorage.removeItem('loggedUser');
-    setRedirect('/');
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button, Typography, Toolbar, AppBar, Tooltip, TextField } from '@material-ui/core/';
 import { AddCircleOutline, Menu, Search, ShoppingCart, Backspace } from '@material-ui/icons/';
@@ -44,17 +44,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-  user?: Credentials
+  user?: Credentials,
+  redirect: string,
 };
 
-const Navibar = ({ user }: Props): JSX.Element => {
+const Navibar = ({ user, redirect }: Props): JSX.Element => {
   const [ searchText, setSearchText ] = useState('');
-  const [ redirect, setRedirect ] = useState('');
-  const loggedIn = !!user;
-
-  useEffect(() => {
-    loggedIn && setRedirect('');
-  }, [user]);
 
   const classes = useStyles();
   const dispatch: AppDispatch = useAppDispatch();
@@ -139,7 +134,7 @@ const Navibar = ({ user }: Props): JSX.Element => {
             </div>
             {user &&
               <div>
-                <AccountMenu redirect={redirect} setRedirect={setRedirect} />
+                <AccountMenu redirect={redirect} />
               </div>
             }
           </div>
