@@ -13,6 +13,10 @@ npm start
 ```
 käynnistää frontendin
 
+Valmiit tunnukset sovellukseen:
+Käyttäjänimi: *admin* salasana: *admin*
+Käyttjänimi: *user* salasana: *user*
+
 ### Heroku
 
 [Linkki herokuun](https://verggis.herokuapp.com/)
