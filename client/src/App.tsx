@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import { Navibar } from './components/Navibar';
@@ -21,6 +21,7 @@ import { validTimeStamp } from './utils/ValidTimeStamp';
 import Sidebar from './components/Sidebar';
 
 const App = (): JSX.Element => {
+  const [ redirect, setRedirect ] = useState('');
   const dispatch: AppDispatch = useAppDispatch();
 
   const user: Credentials | undefined = useAppSelector(
@@ -71,11 +72,21 @@ const App = (): JSX.Element => {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      setRedirect('');
+    } else {
+      setRedirect('/');
+    }
+  }, [user]);
+  
+  console.log('redirect: ', redirect);
   
   return (
     <div>
       <Router>
-        <Navibar user={user} />
+        <Navibar redirect={redirect} user={user} />
         <br/>
         {notification.visible && (
           <div>
@@ -89,7 +100,7 @@ const App = (): JSX.Element => {
           </Switch>
 
           <Switch>
-            <Route path='/pastOrders' render={() => <PastOrders />} />
+            <Route path='/pastOrders' render={() => <PastOrders redirect={redirect} />} />
           </Switch>
 
           <Switch>
