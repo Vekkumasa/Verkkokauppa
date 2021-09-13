@@ -61,7 +61,7 @@ const ProductForm = ({ errors, touched, setFieldValue, setImage, image, setTags,
           <Grid item xs={9}>
             <Field
               className={classes.field}
-              placeholder="Wish.com tason tuote (ei pakollinen)"
+              placeholder="Tuotteen kuvaus (ei pakollinen)"
               type="text"
               name="description"
             />
